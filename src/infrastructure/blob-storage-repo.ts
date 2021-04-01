@@ -4,19 +4,21 @@ import {
     BlobDownloadResponseModel,
     ContainerClient
   } from "@azure/storage-blob";
-import { Document } from '../file-management/model'
+import { Document, Documents } from '../file-management/model'
 
-export class BlobStorage {
+export function createBlobServiceClient(account: string, accountKey: string): BlobServiceClient {
+    const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
+    return new BlobServiceClient(
+        `https://${account}.blob.core.windows.net`,
+        sharedKeyCredential
+    );
+
+}
+export class BlobStorage implements Documents {
     private containerClient: ContainerClient
 
-    constructor(account: string, accountKey: string, containerName: string) {
-        const sharedKeyCredential = new StorageSharedKeyCredential(account, accountKey);
-        const blobServiceClient = new BlobServiceClient(
-            `https://${account}.blob.core.windows.net`,
-            sharedKeyCredential
-          );
-        this.containerClient = blobServiceClient.getContainerClient(containerName);
-
+    constructor(client: BlobServiceClient, containerName: string) {
+        this.containerClient = client.getContainerClient(containerName);
     }
 
     async add(id: string, content: Buffer): Promise<Document> {
@@ -26,9 +28,9 @@ export class BlobStorage {
         return new Document(id)
     }
 
-    async exists(id: string){
+    exists(id: string){
         const blockBlobClient = this.containerClient.getBlockBlobClient(id);
 
-        return await blockBlobClient.exists()
+        return blockBlobClient.exists()
     }
 }
