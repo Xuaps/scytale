@@ -1,0 +1,8 @@
+{
+    "Azure": {
+        "Storage": {
+            "AccountName": "ACCOUNT_NAME",
+            "AccountKey": "ACCOUNT_KEY"
+        }
+    }
+}

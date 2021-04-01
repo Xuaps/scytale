@@ -1,0 +1,11 @@
+{
+    "Azure": {
+        "Storage": {
+            "AccountName": "",
+            "AccountKey": ""
+        }
+    },
+    "Documents": {
+        "ContainerName": "test"
+    }
+}
