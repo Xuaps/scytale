@@ -3,7 +3,7 @@ import config from 'config'
 import { promisify } from 'util'
 import { BlobStorage, createBlobServiceClient } from '../../src/infrastructure/blob-storage-repo'
 
-const filePath = 'mocks/test.txt' 
+const filePath = 'mocks/assets/test.txt' 
 const connection = createBlobServiceClient(
     config.get('Azure.Storage.AccountName'), 
     config.get('Azure.Storage.AccountKey')

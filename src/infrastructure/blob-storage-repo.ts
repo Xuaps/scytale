@@ -24,8 +24,8 @@ export class BlobStorage implements Documents {
     async add(id: string, content: Buffer): Promise<Document> {
         const blockBlobClient = this.containerClient.getBlockBlobClient(id);
         await blockBlobClient.upload(content, Buffer.byteLength(content));
-
-        return new Document(id)
+        
+        return new Document(blockBlobClient.name)
     }
 
     exists(id: string){
