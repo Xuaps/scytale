@@ -1,16 +1,17 @@
 import { BlobServiceClient, BlockBlobClient, ContainerClient } from "@azure/storage-blob"
-import sinon from "sinon"
+import faker from "faker"
 
 export function newClient() {
-    const blobClient = sinon.createStubInstance(BlockBlobClient, {
-        upload: sinon.stub(),
-        exists: sinon.stub()
-    })
-    const client = sinon.createStubInstance(BlobServiceClient, {
-        getContainerClient: sinon.stub<[containerName: string]>().returns(sinon.createStubInstance(ContainerClient, {
-            getBlockBlobClient: sinon.stub<[blobName: string]>().returns(blobClient)
-        }))
-    })
+    const blobClient = ({
+        upload: jest.fn(),
+        exists: jest.fn(),
+        name: faker.system.fileName()
+    } as unknown) as BlockBlobClient
+    const client = ({
+        getContainerClient: () => ({
+            getBlockBlobClient: () => blobClient
+        } as unknown) as ContainerClient
+    } as unknown) as BlobServiceClient
 
-    return { client: (client as unknown) as BlobServiceClient, blobClient }
+    return { client, blobClient }
 }

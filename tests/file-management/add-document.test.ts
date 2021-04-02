@@ -1,5 +1,4 @@
 import config from 'config'
-import sinon from 'sinon'
 import faker from 'faker'
 import { BlobStorage } from '../../src/infrastructure/blob-storage-repo'
 import { BlobServiceClient, BlockBlobClient, ContainerClient } from '@azure/storage-blob'
@@ -8,31 +7,42 @@ import { Document } from '../../src/file-management/model'
 import { newFile } from '../../mocks/object-mothers/file'
 import { newClient } from '../../mocks/object-mothers/blob-storage-client'
 
-class URIManager {
-    public generateFrom(doc: Document) {
-        return ""
-    }
-}
+let fakeFile: { docId: string, buffer: Buffer }
+let fakeStorageClient: { client: BlobServiceClient, blobClient: BlockBlobClient }
+let documentsRepo: BlobStorage
 
 describe('As a user I want to add a document to allow others download it later', () => {
+    beforeEach(() => {
+        fakeFile = newFile();
+        fakeStorageClient = newClient();
+        
+        documentsRepo = new BlobStorage(
+            fakeStorageClient.client,
+            config.get('Documents.ContainerName')
+        )
+    })
+
     describe('Given a document when a user upload the document', () => {
         it('should add the document to the storage', async () => {
+            await new AddDocument(documentsRepo).execute(fakeFile.docId, fakeFile.buffer)
+            
+            //TODO
+            expect(fakeStorageClient.blobClient.upload).toHaveBeenCalled();
+        })
+
+        it.skip('should return a unique identifier to the file', async () => {
             const { docId, buffer } = newFile();
             const { client, blobClient } = newClient();
-            
+             
             const documents = new BlobStorage(
                 client,
                 config.get('Documents.ContainerName')
             )
-            const uriManager = new URIManager()
 
-            await new AddDocument(documents, uriManager).execute(docId, buffer)
+            const id = await new AddDocument(documents).execute(docId, buffer)
             
             //TODO
-            expect(blobClient.upload.calledOnce).toBe(true)
-        })
-
-        it('should return a link to the document', async () => {
+            expect(id.length).toBe(40)
         })
     })
     

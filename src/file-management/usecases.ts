@@ -1,12 +1,19 @@
 import { Documents } from "./model"
+import crypto from 'crypto'
 
 export class AddDocument {
-    constructor(private documents: Documents, private uriManager: any){}
+    constructor(private documents: Documents){}
 
-    public async execute(id: string, buffer: Buffer) {
-        const docData = await this.documents.add(id, buffer)
+    private getUniqueFileName(fileName: string) {
+        return fileName + new Date().getTime()
+    }
 
-        return this.uriManager.generateFrom(docData)
+    private createHash(fileName: string){
+        return crypto.createHash('sha1').update(fileName).digest('base64')
+    }
+
+    public async execute(fileName: string, buffer: Buffer) {
+        return (await this.documents.add(this.createHash(this.getUniqueFileName(fileName)), buffer)).toString()
     }
 }
 
