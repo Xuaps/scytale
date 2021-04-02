@@ -1,19 +1,10 @@
-import { Documents } from "./model"
-import crypto from 'crypto'
+import { Documents, genRandomString } from "./model"
 
 export class AddDocument {
-    constructor(private documents: Documents){}
+    constructor(private documents: Documents, private fileNameLength: number){}
 
-    private getUniqueFileName(fileName: string) {
-        return fileName + new Date().getTime()
-    }
-
-    private createHash(fileName: string){
-        return crypto.createHash('sha1').update(fileName).digest('base64')
-    }
-
-    public async execute(fileName: string, buffer: Buffer) {
-        return (await this.documents.add(this.createHash(this.getUniqueFileName(fileName)), buffer)).toString()
+    public async execute(buffer: Buffer) {
+        return (await this.documents.add(genRandomString(this.fileNameLength), buffer)).toString()
     }
 }
 

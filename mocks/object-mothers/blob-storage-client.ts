@@ -5,7 +5,6 @@ export function newClient() {
     const blobClient = ({
         upload: jest.fn(),
         exists: jest.fn(),
-        name: faker.system.fileName()
     } as unknown) as BlockBlobClient
     const client = ({
         getContainerClient: () => ({

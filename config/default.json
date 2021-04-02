@@ -6,6 +6,7 @@
         }
     },
     "Documents": {
-        "ContainerName": "test"
+        "ContainerName": "test",
+        "RandomNameLength": 64
     }
 }

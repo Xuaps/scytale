@@ -1,3 +1,4 @@
+import crypto from 'crypto'
 export interface Documents {
     add(id: string, buffer: Buffer) : Promise<Document>
 
@@ -11,3 +12,9 @@ export class Document {
         return this.id
     }
 }
+
+export function genRandomString(length: number){
+    return crypto.randomBytes(Math.ceil(length/2))
+            .toString('hex') 
+            .slice(0,length);
+};
