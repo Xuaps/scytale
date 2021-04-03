@@ -1,7 +1,6 @@
 import {
   BlobServiceClient,
   StorageSharedKeyCredential,
-  BlobDownloadResponseModel,
   ContainerClient,
 } from "@azure/storage-blob";
 import { Document, Documents } from "../file-management/model";
@@ -31,8 +30,8 @@ export class BlobStorage implements Documents {
   ): Promise<Buffer> {
     return new Promise((resolve, reject) => {
       const chunks: Buffer[] = [];
-      readableStream.on("data", (data: Buffer | string) => {
-        chunks.push(data instanceof Buffer ? data : Buffer.from(data));
+      readableStream.on("data", (data: Buffer) => {
+        chunks.push(data);
       });
       readableStream.on("end", () => {
         resolve(Buffer.concat(chunks));
@@ -48,7 +47,7 @@ export class BlobStorage implements Documents {
     return new Document(id, content);
   }
 
-  async get(id: string): Promise<Document> {
+  async getById(id: string): Promise<Document> {
     const blockBlobClient = this.containerClient.getBlockBlobClient(id);
     const content = await this.streamToBuffer(
       (await blockBlobClient.download(0)).readableStreamBody!

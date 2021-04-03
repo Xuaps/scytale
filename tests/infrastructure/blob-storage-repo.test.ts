@@ -32,7 +32,7 @@ describe("BlobStorageRepo", () => {
 
   describe("Get a blob", () => {
     it("should get a blob from the storage", async () => {
-      const doc = await blobStorage.get(docId);
+      const doc = await blobStorage.getById(docId);
 
       expect(doc.toBuffer()).toStrictEqual(buffer);
     });
