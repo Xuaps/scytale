@@ -11,8 +11,11 @@
   "license": "ISC",
   "devDependencies": {
     "@types/config": "0.0.38",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
     "@types/faker": "^5.5.0",
     "@types/jest": "^26.0.22",
+    "@types/multer": "^1.4.5",
     "@types/node": "^14.14.37",
     "@types/stream-buffers": "^3.0.3",
     "faker": "^5.5.2",
@@ -26,6 +29,9 @@
   },
   "dependencies": {
     "@azure/storage-blob": "^12.5.0",
-    "config": "^3.3.6"
+    "config": "^3.3.6",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "multer": "^1.4.2"
   }
 }
