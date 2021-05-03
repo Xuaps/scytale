@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import config from "config";
-import { GetDocument, AddDocument } from "../file-management/usecases";
+import { GetDocument, AddDocument } from "../application";
 import { BlobStorage, createBlobServiceClient } from "./blob-storage-repo";
 
 const connection = createBlobServiceClient(

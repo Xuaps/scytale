@@ -3,7 +3,7 @@ import {
   StorageSharedKeyCredential,
   ContainerClient,
 } from "@azure/storage-blob";
-import { Document, Documents } from "../file-management/model";
+import { Document, Documents } from "../domain/file-management/model";
 
 export function createBlobServiceClient(
   account: string,

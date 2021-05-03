@@ -1,7 +1,7 @@
 import config from 'config'
 import { BlobStorage } from '../../src/infrastructure/blob-storage-repo'
 import { BlobServiceClient, BlockBlobClient } from '@azure/storage-blob'
-import { AddDocument } from '../../src/file-management/usecases'
+import { AddDocument } from '../../src/application'
 import { newFile } from '../../mocks/object-mothers/file'
 import { newClient } from '../../mocks/object-mothers/blob-storage-client'
 

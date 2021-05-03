@@ -1,7 +1,7 @@
 import config from "config";
 import { newFile, newReadableStream } from "../../mocks/object-mothers/file";
 import { newClient } from "../../mocks/object-mothers/blob-storage-client";
-import { GetDocument } from "../../src/file-management/usecases";
+import { GetDocument } from "../../src/application";
 import { BlobStorage } from "../../src/infrastructure/blob-storage-repo";
 
 const fakeDoc = newFile();

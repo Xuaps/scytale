@@ -17,7 +17,8 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(express.json());
-app.use("/", routes);
+app.use("/api", routes);
+app.use('/', express.static('dist'))
 app.use(
   (error: Error, req: Request, res: Response, next: NextFunction): Response => {
     return res.status(500).json({

@@ -29,7 +29,7 @@ init _ =
 
 url : String
 url =
-    "http://localhost:3000/documents"
+    "http://localhost:3000/api/documents"
 
 
 uploadFile : File -> Cmd Msg
@@ -76,7 +76,7 @@ view model =
             ]
         , Grid.row []
             [ Grid.col []
-                [ a[href (String.join "" [url, model.uuid ])][
+                [ a[href (String.join "/" [url, model.uuid ])][
                     text model.uuid
                 ] ]
             ]
