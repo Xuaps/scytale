@@ -20,6 +20,11 @@
       var app = Elm.HomePage.init({
         node: document.getElementById("elm-app-is-loaded-here")
       });      
+      worker.onmessage = e => {
+  const message = e.data;
+  console.log(`[From Worker]: ${message}`);
+};
+worker.postMessage("Marco!");
     </script>
   </body>
 </html>
