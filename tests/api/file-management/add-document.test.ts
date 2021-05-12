@@ -1,9 +1,9 @@
 import config from 'config'
-import { BlobStorage } from '../../src/infrastructure/blob-storage-repo'
+import { BlobStorage } from '../../../src/api/infrastructure/blob-storage-repo'
 import { BlobServiceClient, BlockBlobClient } from '@azure/storage-blob'
-import { AddDocument } from '../../src/application'
-import { newFile } from '../../mocks/object-mothers/file'
-import { newClient } from '../../mocks/object-mothers/blob-storage-client'
+import { AddDocument } from '../../../src/api/application'
+import { newFile } from '../../../mocks/object-mothers/file'
+import { newClient } from '../../../mocks/object-mothers/blob-storage-client'
 
 let fakeFile: { docId: string, buffer: Buffer }
 let fakeStorageClient: { client: BlobServiceClient, blobClient: BlockBlobClient }

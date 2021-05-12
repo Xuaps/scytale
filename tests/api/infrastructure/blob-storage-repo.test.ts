@@ -4,7 +4,7 @@ import { promisify } from "util";
 import {
   BlobStorage,
   createBlobServiceClient,
-} from "../../src/infrastructure/blob-storage-repo";
+} from "../../../src/api/infrastructure/blob-storage-repo";
 
 const docId = "mocks/assets/test.txt";
 const connection = createBlobServiceClient(

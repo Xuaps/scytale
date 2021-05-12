@@ -1,8 +1,8 @@
 import config from "config";
-import { newFile, newReadableStream } from "../../mocks/object-mothers/file";
-import { newClient } from "../../mocks/object-mothers/blob-storage-client";
-import { GetDocument } from "../../src/application";
-import { BlobStorage } from "../../src/infrastructure/blob-storage-repo";
+import { newFile, newReadableStream } from "../../../mocks/object-mothers/file";
+import { newClient } from "../../../mocks/object-mothers/blob-storage-client";
+import { GetDocument } from "../../../src/api/application";
+import { BlobStorage } from "../../../src/api/infrastructure/blob-storage-repo";
 
 const fakeDoc = newFile();
 const fakeReadableStream = newReadableStream(fakeDoc.buffer);
