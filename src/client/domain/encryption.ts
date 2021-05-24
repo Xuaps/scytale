@@ -12,10 +12,10 @@ function readFile(file: File): Promise<ArrayBuffer> {
   });
 }
 
-export async function encryptFile(
+async function encryptFile(
   objFile: File,
   encPassPhrase: string
-): Promise<string> {
+): Promise<Blob> {
   const plainTextBytes = new Uint8Array(await readFile(objFile));
   const pbkdf2iterations = 10000;
   const passPhraseBytes = new TextEncoder().encode(encPassPhrase);
@@ -74,15 +74,14 @@ export async function encryptFile(
   resultBytes.set(cipherBytes, 16);
 
   const blob = new Blob([resultBytes], { type: "application/download" });
-  const blobUrl = URL.createObjectURL(blob);
-
-  return blobUrl;
+  
+  return blob;
 }
 
-export async function decryptFile(
+async function decryptFile(
   objFile: File,
   decPassPhrase: string
-): Promise<string> {
+): Promise<Blob> {
   const cipherBytesA = new Uint8Array(await readFile(objFile));
   const pbkdf2iterations = 10000;
   const passPhraseBytes = new TextEncoder().encode(decPassPhrase);
@@ -136,8 +135,7 @@ export async function decryptFile(
 
   console.log("ciphertext decrypted");
 
-  var blob = new Blob([plainTextBytes], { type: "application/download" });
-  var blobUrl = URL.createObjectURL(blob);
-
-  return blobUrl;
+  return new Blob([plainTextBytes], { type: "application/download" });
 }
+
+export {encryptFile, decryptFile}
