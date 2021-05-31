@@ -17,14 +17,47 @@
     
     <script src="elm.js"></script>
     <script>
-      var app = Elm.HomePage.init({
+      class CustomFile extends HTMLElement {
+        constructor() {
+          super();
+          this.processFile = this.processFile.bind(this);
+        }
+
+        processFile(evt) {
+          const file = evt.target.files[0];
+          const filename = file.name;
+          const reader = new FileReader();
+
+          reader.onload = (e) => {
+            const data = e.target.result;
+            const iv = crypto.getRandomValues(new Uint8Array(16));
+
+            crypto.subtle.generateKey({ 'name': 'AES-CBC', 'length': 256 }, false, ['encrypt', 'decrypt'])
+              .then(key => crypto.subtle.encrypt({ 'name': 'AES-CBC', iv }, key, data) )
+              .then(encrypted => {
+                const evt = new CustomEvent("file-selected", {
+                  detail: new File([encrypted.buffer], filename)
+                }) ;
+                this.dispatchEvent(evt);
+              })
+              .catch(console.error);
+          }
+
+          reader.readAsArrayBuffer(file);
+        }
+
+        connectedCallback() {
+          const input = document.createElement('input');
+          input.type = "file";
+          input.addEventListener('change', this.processFile)
+          input.innerHtml = "Open file";
+          this.appendChild(input);
+        }
+      }
+      customElements.define('custom-file', CustomFile);
+      Elm.HomePage.init({
         node: document.getElementById("elm-app-is-loaded-here")
-      });      
-      worker.onmessage = e => {
-  const message = e.data;
-  console.log(`[From Worker]: ${message}`);
-};
-worker.postMessage("Marco!");
+      });
     </script>
   </body>
 </html>

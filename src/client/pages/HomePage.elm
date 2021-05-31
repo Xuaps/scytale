@@ -22,15 +22,11 @@ type alias Doc =
     { files : List File, uuid : String, error : String }
 
 
-init : () -> ( Doc, Cmd Msg )
-init _ =
-    ( { files = [], uuid = "", error = "" }, Cmd.none )
-
-
 url : String
 url =
     "http://localhost:3000/api/documents"
 
+--//cmd
 
 uploadFile : File -> Cmd Msg
 uploadFile file =
@@ -39,6 +35,25 @@ uploadFile file =
         , body = Http.multipartBody [ Http.filePart "document" file ]
         , expect = Http.expectJson FileUploaded fileIdDecoder
         }
+
+
+--json decoders
+
+
+filesDecoder : D.Decoder (List File)
+filesDecoder =
+    D.at [ "target", "files" ] (D.list File.decoder)
+
+
+fileIdDecoder : D.Decoder String
+fileIdDecoder =
+    D.at [ "id" ] D.string
+
+
+--/////
+init : () -> ( Doc, Cmd Msg )
+init _ =
+    ( { files = [], uuid = "", error = "" }, Cmd.none )
 
 
 update : Msg -> Doc -> ( Doc, Cmd Msg )
@@ -85,16 +100,6 @@ view model =
                 [ text model.error ]
             ]
         ]
-
-
-filesDecoder : D.Decoder (List File)
-filesDecoder =
-    D.at [ "target", "files" ] (D.list File.decoder)
-
-
-fileIdDecoder : D.Decoder String
-fileIdDecoder =
-    D.at [ "id" ] D.string
 
 
 main : Program () Doc Msg
