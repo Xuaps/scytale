@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "esnext",
+    "sourceMap": true,
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "exclude": [
+    "./__mocks__",
+    "./__tests__"
+  ]
+}

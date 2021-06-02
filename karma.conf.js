@@ -16,7 +16,7 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
         {pattern: 'src/client/domain/*.ts', type: "js" },
-        {pattern: 'tests/client/*.ts', type: "js" },
+        {pattern: 'src/client/__tests__/*.ts', type: "js" },
     ],
 
     // list of files / patterns to exclude
@@ -50,7 +50,7 @@ module.exports = function(config) {
     logLevel: config.LOG_INFO,
 
 
-    // enable / disable watching file and executing tests whenever any file changes
+    // enable / disable watching file and executing __tests__ whenever any file changes
     autoWatch: true,
 
 
@@ -60,7 +60,7 @@ module.exports = function(config) {
 
 
     // Continuous Integration mode
-    // if true, Karma captures browsers, runs the tests and exits
+    // if true, Karma captures browsers, runs the __tests__ and exits
     singleRun: false,
 
     // Concurrency level

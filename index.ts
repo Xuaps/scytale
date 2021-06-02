@@ -1,6 +1,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import routes from "./src/api/infrastructure/routes";
 import cors from "cors";
+import path = require("path");
 
 const app: express.Application = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +18,9 @@ app.use(function (req, res, next) {
   next();
 });
 app.use(express.json());
+
 app.use("/api", routes);
+app.use("/assets", express.static(path.join(__dirname, "src/client")));
 app.use('/', express.static('public'))
 app.use(
   (error: Error, req: Request, res: Response, next: NextFunction): Response => {

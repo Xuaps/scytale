@@ -1,32 +1,16 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <link rel="stylesheet" 
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<html lang="en">
+<head>
+  <title>My Fullstack TypeScript App</title>
 
-    <style>
-      .jumbotron {
-        background-color: #e6ffe6;
-        text-align: center;
-      }
-    </style>
-  </head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-  <body>
-    <div id="elm-app-is-loaded-here"></div>
-    
-    <script src="elm.js"></script>
-    <script>
-      var app = Elm.HomePage.init({
-        node: document.getElementById("elm-app-is-loaded-here")
-      });
-      var myWorker = new Worker('./workers/cypher.js');
-      myWorker.onmessage = function(e) {
-        app.ports.messageReceiver.send(e.data)
-      };
-      app.ports.sendMessage.subscribe(function (msg) {
-        myWorker.postMessage(msg)
-      });
-    </script>
-  </body>
+</head>
+<body>
+<div id="root"></div>
+
+<script src="/assets/vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-1b44d9.bundle.js"></script>
+<script src="/assets/main.bundle.js"></script>
+</body>
 </html>

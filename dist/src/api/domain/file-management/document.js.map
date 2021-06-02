@@ -1,0 +1,1 @@
+{"version":3,"file":"document.js","sourceRoot":"","sources":["../../../../../src/api/domain/file-management/document.ts"],"names":[],"mappings":";;;AAAA,MAAa,QAAQ;IACnB,YAAoB,EAAU,EAAU,OAAe;QAAnC,OAAE,GAAF,EAAE,CAAQ;QAAU,YAAO,GAAP,OAAO,CAAQ;IAAG,CAAC;IAEpD,QAAQ;QACb,OAAO,IAAI,CAAC,EAAE,CAAC;IACjB,CAAC;IAEM,QAAQ;QACb,OAAO,IAAI,CAAC,OAAO,CAAC;IACtB,CAAC;CACF;AAVD,4BAUC"}
