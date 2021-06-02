@@ -2,10 +2,10 @@
 /******/ 	"use strict";
 /******/ 	var __webpack_modules__ = ({
 
-/***/ "./node_modules/css-loader/dist/cjs.js!./src/client/style.css":
-/*!********************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js!./src/client/style.css ***!
-  \********************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js!./src/web/style.css":
+/*!*****************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js!./src/web/style.css ***!
+  \*****************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
@@ -20,22 +20,22 @@
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".App {\n    margin: 30px auto;\n    max-width: 320px;\n    padding: 2em;\n    border: 1px solid silver;\n    border-radius: 1em;\n\n    text-align: center;\n}\n", "",{"version":3,"sources":["webpack://./src/client/style.css"],"names":[],"mappings":"AAAA;IACI,iBAAiB;IACjB,gBAAgB;IAChB,YAAY;IACZ,wBAAwB;IACxB,kBAAkB;;IAElB,kBAAkB;AACtB","sourcesContent":[".App {\n    margin: 30px auto;\n    max-width: 320px;\n    padding: 2em;\n    border: 1px solid silver;\n    border-radius: 1em;\n\n    text-align: center;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, ".App {\n    margin: 30px auto;\n    max-width: 320px;\n    padding: 2em;\n    border: 1px solid silver;\n    border-radius: 1em;\n\n    text-align: center;\n}\n", "",{"version":3,"sources":["webpack://./src/web/style.css"],"names":[],"mappings":"AAAA;IACI,iBAAiB;IACjB,gBAAgB;IAChB,YAAY;IACZ,wBAAwB;IACxB,kBAAkB;;IAElB,kBAAkB;AACtB","sourcesContent":[".App {\n    margin: 30px auto;\n    max-width: 320px;\n    padding: 2em;\n    border: 1px solid silver;\n    border-radius: 1em;\n\n    text-align: center;\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
 
-/***/ "./src/client/style.css":
-/*!******************************!*\
-  !*** ./src/client/style.css ***!
-  \******************************/
+/***/ "./src/web/style.css":
+/*!***************************!*\
+  !*** ./src/web/style.css ***!
+  \***************************/
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./style.css */ "./node_modules/css-loader/dist/cjs.js!./src/client/style.css");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_style_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../node_modules/css-loader/dist/cjs.js!./style.css */ "./node_modules/css-loader/dist/cjs.js!./src/web/style.css");
 
             
 
@@ -52,15 +52,15 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./src/client/main.tsx":
-/*!*****************************!*\
-  !*** ./src/client/main.tsx ***!
-  \*****************************/
+/***/ "./src/web/main.tsx":
+/*!**************************!*\
+  !*** ./src/web/main.tsx ***!
+  \**************************/
 /***/ ((__unused_webpack_module, __unused_webpack___webpack_exports__, __webpack_require__) => {
 
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
-/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.css */ "./src/client/style.css");
+/* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./style.css */ "./src/web/style.css");
 
 
 
@@ -221,7 +221,7 @@ react_dom__WEBPACK_IMPORTED_MODULE_1__.render(react__WEBPACK_IMPORTED_MODULE_0__
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-1b44d9"], () => (__webpack_require__("./src/client/main.tsx")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["vendors-node_modules_css-loader_dist_runtime_api_js-node_modules_css-loader_dist_runtime_cssW-1b44d9"], () => (__webpack_require__("./src/web/main.tsx")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
