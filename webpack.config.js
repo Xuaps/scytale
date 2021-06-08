@@ -3,6 +3,7 @@ module.exports = {
 
   entry: {
     main: "./src/web/main.tsx",
+    cypher: "./src/web/workers/cypher.ts",
   },
 
   output: {
@@ -38,9 +39,9 @@ module.exports = {
   },
 
   optimization: {
-    splitChunks: {
-      chunks: "all"
-    },
+    // splitChunks: {
+    //   chunks: "all"
+    // },
     usedExports: true
   },
 };

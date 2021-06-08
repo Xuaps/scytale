@@ -21,6 +21,7 @@ app.use("/api", routes_1.default);
 app.use("/assets", express_1.default.static(path.join(__dirname, "src/web")));
 app.use('/', express_1.default.static('public'));
 app.use((error, req, res, next) => {
+    console.log(error);
     return res.status(500).json({
         message: "Something went wrong",
     });

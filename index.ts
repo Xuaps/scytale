@@ -24,6 +24,7 @@ app.use("/assets", express.static(path.join(__dirname, "src/web")));
 app.use('/', express.static('public'))
 app.use(
   (error: Error, req: Request, res: Response, next: NextFunction): Response => {
+    console.log(error)
     return res.status(500).json({
       message: "Something went wrong",
     });

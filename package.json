@@ -4,11 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --watch",
     "test:browser": "karma start",
     "build:backend": "tsc",
     "build:frontend": "webpack",
-    "start": " nodemon --exec \"npm run build:backend && npm run build:frontend && node ./dist/index.js\" -w src"
+    "start": " nodemon --exec \"npm run build:backend && npm run build:frontend && node ./dist/index.js\" -w src -e ts,tsx"
   },
   "keywords": [],
   "author": "",
@@ -54,6 +54,7 @@
     "express": "^4.17.1",
     "multer": "^1.4.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-dropzone": "^11.3.2"
   }
 }
