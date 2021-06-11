@@ -1,15 +1,16 @@
 import express, { Request, Response, NextFunction } from "express";
 import routes from "./src/api/infrastructure/routes";
 import cors from "cors";
-import path = require("path");
+import path from "path";
+import helmet from "helmet"
 
 const app: express.Application = express();
 const port = process.env.PORT || 3000;
 
-app.disable("x-powered-by");
-
+app.use(helmet())
 app.use(cors());
 app.use(function (req, res, next) {
+  req.params
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",

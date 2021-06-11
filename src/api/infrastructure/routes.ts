@@ -3,6 +3,9 @@ import multer from "multer";
 import config from "config";
 import { GetDocument, AddDocument } from "../application";
 import { BlobStorage, createBlobServiceClient } from "./blob-storage-repo";
+import rateLimit from "express-rate-limit";
+
+const router = Router();
 
 const connection = createBlobServiceClient(
   config.get("Azure.Storage.AccountName"),
@@ -13,17 +16,34 @@ const blobStorage = new BlobStorage(
   config.get("Documents.ContainerName")
 );
 
-const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
-const router = Router();
+const OneRequestsPerMinuteLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 2 // limit each IP to 2 requests per windowMs
+});
+const TenRequestsPerDayLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000, // 1 day
+  max: 10 // limit each IP to 10 requests per windowMs
+});
+const TenRequestsPerMinuteLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: 10,
+  keyGenerator: req => req.params.slug
+});
+const OneHundredRequestsPerDayLimiter = rateLimit({
+  windowMs: 24 * 60 * 60 * 1000, // 1 day
+  max: 100,
+  keyGenerator: req => req.params.slug
+});
 
-router.get("/documents/:slug", async (req, res) => {
+router.get("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPerDayLimiter, async (req, res) => {
   const doc = await new GetDocument(blobStorage).execute(req.params.slug);
 
   res.send(doc);
 });
 
-router.post("/documents/", upload.single("document"), async (req, res) => {
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage, limits: { fileSize: 5242880, files: 1	} });
+router.post("/documents/", OneRequestsPerMinuteLimiter, TenRequestsPerDayLimiter, upload.single("document"), async (req, res) => {
   const id = await new AddDocument(blobStorage, 64).execute(req.file.buffer);
 
   res.send({ id });
