@@ -1,0 +1,17 @@
+openapi: 3.0.0
+info:
+  title: Scytale
+  description: Scytale.
+  version: v1
+  contact:
+    email: 'admin@xuaps.com'
+    name: 'Xuaps'
+tags:
+  - name: Documents
+paths:
+  '/documents':
+    $ref: './documents.yaml'
+  '/documents/{id}':
+    $ref: './documents-by-id.yaml'
+servers:
+  - url: http://localhost:3000/api

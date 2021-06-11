@@ -1,0 +1,18 @@
+get:
+  operationId: get-document
+  summary: Get document by id
+  description: Return a document
+  tags:
+    - Documents
+  parameters:
+    - in: path
+      name: id
+      description: Document id
+      required: true
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Success
+      content:
+        application/octet-stream: {}
