@@ -1,1 +1,0 @@
-{"version":3,"file":"get-document.js","sourceRoot":"","sources":["../../../../src/api/application/get-document.ts"],"names":[],"mappings":";;;AAEA,MAAa,WAAW;IACtB,YAAoB,SAAoB;QAApB,cAAS,GAAT,SAAS,CAAW;IAAG,CAAC;IAErC,KAAK,CAAC,OAAO,CAAC,KAAa;QAChC,OAAO,CAAC,MAAM,IAAI,CAAC,SAAS,CAAC,OAAO,CAAC,KAAK,CAAC,CAAC,CAAC,QAAQ,EAAE,CAAC;IAC1D,CAAC;CACF;AAND,kCAMC"}
