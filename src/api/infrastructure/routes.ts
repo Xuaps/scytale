@@ -5,6 +5,8 @@ import { GetDocument, AddDocument } from "../application";
 import { BlobStorage, createBlobServiceClient } from "./blob-storage-repo";
 import rateLimit from "express-rate-limit";
 
+let appInsights = require("applicationinsights");
+let client = new appInsights.TelemetryClient();
 const router = Router();
 
 const connection = createBlobServiceClient(
@@ -37,6 +39,7 @@ const OneHundredRequestsPerDayLimiter = rateLimit({
 
 router.get("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPerDayLimiter, async (req, res) => {
   const doc = await new GetDocument(blobStorage).execute(req.params.slug);
+  client.trackTrace({message: `file downloaded ${req.params.slug}` });
 
   res.send(doc);
 });
@@ -45,6 +48,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5242880, files: 1	} });
 router.post("/documents/", OneRequestsPerMinuteLimiter, TenRequestsPerDayLimiter, upload.single("document"), async (req, res) => {
   const id = await new AddDocument(blobStorage, 64).execute(req.file.buffer);
+  client.trackTrace({message: `file uploaded ${id}` });
 
   res.send({ id });
 });

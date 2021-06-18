@@ -2,8 +2,9 @@
     "Azure": {
         "Storage": {
             "AccountName": "",
-            "AccountKey": ""
-        }
+            "AccountKey": "",
+        },
+        "ApplicationInsightKey": ""
     },
     "Documents": {
         "ContainerName": "test",

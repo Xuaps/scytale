@@ -1,3 +1,7 @@
+let appInsights = require('applicationinsights');
+import config from "config";
+appInsights.setup(config.get("Azure.ApplicationInsightKey")).start()
+
 import express, { Request, Response, NextFunction } from "express";
 import routes from "./src/api/infrastructure/routes";
 import cors from "cors";

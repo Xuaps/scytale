@@ -3,6 +3,7 @@
         "Storage": {
             "AccountName": "ACCOUNT_NAME",
             "AccountKey": "ACCOUNT_KEY"
-        }
+        },
+        "ApplicationInsightKey": "APPINSIGHTS_INSTRUMENTATIONKEY"
     }
 }
