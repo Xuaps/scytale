@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useDropzone } from "react-dropzone";
 
 const Uploader = ({onAddFiles}: {onAddFiles: (files: File[]) => any}) => {

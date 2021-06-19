@@ -1,10 +1,20 @@
-import Uploader from "./components/Uploader";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useCallback, useState } from "react";
+import { Upload } from "./components/Upload";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
+function Preview() {
+  return null;
+}
+
 const App = () => {
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState<File[]>([]);
 
   useEffect(() => {
     cypherWorker.onmessage = ($event: MessageEvent) => {
@@ -14,29 +24,25 @@ const App = () => {
     };
   }, [cypherWorker]);
 
+  const encryptAndAddFile = useCallback((files: File[]) => {
+    cypherWorker.postMessage({
+      file: files[0],
+      password: "test",
+      cmd: "encrypt"
+    });
+  }, []);
+
   return (
-    <>
-      <Uploader onAddFiles={(files: File[]) => cypherWorker.postMessage({
-        file: files[0],
-        password: "test",
-        cmd: "encrypt"
-      })} />
-      <ul>
-        {files.map(f => <li key={f.name}>{f.name}</li>)}
-      </ul>
-      <button onClick={() => {
-        const formData = new FormData();
-        formData.append("document", files[0].encryptedFile);
-        fetch(
-          "http://localhost:3000/api/documents",
-          {
-            method: "POST",
-            body: formData
-          })
-          .then(res => console.log(res));
-      }}>send
-      </button>
-    </>
+    <Router>
+      <Switch>
+        <Route path="/:id">
+          <Preview />
+        </Route>
+        <Route path="/">
+          <Upload files={files} onFilesUploaded={encryptAndAddFile} />
+        </Route>
+      </Switch>
+    </Router>
   );
 };
 
