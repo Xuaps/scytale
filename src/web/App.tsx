@@ -29,7 +29,7 @@ const App = () => {
   const encryptAndAddFile = useCallback((files: File[]) => {
     cypherWorker.postMessage({
       file: files[0],
-      password: "test",
+      password: window.btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(20)))),
       cmd: "encrypt",
     });
   }, []);
