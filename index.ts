@@ -26,7 +26,7 @@ app.use(express.json());
 
 app.use("/api", routes);
 app.use("/assets", express.static(path.join(__dirname, "src/web")));
-app.use('/', express.static('public'))
+app.use('*', express.static('public'))
 app.use(
   (error: Error, req: Request, res: Response, next: NextFunction): Response => {
     console.log(error)
