@@ -12,21 +12,22 @@ const uploadFile = (file) => {
 };
 
 const Upload = ({
-  files,
+  encryptedFiles,
   onFilesUploaded,
 }: {
-  files: {encryptedFile:File, name: string, password: string}[];
+  encryptedFiles: {encryptedFile:File, name: string, password: string}[];
   onFilesUploaded: (files: File[]) => void;
 }) => {
   return (
     <Layout>
       <Uploader onAddFiles={onFilesUploaded} />
       <ul>
-        {files.map((f) => (
+        {encryptedFiles.map((f) => (
           <li key={f.name}>{f.name}</li>
         ))}
       </ul>
-      <button onClick={() => uploadFile(files[0])}>send</button>
+      <button onClick={() => uploadFile(encryptedFiles[0])}>send</button>
+
     </Layout>
   );
 };

@@ -7,13 +7,13 @@ import Download from "./components/Download";
 const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
 const App = () => {
-  const [files, setFiles] = useState<{encryptedFile: File, name: string, password: string}[]>([]);
+  const [encryptedFiles, setEncryptedFiles] = useState<{encryptedFile: File, name: string, password: string}[]>([]);
   const [selectedFile, setSelectedFile] = useState<File>();
 
   useEffect(() => {
     cypherWorker.onmessage = ($event: MessageEvent) => {
       if ($event && $event.data && $event.data.encryptedFile) {
-        setFiles([...files, $event.data]);
+        setEncryptedFiles([...encryptedFiles, $event.data]);
       }
       if ($event && $event.data && $event.data.decryptedFile) {
         setSelectedFile($event.data.decryptedFile);
@@ -54,7 +54,7 @@ const App = () => {
           }}
         />
         <Route path="/">
-          <Upload files={files} onFilesUploaded={encryptAndAddFile} />
+          <Upload encryptedFiles={encryptedFiles} onFilesUploaded={encryptAndAddFile} />
         </Route>
       </Switch>
     </Router>
