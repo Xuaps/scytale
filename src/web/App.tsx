@@ -7,7 +7,12 @@ import Download from "./components/Download";
 const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
 const App = () => {
-  const [encryptedFiles, setEncryptedFiles] = useState<{encryptedFile: File, name: string, password: string}[]>([]);
+  const [encryptedFiles, setEncryptedFiles] = useState<
+    { encryptedFile: File; name: string; password: string }[]
+  >([]);
+  const [uploadedFiles, setUploadedFiles] = useState<
+    { id: string; password: string, name: string }[]
+  >(JSON.parse(localStorage.getItem("files")) || []);
   const [selectedFile, setSelectedFile] = useState<File>();
 
   useEffect(() => {
@@ -37,6 +42,13 @@ const App = () => {
     });
   }, []);
 
+  const addFilesToLocalStorage = (files) => {
+    const nextFiles = [...uploadedFiles, ...files]
+    setUploadedFiles(nextFiles);
+    setEncryptedFiles([]);
+    localStorage.setItem("files", JSON.stringify(nextFiles));
+  };
+
   return (
     <Router>
       <Switch>
@@ -54,7 +66,12 @@ const App = () => {
           }}
         />
         <Route path="/">
-          <Upload encryptedFiles={encryptedFiles} onFilesUploaded={encryptAndAddFile} />
+          <Upload
+            encryptedFiles={encryptedFiles}
+            onAddFiles={encryptAndAddFile}
+            uploadedFiles={uploadedFiles}
+            onUploadFiles={addFilesToLocalStorage}
+          />
         </Route>
       </Switch>
     </Router>

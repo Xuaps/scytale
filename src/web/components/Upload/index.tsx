@@ -8,26 +8,53 @@ const uploadFile = (file) => {
   return fetch("http://localhost:3000/api/documents", {
     method: "POST",
     body: formData,
-  });
+  }).then((res) => res.json());
 };
-
+//
 const Upload = ({
   encryptedFiles,
-  onFilesUploaded,
+  uploadedFiles,
+  onAddFiles,
+  onUploadFiles,
 }: {
-  encryptedFiles: {encryptedFile:File, name: string, password: string}[];
-  onFilesUploaded: (files: File[]) => void;
+  encryptedFiles: { encryptedFile: File; name: string; password: string }[];
+  uploadedFiles: { id: string; password: string; name: string }[];
+  onAddFiles: (files: File[]) => void;
+  onUploadFiles: (
+    files: { name: string; password: string; id: string }[]
+  ) => void;
 }) => {
   return (
     <Layout>
-      <Uploader onAddFiles={onFilesUploaded} />
+      <Uploader onAddFiles={onAddFiles} />
       <ul>
         {encryptedFiles.map((f) => (
           <li key={f.name}>{f.name}</li>
         ))}
       </ul>
-      <button onClick={() => uploadFile(encryptedFiles[0])}>send</button>
-
+      <button
+        onClick={() =>
+          uploadFile(encryptedFiles[0]).then((res: { id: string }) =>
+            onUploadFiles([
+              {
+                id: res.id,
+                name: encryptedFiles[0].name,
+                password: encryptedFiles[0].password,
+              },
+            ])
+          )
+        }
+      >
+        send
+      </button>
+      <br />
+      <ul>
+        {uploadedFiles.map((f) => (
+          <li key={f.id}>
+            <a href={`${f.id}#${f.password}`}>{f.name}</a>
+          </li>
+        ))}
+      </ul>
     </Layout>
   );
 };
