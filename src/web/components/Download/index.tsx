@@ -2,20 +2,20 @@ import { useEffect } from "react";
 
 const downloadFile = async (id) => {
   return fetch(`http://localhost:3000/api/documents/${id}`)
-    .then(response => response.blob())
-}
+    .then(response => response.blob());
+};
 
-const Download = ({id, password, decryptAndSelectFile }) => {
-  useEffect( () => {
+const Download = ({ id, password, actions }) => {
+  useEffect(() => {
     const processFile = async () => {
-      const file = await downloadFile(id)
-      decryptAndSelectFile(file, password)
-    }
+      const file = await downloadFile(id);
+      actions.decryptFile(file, password);
+    };
 
-    processFile();
-  }, [id, password])
+    processFile().then();
+  }, [id, password]);
 
-  return <div>Decrypting file...</div>
-}
+  return <div>Decrypting file...</div>;
+};
 
 export default Download;

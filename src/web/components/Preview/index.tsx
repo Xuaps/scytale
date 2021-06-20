@@ -1,5 +1,5 @@
-const Preview = ({ file }: { file: Blob }) => {
-  return <a href={window.URL.createObjectURL(file)}>Download</a>;
+const Preview = ({ state: { selectedFile } }) => {
+  return <a href={window.URL.createObjectURL(selectedFile)}>Download</a>;
 };
 
 export default Preview;

@@ -1,53 +1,15 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useState, useMemo } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Upload from "./components/Upload";
 import Preview from "./components/Preview";
 import Download from "./components/Download";
+import initialState from "./initialState";
+import initializeActions from "./actions";
 
-const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
 const App = () => {
-  const [encryptedFiles, setEncryptedFiles] = useState<
-    { encryptedFile: File; name: string; password: string }[]
-  >([]);
-  const [uploadedFiles, setUploadedFiles] = useState<
-    { id: string; password: string, name: string }[]
-  >(JSON.parse(localStorage.getItem("files")) || []);
-  const [selectedFile, setSelectedFile] = useState<File>();
-
-  useEffect(() => {
-    cypherWorker.onmessage = ($event: MessageEvent) => {
-      if ($event && $event.data && $event.data.encryptedFile) {
-        setEncryptedFiles([...encryptedFiles, $event.data]);
-      }
-      if ($event && $event.data && $event.data.decryptedFile) {
-        setSelectedFile($event.data.decryptedFile);
-      }
-    };
-  }, [cypherWorker]);
-
-  const encryptAndAddFile = useCallback((files: File[]) => {
-    cypherWorker.postMessage({
-      file: files[0],
-      password: window.btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(20)))),
-      cmd: "encrypt",
-    });
-  }, []);
-
-  const decryptAndSelectFile = useCallback((file: Blob, password) => {
-    cypherWorker.postMessage({
-      file,
-      password,
-      cmd: "decrypt",
-    });
-  }, []);
-
-  const addFilesToLocalStorage = (files) => {
-    const nextFiles = [...uploadedFiles, ...files]
-    setUploadedFiles(nextFiles);
-    setEncryptedFiles([]);
-    localStorage.setItem("files", JSON.stringify(nextFiles));
-  };
+  const [state, setState] = useState(initialState);
+  const actions = useMemo(() => initializeActions({state, setState}), [state, setState]);
 
   return (
     <Router>
@@ -55,22 +17,20 @@ const App = () => {
         <Route
           path="/:id/"
           children={({ location, match }) => {
-            if (selectedFile) return <Preview file={selectedFile} />;
+            if (state.download.selectedFile) return <Preview state={state.download} />;
             return (
               <Download
                 id={match.params.id}
                 password={location.hash.substring(1)}
-                decryptAndSelectFile={decryptAndSelectFile}
+                actions={actions}
               />
             );
           }}
         />
         <Route path="/">
           <Upload
-            encryptedFiles={encryptedFiles}
-            onAddFiles={encryptAndAddFile}
-            uploadedFiles={uploadedFiles}
-            onUploadFiles={addFilesToLocalStorage}
+            state={state.upload}
+            actions={actions}
           />
         </Route>
       </Switch>
