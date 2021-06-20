@@ -1,3 +1,26 @@
+//commands
+import { decryptFile, encryptFile } from "../workers/client";
+
+const uploadFile = (file) => {
+  const formData = new FormData();
+  formData.append("document", file.encryptedFile);
+
+  return fetch("http://localhost:3000/api/documents", {
+    method: "POST",
+    body: formData
+  }).then((res) => res.json())
+    .then((res: { id: string }) =>
+      ([
+        {
+          id: res.id,
+          name: file.name,
+          password: file.password
+        }
+      ])
+    );
+};
+
+//events
 const fileEncrypted = (state, file) => ({
   ...state,
   upload: {
@@ -14,24 +37,6 @@ const fileDecrypted = (state, file) => ({
   }
 });
 
-
-const uploadFile = (state, file) => {
-  const formData = new FormData();
-  formData.append("document", file.encryptedFile);
-  return fetch("http://localhost:3000/api/documents", {
-    method: "POST",
-    body: formData
-  }).then((res) => res.json()).then((res: { id: string }) =>
-    fileUploaded(state, [
-      {
-        id: res.id,
-        name: file.name,
-        password: file.password
-      }
-    ])
-  );
-};
-
 const fileUploaded = (state, files) => {
   const nextFiles = [...state.upload.uploadedFiles, ...files];
 
@@ -40,48 +45,28 @@ const fileUploaded = (state, files) => {
     upload: {
       ...state.upload,
       uploadedFiles: nextFiles,
-      encryptedFiles: [],
+      encryptedFiles: []
     }
-  }
+  };
 };
 
-
-export default function({state, setState}) {
-  const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
-
-  const encryptFile = (files: File[]) => {
-    cypherWorker.postMessage({
-      file: files[0],
-      password: window.btoa(
-        String.fromCharCode(...crypto.getRandomValues(new Uint8Array(20)))
-      ),
-      cmd: "encrypt"
-    });
-  };
-
-  const decryptFile = (file: Blob, password) => {
-    cypherWorker.postMessage({
-      file,
-      password,
-      cmd: "decrypt"
-    });
-  };
-
-  cypherWorker.onmessage = ($event: MessageEvent) => {
-    if ($event && $event.data && $event.data.encryptedFile) {
-      setState(fileEncrypted(state, $event.data));
-    }
-    if ($event && $event.data && $event.data.decryptedFile) {
-      setState(fileDecrypted(state, $event.data));
-    }
-  };
-
+export default function({ state, setState }) {
   return ({
-    encryptFile: (files: File[]) => encryptFile(files),
-    decryptFile: (file: Blob, password) => decryptFile(file, password),
+    encryptFile: async (file: File) => {
+      const res = await encryptFile(file);
+      const doc = fileEncrypted(state, res);
+
+      setState(doc);
+    },
+    decryptFile: async (file: Blob, password) => {
+      const res = await decryptFile(file, password);
+      const doc = fileDecrypted(state, res);
+      setState(doc);
+    },
     uploadFile: async (file) => {
-      const doc = await uploadFile(state, file);
-      setState(doc)
+      const res = await uploadFile(file);
+      const doc = fileUploaded(state, res);
+      setState(doc);
       localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
     }
   });

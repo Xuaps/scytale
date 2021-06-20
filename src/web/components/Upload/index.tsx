@@ -9,7 +9,7 @@ const Upload = ({
                 }) => {
   return (
     <Layout>
-      <Uploader onAddFiles={encryptFile} />
+      <Uploader onAddFile={encryptFile} />
       <ul>
         {encryptedFiles.map((f) => (
           <li key={f.name}>{f.name}</li>

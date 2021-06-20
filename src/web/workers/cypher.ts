@@ -7,12 +7,10 @@ onmessage = async function(e) {
   if (msg.cmd === 'encrypt') {
     const encryptedFile = await encryptFile(msg.file, msg.password)
     // @ts-ignore
-    postMessage({encryptedFile, name: msg.file.name, password: msg.password} );
+    e.ports[0].postMessage({encryptedFile, name: msg.file.name, password: msg.password} );
   } else {
-    console.log(msg)
     const decryptedFile = await decryptFile(msg.file, msg.password)
-    console.log(decryptedFile)
     // @ts-ignore
-    postMessage({decryptedFile});
+    e.ports[0].postMessage({decryptedFile});
   }
 }

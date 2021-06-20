@@ -1,11 +1,10 @@
-import React, { useEffect, useCallback, useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Upload from "./components/Upload";
 import Preview from "./components/Preview";
 import Download from "./components/Download";
 import initialState from "./initialState";
 import initializeActions from "./actions";
-
 
 const App = () => {
   const [state, setState] = useState(initialState);
