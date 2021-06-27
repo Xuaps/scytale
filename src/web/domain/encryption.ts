@@ -1,141 +1,79 @@
-function readFile(file: File): Promise<ArrayBuffer> {
-  return new Promise((resolve, reject) => {
-    var fr = new FileReader();
-    fr.onload = () => {
-      if (!fr.result || typeof fr.result === "string") {
-        return reject();
-      }
+const enc = new TextEncoder();
 
-      resolve(fr.result);
-    };
-    fr.readAsArrayBuffer(file);
-  });
-}
-
-async function encryptFile(
-  objFile: File,
-  encPassPhrase: string
-): Promise<Blob> {
-  const plainTextBytes = new Uint8Array(await readFile(objFile));
-  const pbkdf2iterations = 10000;
-  const passPhraseBytes = new TextEncoder().encode(encPassPhrase);
-  const pbkdf2salt = crypto.getRandomValues(new Uint8Array(8));
-  const passPhraseKey = await crypto.subtle.importKey(
+const getPasswordKey = (password) =>
+  crypto.subtle.importKey(
     "raw",
-    passPhraseBytes,
-    { name: "PBKDF2" },
+    enc.encode(password),
+    "PBKDF2",
     false,
-    ["deriveBits"]
+    ["deriveKey"]
   );
 
-  console.log("passphrasekey imported");
+const deriveKey = (passwordKey, salt, keyUsage) =>
+  crypto.subtle.deriveKey(
+    {
+      name: "PBKDF2",
+      salt: salt,
+      iterations: 250000,
+      hash: "SHA-256",
+    },
+    passwordKey,
+    { name: "AES-GCM", length: 256 },
+    false,
+    keyUsage
+  );
 
-  const pbkdf2bytes = new Uint8Array(
-    await crypto.subtle.deriveBits(
+async function encryptData(secretData: Uint8Array, password: string): Promise<Uint8Array> {
+  try {
+    const salt = crypto.getRandomValues(new Uint8Array(16));
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const passwordKey = await getPasswordKey(password);
+    const aesKey = await deriveKey(passwordKey, salt, ["encrypt"]);
+    const encryptedContent = await crypto.subtle.encrypt(
       {
-        name: "PBKDF2",
-        salt: pbkdf2salt,
-        iterations: pbkdf2iterations,
-        hash: "SHA-256",
+        name: "AES-GCM",
+        iv: iv,
       },
-      passPhraseKey,
-      384
-    )
-  );
+      aesKey,
+      secretData
+    );
 
-  console.log("pbkdf2bytes derived");
-
-  const keyBytes = pbkdf2bytes.slice(0, 32);
-  const ivBytes = pbkdf2bytes.slice(32);
-
-  const key = await crypto.subtle.importKey(
-    "raw",
-    keyBytes,
-    { name: "AES-CBC", length: 256 },
-    false,
-    ["encrypt"]
-  );
-
-  console.log("key imported");
-
-  const cipherBytes = new Uint8Array(
-    await crypto.subtle.encrypt(
-      { name: "AES-CBC", iv: ivBytes },
-      key,
-      plainTextBytes
-    )
-  );
-
-  console.log("plaintext encrypted");
-
-  const resultBytes = new Uint8Array(cipherBytes.length + 16);
-  resultBytes.set(new TextEncoder().encode("Salted__"));
-  resultBytes.set(pbkdf2salt, 8);
-  resultBytes.set(cipherBytes, 16);
-
-  const blob = new Blob([resultBytes], { type: "application/download" });
-  
-  return blob;
+    const encryptedContentArr = new Uint8Array(encryptedContent);
+    let buff = new Uint8Array(
+      salt.byteLength + iv.byteLength + encryptedContentArr.byteLength
+    );
+    buff.set(salt, 0);
+    buff.set(iv, salt.byteLength);
+    buff.set(encryptedContentArr, salt.byteLength + iv.byteLength);
+    return buff;
+  } catch (e) {
+    console.log(`Error - ${e}`);
+    throw e;
+  }
 }
 
-async function decryptFile(
-  objFile: File,
-  decPassPhrase: string
-): Promise<Blob> {
-  const cipherBytesA = new Uint8Array(await readFile(objFile));
-  const pbkdf2iterations = 10000;
-  const passPhraseBytes = new TextEncoder().encode(decPassPhrase);
-  const pbkdf2salt = cipherBytesA.slice(8, 16);
-  const passPhraseKey = await crypto.subtle.importKey(
-    "raw",
-    passPhraseBytes,
-    { name: "PBKDF2" },
-    false,
-    ["deriveBits"]
-  );
-
-  console.log("passphrasekey imported");
-
-  const pbkdf2bytes = new Uint8Array(
-    await crypto.subtle.deriveBits(
+async function decryptData(encryptedData: Uint8Array, password: string): Promise<ArrayBuffer> {
+  try {
+    const salt = encryptedData.slice(0, 16);
+    const iv = encryptedData.slice(16, 16 + 12);
+    const data = encryptedData.slice(16 + 12);
+    const passwordKey = await getPasswordKey(password);
+    const aesKey = await deriveKey(passwordKey, salt, ["decrypt"]);
+    return await crypto.subtle.decrypt(
       {
-        name: "PBKDF2",
-        salt: pbkdf2salt,
-        iterations: pbkdf2iterations,
-        hash: "SHA-256",
+        name: "AES-GCM",
+        iv: iv,
       },
-      passPhraseKey,
-      384
-    )
-  );
-
-  console.log("pbkdf2bytes derived");
-
-  const keyBytes = pbkdf2bytes.slice(0, 32);
-  const ivBytes = pbkdf2bytes.slice(32);
-  const cipherBytes = cipherBytesA.slice(16);
-
-  const key = await crypto.subtle.importKey(
-    "raw",
-    keyBytes,
-    { name: "AES-CBC", length: 256 },
-    false,
-    ["decrypt"]
-  );
-
-  console.log("key imported");
-
-  const plainTextBytes = new Uint8Array(
-    await crypto.subtle.decrypt(
-      { name: "AES-CBC", iv: ivBytes },
-      key,
-      cipherBytes
-    )
-  );
-
-  console.log("ciphertext decrypted");
-
-  return new Blob([plainTextBytes], { type: "application/download" });
+      aesKey,
+      data
+    );
+  } catch (e) {
+    console.log(`Error - ${e}`);
+    throw e;
+  }
 }
 
-export {encryptFile, decryptFile}
+export {
+  encryptData,
+  decryptData,
+}

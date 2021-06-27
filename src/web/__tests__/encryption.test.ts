@@ -1,29 +1,15 @@
 import { expect } from "chai";
-import { encryptFile, decryptFile } from "../domain/encryption";
-
-const createMockFile = ({
-  name = "file.txt",
-  size = 1024,
-  type = "plain/txt",
-  lastModified = new Date(),
-}) => {
-  return new File(["a".repeat(size)], name, { type });
-};
+import { encryptData, decryptData } from "../domain/encryption";
 
 describe("encryption", () => {
   it("encrypt file", async () => {
-    const fakeFileName = "test.txt";
-    const mockFile = createMockFile({
-      name: fakeFileName,
-      size: 1024,
-      type: "application/pdf",
-    });
-    const encryptedFile = await encryptFile(mockFile, "test");
-    const decryptedFile = await decryptFile(
-      new File([encryptedFile], fakeFileName),
-      "test"
-    );
+    const enc = new TextEncoder();
+    const dec = new TextDecoder();
 
-    expect(await decryptedFile.text()).to.equal(await mockFile.text());
+    const data = "a".repeat(1024);
+    const encryptedFile = await encryptData(enc.encode(data), "test");
+    const decryptedFile = await decryptData(encryptedFile, "test");
+
+    expect(dec.decode(decryptedFile)).to.equal(data);
   });
 });

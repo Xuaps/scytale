@@ -1,16 +1,27 @@
-import { encryptFile, decryptFile } from "../domain/encryption";
+import { encryptData, decryptData } from "../domain/encryption";
+import { file2Buff } from "../domain/convert";
 
-onmessage = async function(e) {
-  console.log('Worker: Message received from main script');
-  const msg = e.data
+onmessage = async function (e) {
+  const { file, password, cmd } = e.data;
 
-  if (msg.cmd === 'encrypt') {
-    const encryptedFile = await encryptFile(msg.file, msg.password)
+  const buff = await file2Buff(file);
+  if (cmd === "encrypt") {
+    const encryptedData = await encryptData(new Uint8Array(buff), password);
     // @ts-ignore
-    e.ports[0].postMessage({encryptedFile, name: msg.file.name, password: msg.password} );
+    e.ports[0].postMessage({
+      encryptedFile: new Blob([encryptedData], {
+        type: "application/download",
+      }),
+      name: file.name,
+      password,
+    });
   } else {
-    const decryptedFile = await decryptFile(msg.file, msg.password)
+    const decryptedData = await decryptData(new Uint8Array(buff), password);
     // @ts-ignore
-    e.ports[0].postMessage({decryptedFile});
+    e.ports[0].postMessage({
+      decryptedFile: new Blob([new Uint8Array(decryptedData)], {
+        type: "application/download",
+      }),
+    });
   }
-}
+};
