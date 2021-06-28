@@ -47,7 +47,7 @@ router.get("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPe
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5242880, files: 1	} });
 router.post("/documents/", OneRequestsPerMinuteLimiter, TenRequestsPerDayLimiter, upload.single("document"), async (req, res) => {
-  const id = await new AddDocument(blobStorage, 64).execute(req.file.buffer);
+  const id = await new AddDocument(blobStorage).execute(req.file.buffer, req.file.originalname);
   client.trackTrace({message: `file uploaded ${id}` });
 
   res.send({ id });

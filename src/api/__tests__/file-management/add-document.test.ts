@@ -8,7 +8,6 @@ import { newClient } from '../../__mocks__/object-mothers/blob-storage-client'
 let fakeFile: { docId: string, buffer: Buffer }
 let fakeStorageClient: { client: BlobServiceClient, blobClient: BlockBlobClient }
 let documentsRepo: BlobStorage
-const fileNameLength: number = 64
 
 describe('As a user I want to add a document to allow others download it later', () => {
     beforeEach(() => {
@@ -23,15 +22,15 @@ describe('As a user I want to add a document to allow others download it later',
 
     describe('Given a document when a user upload the document', () => {
         it('should add the document to the storage', async () => {
-            await new AddDocument(documentsRepo, fileNameLength).execute(fakeFile.buffer)
+            await new AddDocument(documentsRepo).execute(fakeFile.buffer, "meta_id")
             
             //TODO
             expect(fakeStorageClient.blobClient.upload).toHaveBeenCalled();
         })
 
         it('should return a unique identifier to the file', async () => {
-            const idFirstUpload = await new AddDocument(documentsRepo, fileNameLength).execute(fakeFile.buffer)
-            const idSecondUpload = await new AddDocument(documentsRepo, fileNameLength).execute(fakeFile.buffer)
+            const idFirstUpload = await new AddDocument(documentsRepo).execute(fakeFile.buffer, "meta_id_1")
+            const idSecondUpload = await new AddDocument(documentsRepo).execute(fakeFile.buffer, "meta_id_2")
             
             expect(idFirstUpload).not.toBe(idSecondUpload)
         })

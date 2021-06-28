@@ -1,12 +1,11 @@
 import { Documents } from "../domain/file-management";
-import { Random } from "../domain/core";
 
 export class AddDocument {
-  constructor(private documents: Documents, private fileNameLength: number) {}
+  constructor(private documents: Documents) {}
 
-  public async execute(buffer: Buffer) {
+  public async execute(buffer: Buffer, metaId: string) {
     return (
-      await this.documents.add(Random.genRandomString(this.fileNameLength), buffer)
+      await this.documents.add(metaId, buffer)
     ).toString();
   }
 }
