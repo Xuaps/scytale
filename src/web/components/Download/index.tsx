@@ -9,7 +9,7 @@ const Download = ({ id, password, actions }) => {
   useEffect(() => {
     const processFile = async () => {
       const file = await downloadFile(id);
-      actions.decryptFile(file, password);
+      await actions.decryptFile(id, file, password);
     };
 
     processFile().then();

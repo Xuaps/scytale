@@ -73,7 +73,12 @@ async function decryptData(encryptedData: Uint8Array, password: string): Promise
   }
 }
 
+const generateRandomPassword = (length: number) => window.btoa(
+  String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length)))
+)
+
 export {
+  generateRandomPassword,
   encryptData,
   decryptData,
 }

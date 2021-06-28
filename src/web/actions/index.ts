@@ -58,8 +58,8 @@ export default function({ state, setState }) {
 
       setState(doc);
     },
-    decryptFile: async (file: Blob, password) => {
-      const res = await decryptFile(file, password);
+    decryptFile: async (id: string, file: Blob, password) => {
+      const res = await decryptFile(id, file, password);
       const doc = fileDecrypted(state, res);
       setState(doc);
     },

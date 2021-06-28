@@ -1,6 +1,9 @@
+import { generateRandomPassword } from "../domain/encryption";
+import { EncryptedFile, DecryptedFile } from "../model";
+
 const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
-export const encryptFile = (file: File) => new Promise((res, rej) => {
+export const encryptFile = (file: File) => new Promise<EncryptedFile>((res, rej) => {
   const channel = new MessageChannel();
 
   channel.port1.onmessage = ({data}) => {
@@ -14,14 +17,12 @@ export const encryptFile = (file: File) => new Promise((res, rej) => {
 
   cypherWorker.postMessage({
     file: file,
-    password: window.btoa(
-      String.fromCharCode(...crypto.getRandomValues(new Uint8Array(20)))
-    ),
+    password: generateRandomPassword(20),
     cmd: "encrypt"
   }, [channel.port2]);
 });
 
-export const decryptFile = (file: Blob, password) => new Promise((res, rej) => {
+export const decryptFile = (id: string, file: Blob, password) => new Promise<DecryptedFile>((res, rej) => {
   const channel = new MessageChannel();
 
   channel.port1.onmessage = ({data}) => {
@@ -34,6 +35,7 @@ export const decryptFile = (file: Blob, password) => new Promise((res, rej) => {
   };
 
   cypherWorker.postMessage({
+    id,
     file,
     password,
     cmd: "decrypt"
