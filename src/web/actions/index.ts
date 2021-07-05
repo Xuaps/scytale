@@ -1,43 +1,43 @@
 //commands
 import { decryptFile, encryptFile } from "../workers/client";
+import { Actions, DecryptedFile, EncryptedFile, State, UploadedFile } from "../model";
 
-const uploadFile = (file) => {
+const uploadFile = (file: EncryptedFile): Promise<[UploadedFile]> => {
   const formData = new FormData();
   formData.append("document", file.encryptedFile);
 
   return fetch("http://localhost:3000/api/documents", {
     method: "POST",
-    body: formData
-  }).then((res) => res.json())
-    .then((res: { id: string }) =>
-      ([
-        {
-          id: res.id,
-          name: file.name,
-          password: file.password
-        }
-      ])
-    );
+    body: formData,
+  })
+    .then((res) => res.json())
+    .then((res: { id: string }) => [
+      {
+        id: res.id,
+        name: file.name,
+        password: file.password,
+      },
+    ]);
 };
 
 //events
-const fileEncrypted = (state, file) => ({
+const fileEncrypted = (state: State, file: EncryptedFile): State => ({
   ...state,
   upload: {
     ...state.upload,
-    encryptedFiles: [...state.upload.encryptedFiles, file]
-  }
+    encryptedFiles: [...state.upload.encryptedFiles, file],
+  },
 });
 
-const fileDecrypted = (state, file) => ({
+const fileDecrypted = (state: State, file: DecryptedFile): State => ({
   ...state,
   download: {
     ...state.download,
-    selectedFile: file.decryptedFile
-  }
+    selectedFile: file.decryptedFile,
+  },
 });
 
-const fileUploaded = (state, files) => {
+const fileUploaded = (state: State, files: UploadedFile[]): State => {
   const nextFiles = [...state.upload.uploadedFiles, ...files];
 
   return {
@@ -45,13 +45,19 @@ const fileUploaded = (state, files) => {
     upload: {
       ...state.upload,
       uploadedFiles: nextFiles,
-      encryptedFiles: []
-    }
+      encryptedFiles: [],
+    },
   };
 };
 
-export default function({ state, setState }) {
-  return ({
+export default function ({
+  state,
+  setState,
+}: {
+  state: State;
+  setState: (state: State) => void;
+}): Actions {
+  return {
     encryptFile: async (file: File) => {
       const res = await encryptFile(file);
       const doc = fileEncrypted(state, res);
@@ -68,6 +74,6 @@ export default function({ state, setState }) {
       const doc = fileUploaded(state, res);
       setState(doc);
       localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
-    }
-  });
+    },
+  };
 }

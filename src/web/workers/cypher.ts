@@ -4,7 +4,7 @@ import { base642Buff, buff2Base64, file2Buff } from "../domain/convert";
 const enc = new TextEncoder();
 const dec = new TextDecoder();
 
-onmessage = async function (e) {
+onmessage = async function (e: MessageEvent) {
   const { id, file, password, cmd } = e.data;
 
   const buff = await file2Buff(file);

@@ -22,7 +22,7 @@ export const encryptFile = (file: File) => new Promise<EncryptedFile>((res, rej)
   }, [channel.port2]);
 });
 
-export const decryptFile = (id: string, file: Blob, password) => new Promise<DecryptedFile>((res, rej) => {
+export const decryptFile = (id: string, file: Blob, password: string) => new Promise<DecryptedFile>((res, rej) => {
   const channel = new MessageChannel();
 
   channel.port1.onmessage = ({data}) => {

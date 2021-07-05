@@ -74,7 +74,8 @@ module.exports = function(config) {
             module: "ES5",
             sourceMap: false,
             target: "ES5",
-            exclude: ['node_modules']
+            exclude: ['node_modules'],
+            downlevelIteration: true
         },
     }
   })

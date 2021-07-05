@@ -1,14 +1,6 @@
-import { EncryptedFile, UploadedFile } from "./model";
+import { State } from "./model";
 
-const initialState  : {
-  upload: {
-    encryptedFiles: EncryptedFile[];
-    uploadedFiles: UploadedFile[];
-  },
-  download: {
-    selectedFile: File | null;
-  }
-} = {
+const initialState : State = {
   upload: {
     encryptedFiles: [],
     uploadedFiles: JSON.parse(localStorage.getItem("files")) || [],

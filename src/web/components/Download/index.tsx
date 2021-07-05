@@ -1,11 +1,12 @@
 import { useEffect } from "react";
+import { Actions } from "../../model";
 
-const downloadFile = async (id) => {
+const downloadFile = async (id: string): Promise<Blob> => {
   return fetch(`http://localhost:3000/api/documents/${id}`)
     .then(response => response.blob());
 };
 
-const Download = ({ id, password, actions }) => {
+const Download = ({ id, password, actions } : {id: string, password: string, actions: Actions}) => {
   useEffect(() => {
     const processFile = async () => {
       const file = await downloadFile(id);

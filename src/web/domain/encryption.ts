@@ -1,6 +1,6 @@
 const enc = new TextEncoder();
 
-const getPasswordKey = (password) =>
+const getPasswordKey = (password: string): Promise<CryptoKey> =>
   crypto.subtle.importKey(
     "raw",
     enc.encode(password),
@@ -9,7 +9,7 @@ const getPasswordKey = (password) =>
     ["deriveKey"]
   );
 
-const deriveKey = (passwordKey, salt, keyUsage) =>
+const deriveKey = (passwordKey: CryptoKey, salt: Uint8Array, keyUsage: KeyUsage[]): Promise<CryptoKey> =>
   crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
@@ -73,7 +73,7 @@ async function decryptData(encryptedData: Uint8Array, password: string): Promise
   }
 }
 
-const generateRandomPassword = (length: number) => window.btoa(
+const generateRandomPassword = (length: number): string => window.btoa(
   String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length)))
 )
 

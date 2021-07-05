@@ -1,12 +1,12 @@
 import React, { useCallback } from "react";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { EncryptedFile, UploadedFile } from "../../model";
+import { Actions, EncryptedFile, State, UploadedFile, UploadState } from "../../model";
 
 const Upload = ({
                   state: { encryptedFiles, uploadedFiles },
                   actions: { encryptFile, uploadFile }
-                }) => {
+                }: { state: UploadState, actions: Actions}) => {
   return (
     <Layout>
       <Uploader onAddFile={encryptFile} />
