@@ -8,11 +8,11 @@ export type UploadState = {
 export type DownloadState = {
   selectedFile: File | null;
 }
-export interface State {
+export type State = {
   upload: UploadState,
   download: DownloadState,
 }
-export interface Actions {
+export type Actions = {
   encryptFile: (file: File) => void;
   decryptFile: (id: string, file: Blob, password: string) => void;
   uploadFile: (file: EncryptedFile) => void;
