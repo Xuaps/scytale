@@ -1,7 +1,7 @@
-import React, { useCallback } from "react";
+import React from "react";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { Actions, EncryptedFile, State, UploadedFile, UploadState } from "../../model";
+import { Actions, UploadState } from "../../model";
 
 const Upload = ({
                   state: { encryptedFiles, uploadedFiles },

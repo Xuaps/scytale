@@ -1,22 +1,31 @@
-import { useEffect } from "react";
-import { Actions } from "../../model";
+import React, { useEffect } from "react";
+import { Actions, DownloadState } from "../../model";
 
-const downloadFile = async (id: string): Promise<Blob> => {
-  return fetch(`http://localhost:3000/api/documents/${id}`)
-    .then(response => response.blob());
-};
-
-const Download = ({ id, password, actions } : {id: string, password: string, actions: Actions}) => {
+const Download = ({
+  id,
+  password,
+  state,
+  actions,
+}: {
+  id: string;
+  password: string;
+  state: DownloadState;
+  actions: Actions;
+}) => {
   useEffect(() => {
-    const processFile = async () => {
-      const file = await downloadFile(id);
-      await actions.decryptFile(id, file, password);
-    };
+    actions.downloadFile(id, password);
+  }, []);
 
-    processFile().then();
-  }, [id, password]);
+  if (!state.selectedFile) return <div>Decrypting file...</div>;
 
-  return <div>Decrypting file...</div>;
+  return (
+    <a
+      download={state.selectedFile.name}
+      href={window.URL.createObjectURL(state.selectedFile)}
+    >
+      Download
+    </a>
+  );
 };
 
 export default Download;

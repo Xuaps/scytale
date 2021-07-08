@@ -1,6 +1,11 @@
 //commands
 import { decryptFile, encryptFile } from "../workers/client";
-import { Actions, DecryptedFile, EncryptedFile, State, UploadedFile } from "../model";
+import { Actions, DecryptedFile, DownloadState, EncryptedFile, State, UploadedFile } from "../model";
+
+const downloadFile = async (id: string): Promise<Blob> => {
+  return fetch(`http://localhost:3000/api/documents/${id}`)
+    .then(response => response.blob());
+};
 
 const uploadFile = (file: EncryptedFile): Promise<[UploadedFile]> => {
   const formData = new FormData();
@@ -74,6 +79,13 @@ export default function ({
       const doc = fileUploaded(state, res);
       setState(doc);
       localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
+    },
+    downloadFile: async (id: string, password: string) => {
+      const file = await downloadFile(id);
+      const decryptedFile = await decryptFile(id, file, password);
+      const doc = fileDecrypted(state, decryptedFile)
+
+      setState(doc)
     },
   };
 }

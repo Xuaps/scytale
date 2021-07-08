@@ -16,5 +16,6 @@ export type Actions = {
   encryptFile: (file: File) => void;
   decryptFile: (id: string, file: Blob, password: string) => void;
   uploadFile: (file: EncryptedFile) => void;
+  downloadFile: (id: string, password: string) => void;
 }
 
