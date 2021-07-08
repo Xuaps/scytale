@@ -2,7 +2,7 @@ module.exports = {
   mode: "development",
 
   entry: {
-    main: "./src/web/main.tsx",
+    main: "./src/web/Main.tsx",
     cypher: "./src/web/workers/cypher.ts",
   },
 
