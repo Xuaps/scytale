@@ -3,11 +3,14 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Upload from "./components/Upload";
 import Download from "./components/Download";
 import initialState from "./initialState";
-import initializeActions from "./actions";
+import initializeActions from "./services";
+import { DefaultApi } from "../../gen";
+import * as enc from './workers/client';
 
 const App = () => {
+  const docs = useMemo(() => new DefaultApi(), []);
   const [state, setState] = useState(initialState);
-  const actions = useMemo(() => initializeActions({state, setState}), [state, setState]);
+  const actions = useMemo(() => initializeActions({state, setState, docs, enc}), [state, setState]);
 
   return (
     <Router>

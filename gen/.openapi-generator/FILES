@@ -1,8 +1,7 @@
-.gitignore
-.npmignore
 .openapi-generator-ignore
-api.ts
-base.ts
-configuration.ts
-git_push.sh
-index.ts
+apis/DefaultApi.ts
+apis/services.ts
+services.ts
+models/InlineResponse201.ts
+models/services.ts
+runtime.ts

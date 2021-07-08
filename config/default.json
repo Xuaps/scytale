@@ -7,7 +7,6 @@
         "ApplicationInsightKey": ""
     },
     "Documents": {
-        "ContainerName": "test",
-        "RandomNameLength": 64
+        "ContainerName": "test"
     }
 }
