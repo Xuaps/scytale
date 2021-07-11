@@ -1,5 +1,4 @@
-import { DecryptedFile, EncryptedFile, DownloadFile, State } from "../model";
-import { fileDecrypted } from "../events";
+import { DecryptedFile, EncryptedFile, DownloadFile, State, Reducers } from "../model";
 import { DefaultApi } from "../../../gen";
 
 export default function (
@@ -13,13 +12,14 @@ export default function (
       password: string
     ) => Promise<DecryptedFile>;
     encryptFile: (file: File) => Promise<EncryptedFile>;
-  }
+  },
+  reducers: Reducers,
 ): DownloadFile {
   return {
     execute: async (id: string, password: string) => {
       const file = await docs.getDocument({ id });
       const decryptedFile = await enc.decryptFile(id, file, password);
-      const doc = fileDecrypted(state, decryptedFile);
+      const doc = reducers.fileDecrypted(state, decryptedFile);
 
       setState(doc);
     }

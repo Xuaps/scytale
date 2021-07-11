@@ -1,16 +1,16 @@
-import { State, UploadedFile, UploadFile } from "../model";
-import { fileUploaded } from "../events";
+import { Reducers, State, UploadFile } from "../model";
 import { DefaultApi } from "../../../gen";
 
 export default function (
   state: State,
   setState: (state: State) => void,
-  docs: DefaultApi
+  docs: DefaultApi,
+  reducers: Reducers,
 ): UploadFile {
   return {
     execute: async (file) => {
       const res = await docs.uploadDocuments({ document: file.encryptedFile });
-      const doc = fileUploaded(state, [
+      const doc = reducers.fileUploaded(state, [
         {
           id: res.id,
           name: file.name,

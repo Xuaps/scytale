@@ -1,5 +1,4 @@
-import { DecryptedFile, DecryptFile, EncryptedFile, State } from "../model";
-import { fileDecrypted } from "../events";
+import { DecryptedFile, DecryptFile, EncryptedFile, Reducers, State } from "../model";
 
 export default function (
   state: State,
@@ -11,12 +10,13 @@ export default function (
       password: string
     ) => Promise<DecryptedFile>;
     encryptFile: (file: File) => Promise<EncryptedFile>;
-  }
+  },
+  reducers: Reducers,
 ): DecryptFile {
   return {
     execute: async (id: string, file: Blob, password) => {
       const res = await enc.decryptFile(id, file, password);
-      const doc = fileDecrypted(state, res);
+      const doc = reducers.fileDecrypted(state, res);
       setState(doc);
     },
   };

@@ -5,6 +5,7 @@ import Download from "./components/Download";
 import store from "./store";
 import { DownloadFile, EncryptFile, UploadFile } from './commands';
 import { DefaultApi } from "../../gen";
+import * as reducers from './reducers';
 import * as enc from './workers/client';
 
 const App = () => {
@@ -21,15 +22,15 @@ const App = () => {
                 id={match.params.id}
                 password={location.hash.substring(1)}
                 state={state.download}
-                downloadFile={DownloadFile(state, setState, docs, enc)}
+                downloadFile={DownloadFile(state, setState, docs, enc, reducers)}
             />)
           }
         />
         <Route path="/">
           <Upload
             state={state.upload}
-            encryptFile={EncryptFile(state, setState, enc)}
-            uploadFile={UploadFile(state, setState, docs)}
+            encryptFile={EncryptFile(state, setState, enc, reducers)}
+            uploadFile={UploadFile(state, setState, docs, reducers)}
           />
         </Route>
       </Switch>
