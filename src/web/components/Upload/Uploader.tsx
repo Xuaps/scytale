@@ -1,7 +1,8 @@
 import React, { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
+import { EncryptFile } from "../../model";
 
-const Uploader = ({ onAddFile }: { onAddFile: (file: File) => any }) => {
+const Uploader = ({ onAddFile }: { onAddFile: EncryptFile }) => {
   const {
     acceptedFiles,
     fileRejections,
@@ -14,7 +15,7 @@ const Uploader = ({ onAddFile }: { onAddFile: (file: File) => any }) => {
 
   useEffect(() => {
     if(acceptedFiles.length === 1) {
-      onAddFile(acceptedFiles[0]);
+      onAddFile.execute(acceptedFiles[0]);
     }
   }, [acceptedFiles])
 

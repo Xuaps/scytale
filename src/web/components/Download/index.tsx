@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
-import { Actions, DownloadState } from "../../model";
+import { DownloadFile, DownloadState } from "../../model";
 
 const Download = ({
   id,
   password,
   state,
-  actions,
+  downloadFile,
 }: {
   id: string;
   password: string;
   state: DownloadState;
-  actions: Actions;
+  downloadFile: DownloadFile;
 }) => {
   useEffect(() => {
-    actions.downloadFile(id, password);
+    downloadFile.execute(id, password).then();
   }, []);
 
   if (!state.selectedFile) return <div>Decrypting file...</div>;

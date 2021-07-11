@@ -1,6 +1,6 @@
 import { State } from "./model";
 
-const initialState : State = {
+const store : State = {
   upload: {
     encryptedFiles: [],
     uploadedFiles: JSON.parse(localStorage.getItem("files")) || [],
@@ -10,4 +10,4 @@ const initialState : State = {
   }
 }
 
-export default initialState;
+export default store;

@@ -12,10 +12,9 @@ export type State = {
   upload: UploadState,
   download: DownloadState,
 }
-export type Actions = {
-  encryptFile: (file: File) => void;
-  decryptFile: (id: string, file: Blob, password: string) => void;
-  uploadFile: (file: EncryptedFile) => void;
-  downloadFile: (id: string, password: string) => void;
-}
+
+export type DownloadFile = { execute: (id: string, password: string) => Promise<void> };
+export type EncryptFile = { execute: (file: File) => Promise<void> };
+export type DecryptFile = { execute: (id: string, file: Blob, password: string) => void };
+export type UploadFile = { execute: (file: EncryptedFile) => void };
 

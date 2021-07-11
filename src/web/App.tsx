@@ -2,15 +2,14 @@ import React, { useState, useMemo } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Upload from "./components/Upload";
 import Download from "./components/Download";
-import initialState from "./initialState";
-import initializeActions from "./services";
+import store from "./store";
+import { DownloadFile, EncryptFile, UploadFile } from './commands';
 import { DefaultApi } from "../../gen";
 import * as enc from './workers/client';
 
 const App = () => {
   const docs = useMemo(() => new DefaultApi(), []);
-  const [state, setState] = useState(initialState);
-  const actions = useMemo(() => initializeActions({state, setState, docs, enc}), [state, setState]);
+  const [state, setState] = useState(store);
 
   return (
     <Router>
@@ -22,14 +21,15 @@ const App = () => {
                 id={match.params.id}
                 password={location.hash.substring(1)}
                 state={state.download}
-                actions={actions}
+                downloadFile={DownloadFile(state, setState, docs, enc)}
             />)
           }
         />
         <Route path="/">
           <Upload
             state={state.upload}
-            actions={actions}
+            encryptFile={EncryptFile(state, setState, enc)}
+            uploadFile={UploadFile(state, setState, docs)}
           />
         </Route>
       </Switch>

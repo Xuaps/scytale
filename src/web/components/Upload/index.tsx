@@ -1,12 +1,17 @@
 import React from "react";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { Actions, UploadState } from "../../model";
+import { EncryptFile, UploadFile, UploadState } from "../../model";
 
 const Upload = ({
-                  state: { encryptedFiles, uploadedFiles },
-                  actions: { encryptFile, uploadFile }
-                }: { state: UploadState, actions: Actions}) => {
+  state: { encryptedFiles, uploadedFiles },
+  encryptFile,
+  uploadFile,
+}: {
+  state: UploadState;
+  encryptFile: EncryptFile;
+  uploadFile: UploadFile;
+}) => {
   return (
     <Layout>
       <Uploader onAddFile={encryptFile} />
@@ -15,13 +20,7 @@ const Upload = ({
           <li key={f.name}>{f.name}</li>
         ))}
       </ul>
-      <button
-        onClick={() =>
-          uploadFile(encryptedFiles[0])
-        }
-      >
-        send
-      </button>
+      <button onClick={() => uploadFile.execute(encryptedFiles[0])}>send</button>
       <br />
       <ul>
         {uploadedFiles.map((f) => (
