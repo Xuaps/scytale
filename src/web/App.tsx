@@ -1,17 +1,8 @@
-import React, { useState, useMemo } from "react";
+import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Upload from "./components/Upload";
-import Download from "./components/Download";
-import store from "./store";
-import { DownloadFile, EncryptFile, UploadFile } from './commands';
-import { DefaultApi } from "../../gen";
-import * as reducers from './reducers';
-import * as enc from './workers/client';
+import { Upload, Download } from "./components";
 
-const App = () => {
-  const docs = useMemo(() => new DefaultApi(), []);
-  const [state, setState] = useState(store);
-
+const App = ({state, events}) => {
   return (
     <Router>
       <Switch>
@@ -22,15 +13,15 @@ const App = () => {
                 id={match.params.id}
                 password={location.hash.substring(1)}
                 state={state.download}
-                downloadFile={DownloadFile(state, setState, docs, enc, reducers)}
+                onRender={events.DownloadAFileRequested}
             />)
           }
         />
         <Route path="/">
           <Upload
             state={state.upload}
-            encryptFile={EncryptFile(state, setState, enc, reducers)}
-            uploadFile={UploadFile(state, setState, docs, reducers)}
+            onAddFile={events.FileAdded}
+            onFileUpload={events.FileUploadRequested}
           />
         </Route>
       </Switch>

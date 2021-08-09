@@ -1,19 +1,21 @@
 import React, { useEffect } from "react";
-import { DownloadFile, DownloadState } from "../../model";
+import { SharedFile } from "../../model";
+import { Subject } from "rxjs";
+import { DownloadState } from "../../store";
 
 const Download = ({
   id,
   password,
   state,
-  downloadFile,
+  onRender,
 }: {
   id: string;
   password: string;
   state: DownloadState;
-  downloadFile: DownloadFile;
+  onRender: Subject<SharedFile>;
 }) => {
   useEffect(() => {
-    downloadFile.execute(id, password).then();
+    onRender.next({id, password})
   }, []);
 
   if (!state.selectedFile) return <div>Decrypting file...</div>;

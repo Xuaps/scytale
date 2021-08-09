@@ -1,4 +1,16 @@
-import { State } from "./model";
+import { EncryptedFile, UploadedFile } from "./model";
+
+export type UploadState = {
+  encryptedFiles: EncryptedFile[];
+  uploadedFiles: UploadedFile[];
+}
+export type DownloadState = {
+  selectedFile: File | null;
+}
+export type State = {
+  upload: UploadState,
+  download: DownloadState,
+}
 
 const store : State = {
   upload: {

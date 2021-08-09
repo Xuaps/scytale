@@ -1,26 +1,28 @@
 import React from "react";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { EncryptFile, UploadFile, UploadState } from "../../model";
+import { EncryptedFile } from "../../model";
+import { Subject } from "rxjs";
+import { UploadState } from "../../store";
 
 const Upload = ({
   state: { encryptedFiles, uploadedFiles },
-  encryptFile,
-  uploadFile,
+  onFileUpload,
+  onAddFile,
 }: {
   state: UploadState;
-  encryptFile: EncryptFile;
-  uploadFile: UploadFile;
+  onFileUpload: Subject<EncryptedFile>;
+  onAddFile: Subject<File>
 }) => {
   return (
     <Layout>
-      <Uploader onAddFile={encryptFile} />
+      <Uploader onAddFile={onAddFile} />
       <ul>
         {encryptedFiles.map((f) => (
           <li key={f.name}>{f.name}</li>
         ))}
       </ul>
-      <button onClick={() => uploadFile.execute(encryptedFiles[0])}>send</button>
+      <button onClick={() => onFileUpload.next(encryptedFiles[0])}>send</button>
       <br />
       <ul>
         {uploadedFiles.map((f) => (
