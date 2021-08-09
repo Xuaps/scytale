@@ -1,5 +1,5 @@
-import { generateRandomPassword } from "../domain/encryption";
-import { EncryptedFile, DecryptedFile } from "../model";
+import { generateRandomPassword } from "../../domain/encryption";
+import { EncryptedFile, DecryptedFile } from "../../model";
 
 const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
 
@@ -41,3 +41,5 @@ export const decryptFile = (id: string, file: Blob, password: string) => new Pro
     cmd: "decrypt"
   }, [channel.port2]);
 });
+
+export * from './gen'

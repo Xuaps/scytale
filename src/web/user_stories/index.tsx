@@ -2,10 +2,9 @@ import React, { useEffect, useMemo, useState } from "react";
 import AddFiles from "./add_file";
 import UploadFile from "./upload_file";
 import DownloadFile from "./download_file";
-import { DefaultApi } from "../../../gen";
 import store from "../store";
 import { createFileEncryptedDoc, createFileUploadedDoc, fileDecrypted } from "../actions/documents";
-import { decryptFile, encryptFile } from "../actions/commands";
+import { decryptFile, encryptFile, DefaultApi } from "../actions/commands";
 import { DownloadAFileRequested, FileAdded, FileUploadRequested } from "../actions/events";
 
 export default function ({ app }) {
