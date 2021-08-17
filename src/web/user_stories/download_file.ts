@@ -4,7 +4,6 @@ import { SharedFile } from "../model";
 export default {
   init: (DownloadAFileRequested: Subject<SharedFile>, decryptFile, fileDecrypted, getDocument, state, setState) => {
     DownloadAFileRequested.pipe(
-      map((a) => {console.log(a); return a;}),
       mergeMap(async file => ({
         doc: await getDocument({ id: file.id }),
         id: file.id,
