@@ -9,6 +9,8 @@
   paths:
     /documents:
       post:
+        tags:
+          - documents
         operationId: "upload-documents"
         summary: "Create a document"
         description: "Create a new document"
@@ -34,6 +36,8 @@
                       type: string
     /documents/{id}:
       get:
+        tags:
+          - documents
         operationId: "get-document"
         summary: "Get document by id"
         description: "Return a document"
@@ -52,5 +56,49 @@
                 schema:
                   type: string
                   format: binary
+      delete:
+        tags:
+          - documents
+        operationId: "delete-document"
+        summary: "Delete document by id"
+        description: "Delete a document"
+        parameters:
+          - name: id
+            in: path
+            description: "Document id"
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: The resource was deleted successfully.
+    /stats/{id}:
+      get:
+        tags:
+          - stats
+        operationId: "get-document-stats"
+        summary: "Get document stats by id"
+        description: "Return a document's stats"
+        parameters:
+          - name: id
+            in: path
+            description: "Document id"
+            required: true
+            schema:
+              type: string
+        responses:
+          200:
+            description: "Success"
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      location:
+                        type: string
+                      timestamp:
+                        type: string
   servers:
     - url: "http://localhost:3000/api"

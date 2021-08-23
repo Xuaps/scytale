@@ -1,7 +1,8 @@
-.openapi-generator-ignore
-apis/DefaultApi.ts
-apis/services.ts
-services.ts
+apis/DocumentsApi.ts
+apis/StatsApi.ts
+apis/index.ts
+index.ts
+models/InlineResponse200.ts
 models/InlineResponse201.ts
-models/services.ts
+models/index.ts
 runtime.ts
