@@ -39,7 +39,8 @@ const OneHundredRequestsPerDayLimiter = rateLimit({
 
 router.get("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPerDayLimiter, async (req, res) => {
   const doc = await new GetDocument(blobStorage).execute(req.params.slug);
-  client.trackTrace({message: `file downloaded ${req.params.slug}` });
+
+  client.trackEvent({name: "file-requested", properties: {id:req.params.slug, ip: req.ip}});
 
   res.send(doc);
 });
@@ -48,7 +49,6 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage, limits: { fileSize: 5242880, files: 1	} });
 router.post("/documents/", OneRequestsPerMinuteLimiter, TenRequestsPerDayLimiter, upload.single("document"), async (req, res) => {
   const id = await new AddDocument(blobStorage).execute(req.file.buffer, req.file.originalname);
-  client.trackTrace({message: `file uploaded ${id}` });
 
   res.send({ id });
 });
