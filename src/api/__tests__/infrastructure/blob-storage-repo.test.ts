@@ -37,4 +37,16 @@ describe("BlobStorageRepo", () => {
       expect(doc.toBuffer()).toStrictEqual(buffer);
     });
   });
+
+  describe("Delete a blob", () => {
+    it("should delete a blob from the storage", async () => {
+      const doc = await blobStorage.add(docId, buffer);
+
+      expect(await blobStorage.exists(doc.toString())).toBe(true);
+
+      await blobStorage.delete(docId);
+
+      expect(await blobStorage.exists(doc.toString())).toBe(false);
+    });
+  });
 });

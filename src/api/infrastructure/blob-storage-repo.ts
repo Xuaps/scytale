@@ -56,6 +56,10 @@ export class BlobStorage implements Documents {
     return new Document(id, content);
   }
 
+  async delete(id: string) {
+    await this.containerClient.deleteBlob(id);
+  }
+
   exists(id: string) {
     const blockBlobClient = this.containerClient.getBlockBlobClient(id);
 
