@@ -41,7 +41,7 @@ export const createDeleteFileDoc: FileDeleted = (state, file: SharedFile) => {
   };
 };
 
-export const fileDecrypted: FileDecrypted = (state, file) => ({
+export const createDownloadFileDoc: FileDecrypted = (state, file) => ({
   ...state,
   download: {
     ...state.download,

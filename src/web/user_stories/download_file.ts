@@ -1,21 +1,24 @@
-import { map, mergeMap, Subject } from "rxjs";
-import { SharedFile } from "../model";
+import { map, mergeMap } from "rxjs";
+import { DownloadAFileRequested } from "../actions/events";
 
-export default {
-  init: (DownloadAFileRequested: Subject<SharedFile>, decryptFile, fileDecrypted, getDocument, state, setState) => {
-    DownloadAFileRequested.pipe(
-      mergeMap(async file => ({
-        doc: await getDocument({ id: file.id }),
-        id: file.id,
-        password: file.password
-      })),
-      mergeMap(file => decryptFile(file.id, file.doc, file.password)),
-      map(decryptedFile => fileDecrypted(state, decryptedFile))
-    ).subscribe(
-      {
-        next: doc => setState(doc),
-        error: error => {
-        }
-      });
-  }
+const useDownloadFile = (decryptFile, fileDecrypted, getDocument, setState) => {
+  DownloadAFileRequested.pipe(
+    mergeMap(async file => ({
+      doc: await getDocument({ id: file.id }),
+      id: file.id,
+      password: file.password
+    })),
+    mergeMap(file => decryptFile(file.id, file.doc, file.password)),
+    map(decryptedFile => fileDecrypted(decryptedFile))
+  ).subscribe(
+    {
+      next: doc => setState(doc),
+      error: error => {
+        console.log(error)
+      }
+    });
+
+  return DownloadAFileRequested;
 };
+
+export default useDownloadFile;

@@ -1,16 +1,20 @@
-import { map, mergeMap, Subject } from "rxjs";
-import { SharedFile } from "../model";
+import { map, mergeMap } from "rxjs";
+import { FileStatsRequested } from "../actions/events";
 
-export default {
-  init: (FileStatsRequested: Subject<SharedFile>, createFileStatsDoc, getFileStats, state, setState) => {
-    FileStatsRequested.pipe(
-      mergeMap(async file => {
-        return await getFileStats({id: file.id})
-      }),
-      map(stats => createFileStatsDoc(state, stats)),
-    ).subscribe({
-        next: doc => setState(doc),
-        error: error => {}
-    });
-  }
-}
+const useGetStats = (createFileStatsDoc, getFileStats, setState) => {
+  FileStatsRequested.pipe(
+    mergeMap(async file => {
+      return await getFileStats({ id: file.id });
+    }),
+    map(stats => createFileStatsDoc(stats))
+  ).subscribe({
+    next: doc => setState(doc),
+    error: error => {
+      console.log(error)
+    }
+  });
+
+  return FileStatsRequested;
+};
+
+export default useGetStats;

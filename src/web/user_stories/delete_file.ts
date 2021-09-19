@@ -1,24 +1,29 @@
-import { map, mergeMap, Subject } from "rxjs";
-import { SharedFile } from "../model";
+import { map, mergeMap } from "rxjs";
+import { FileDeletionRequested } from "../actions/events";
 
-export default {
-  init: (FileDeletionRequested: Subject<SharedFile>, createDeleteFileDoc, deleteFile, state, setState) => {
-    const obs = FileDeletionRequested.pipe(
-      mergeMap(async file => {
-        await deleteFile({id: file.id})
-        return file
-      }),
-      map(file => createDeleteFileDoc(state, file)),
-    )
-    
-    obs.subscribe({
-        next: doc => setState(doc),
-        error: error => {}
-    });
+const useDeleteFile = (createDeleteFileDoc, deleteFile, setState) => {
+  FileDeletionRequested.pipe(
+    mergeMap(async file => {
+      try {
+        await deleteFile({ id: file.id });
+      } catch (err) {
+        if (err.status === 404) return file;
+        throw err;
+      }
+      return file;
+    }),
+    map(file => createDeleteFileDoc(file))
+  ).subscribe({
+    next: doc => {
+      setState(doc);
+      localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
+    },
+    error: error => {
+      console.log(error);
+    }
+  });
 
-    obs.subscribe(
-      { next: doc => localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles)) }
-    );
-  }
-}
+  return FileDeletionRequested;
+};
 
+export default useDeleteFile;

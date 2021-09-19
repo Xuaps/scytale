@@ -1,7 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import config from "config";
-import { GetDocument, AddDocument } from "../application";
+import { GetDocument, AddDocument, DeleteDocument } from "../application";
 import { BlobStorage, createBlobServiceClient } from "./blob-storage-repo";
 import rateLimit from "express-rate-limit";
 
@@ -43,6 +43,15 @@ router.get("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPe
   client.trackEvent({name: "file-requested", properties: {id:req.params.slug, ip: req.ip}});
 
   res.send(doc);
+});
+
+router.delete("/documents/:slug", TenRequestsPerMinuteLimiter, OneHundredRequestsPerDayLimiter, async (req, res) => {
+  const result = await new DeleteDocument(blobStorage).execute(req.params.slug);
+  if(result instanceof Error) return res.status(404).end()
+
+  client.trackEvent({name: "file-deleted", properties: {id:req.params.slug, ip: req.ip}});
+
+  res.status(204).end();
 });
 
 const storage = multer.memoryStorage();

@@ -1,15 +1,19 @@
 import { map, mergeMap } from "rxjs";
+import { FileAdded } from "../actions/events";
 
-export default {
-  init: (FileAdded, encryptFile, createFileEncryptedDoc, state, setState) => {
-    FileAdded.pipe(
-      mergeMap(file => encryptFile(file)),
-      map(file => createFileEncryptedDoc(state, file)),
-    ).subscribe(
-      {
-        next: doc => setState(doc),
-        error: error => {
-        }
-      })
-  }
-}
+const useAddFile = (encryptFile, createFileEncryptedDoc, setState) => {
+  FileAdded.pipe(
+    mergeMap(file => encryptFile(file)),
+    map(file => createFileEncryptedDoc(file))
+  ).subscribe(
+    {
+      next: doc => setState(doc),
+      error: error => {
+        console.log(error)
+      }
+    });
+
+  return FileAdded;
+};
+
+export default useAddFile

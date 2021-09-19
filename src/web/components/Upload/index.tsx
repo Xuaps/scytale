@@ -31,7 +31,7 @@ const Upload = ({
           <li key={f.id}>
             <a href={`${f.id}#${f.password}`}>{f.name}</a>&nbsp;
             <a href={`/stats/${f.id}`}>stats</a>&nbsp;
-            <button onClick={() => onDeleteFile.next(f)}>Delete</button>
+            <button onClick={() => {console.log("t"); onDeleteFile.next(f)}}>Delete</button>
           </li>
         ))}
       </ul>

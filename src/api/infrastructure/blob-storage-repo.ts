@@ -57,7 +57,11 @@ export class BlobStorage implements Documents {
   }
 
   async delete(id: string) {
-    await this.containerClient.deleteBlob(id);
+    try {
+      await this.containerClient.deleteBlob(id);
+    } catch (ex) {
+      return new Error("Document not found")
+    }
   }
 
   exists(id: string) {
