@@ -24,7 +24,49 @@ export interface InlineResponse200 {
      * @type {string}
      * @memberof InlineResponse200
      */
-    location?: string;
+    ip?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    model?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    os?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    type?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    city?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    stateOrProvince?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    countryOrRegion?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof InlineResponse200
+     */
+    browser?: string;
     /**
      * 
      * @type {string}
@@ -43,7 +85,14 @@ export function InlineResponse200FromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'location': !exists(json, 'location') ? undefined : json['location'],
+        'ip': !exists(json, 'ip') ? undefined : json['ip'],
+        'model': !exists(json, 'model') ? undefined : json['model'],
+        'os': !exists(json, 'os') ? undefined : json['os'],
+        'type': !exists(json, 'type') ? undefined : json['type'],
+        'city': !exists(json, 'city') ? undefined : json['city'],
+        'stateOrProvince': !exists(json, 'stateOrProvince') ? undefined : json['stateOrProvince'],
+        'countryOrRegion': !exists(json, 'countryOrRegion') ? undefined : json['countryOrRegion'],
+        'browser': !exists(json, 'browser') ? undefined : json['browser'],
         'timestamp': !exists(json, 'timestamp') ? undefined : json['timestamp'],
     };
 }
@@ -57,7 +106,14 @@ export function InlineResponse200ToJSON(value?: InlineResponse200 | null): any {
     }
     return {
         
-        'location': value.location,
+        'ip': value.ip,
+        'model': value.model,
+        'os': value.os,
+        'type': value.type,
+        'city': value.city,
+        'stateOrProvince': value.stateOrProvince,
+        'countryOrRegion': value.countryOrRegion,
+        'browser': value.browser,
         'timestamp': value.timestamp,
     };
 }

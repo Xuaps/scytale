@@ -96,7 +96,21 @@
                   items:
                     type: object
                     properties:
-                      location:
+                      ip:
+                        type: string
+                      model:
+                        type: string
+                      os:
+                        type: string
+                      type:
+                        type: string
+                      city:
+                        type: string
+                      stateOrProvince:
+                        type: string
+                      countryOrRegion:
+                        type: string
+                      browser:
                         type: string
                       timestamp:
                         type: string

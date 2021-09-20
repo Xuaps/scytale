@@ -4,6 +4,8 @@
             "AccountName": "ACCOUNT_NAME",
             "AccountKey": "ACCOUNT_KEY"
         },
-        "ApplicationInsightKey": "APPINSIGHTS_INSTRUMENTATIONKEY"
+        "ApplicationInsightKey": "APPINSIGHTS_INSTRUMENTATIONKEY",
+        "ApplicationInsightAPIKey": "APPINSIGHTS_APIKEY",
+        "ApplicationInsightAppID": "APPINSIGHTS_APPID"
     }
 }

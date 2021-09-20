@@ -19,7 +19,17 @@ const Stats = ({
   if (!state.loaded) return <div>loading stats...</div>;
 
   return (<div>
-    {state.stats.map(f => `${f.region}&nbsp;`)}
+    {state.stats.map(f => `
+      ${f.type}&nbsp;
+      ${f.model}&nbsp;
+      ${f.os}&nbsp;
+      ${f.ip}&nbsp;
+      ${f.city}&nbsp;
+      ${f.stateOrProvince}&nbsp;
+      ${f.countryOrRegion}&nbsp;
+      ${f.browser}&nbsp;
+      ${f.timestamp}&nbsp;
+    `)}
   </div>
   );
 };

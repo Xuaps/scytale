@@ -51,5 +51,8 @@ export const createDownloadFileDoc: FileDecrypted = (state, file) => ({
 
 export const createFileStatsDoc: FileStatsRecovered = (state, stats) => ({
   ...state,
-  file_stats: {loaded: true, stats}
+  file_stats: {
+    loaded: true,
+    stats
+  }
 })

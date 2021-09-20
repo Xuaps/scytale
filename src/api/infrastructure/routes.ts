@@ -1,9 +1,11 @@
 import { Router } from "express";
+import fetch from 'node-fetch';
 import multer from "multer";
 import config from "config";
 import { GetDocument, AddDocument, DeleteDocument } from "../application";
 import { BlobStorage, createBlobServiceClient } from "./blob-storage-repo";
 import rateLimit from "express-rate-limit";
+import { timestamp } from "rxjs";
 
 let appInsights = require("applicationinsights");
 let client = new appInsights.TelemetryClient();
@@ -61,5 +63,15 @@ router.post("/documents/", OneRequestsPerMinuteLimiter, TenRequestsPerDayLimiter
 
   res.send({ id });
 });
+
+router.get("/stats/:id", TenRequestsPerDayLimiter, OneHundredRequestsPerDayLimiter, async (req, res) => {
+    const events = await fetch(`https://api.applicationinsights.io/v1/apps/${config.get("Azure.ApplicationInsightAppID")}/events/customEvents?timespan=P3Y6M4DT12H30M5S&$search=${req.params.id}`, {
+      headers: {
+        'x-api-key': config.get("Azure.ApplicationInsightAPIKey")
+      }
+    }).then(response => response.json()).then(data => data.value.map((v: { client: any; timestamp: any; }) => ({...v.client, timestamp: v.timestamp}) ))
+      .catch(err => console.log(err))
+  return res.json(events)
+})
 
 export default router;
