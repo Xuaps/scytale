@@ -1,33 +1,41 @@
-name: JavaScript CI
+name: Docker CI
 
 on: [push]
 
-env:
-  AZURE_WEBAPP_NAME: xuaps-scytale   # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: 'dist'      # set this to the path to your web app project, defaults to the repository root
-  NODE_VERSION: '14.x'                # set this to the node version to use
-
 jobs:
-  build-and-deploy:
-    name: Build and Deploy
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@main
-    - name: Use Node.js ${{ env.NODE_VERSION }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: ${{ env.NODE_VERSION }}
-    - name: npm install, build, and test
-      run: |
-        # Build and test the project, then
-        # deploy to Azure Web App.
-        npm install
-        npm run build:backend
-        npm run build:frontend
-      working-directory: .
-    - name: 'Deploy to Azure WebApp'
-      uses: azure/webapps-deploy@v2
-      with: 
-        app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+        # checkout the repo
+        - name: 'Checkout GitHub Action'
+          uses: actions/checkout@main
+          
+        - name: 'Login via Azure CLI'
+          uses: azure/login@v1
+          with:
+            creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+        - name: 'Build and push image'
+          uses: azure/docker-login@v1
+          with:
+            login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            username: ${{ secrets.REGISTRY_USERNAME }}
+            password: ${{ secrets.REGISTRY_PASSWORD }}
+        - run: |
+            npm install
+            npm run build:backend 
+            npm run build:frontend
+            docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/scytale:${{ github.sha }}
+            docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/scytale:${{ github.sha }}
+
+        - name: 'Deploy to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: ${{ secrets.RESOURCE_GROUP }}${{ github.run_number }}
+            image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/sampleapp:${{ github.sha }}
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: xuaps-scytale
+            location: 'west eu'
