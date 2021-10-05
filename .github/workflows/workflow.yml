@@ -48,7 +48,7 @@ jobs:
             dns-name-label: scytale
             image: jonasal/nginx-certbot:latest
             azure-file-volume-share-name: nginx
-            azure-file-volume-account-name: ${{ secretd.ACCOUNT_NAME }}
+            azure-file-volume-account-name: ${{ secrets.ACCOUNT_NAME }}
             azure-file-volume-account-key: ${{ secrets.ACCOUNT_KEY }}
             azure-file-volume-mount-path: /etc/nginx/user_conf.d
             registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
