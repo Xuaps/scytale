@@ -40,9 +40,7 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: xuaps-scytale
             location: 'west europe'
-            ports:
-              - 80
-              - 443
+            ports: 80 443
         - name: 'Deploy NGINX to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
           with:
@@ -58,6 +56,4 @@ jobs:
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: xuaps-scytale
             location: 'west europe'
-            ports:
-              - 80
-              - 443
+            ports: 80 443
