@@ -28,16 +28,36 @@ jobs:
             docker build . -t ${{ secrets.REGISTRY_LOGIN_SERVER }}/scytale:${{ github.sha }}
             docker push ${{ secrets.REGISTRY_LOGIN_SERVER }}/scytale:${{ github.sha }}
 
-        - name: 'Deploy to Azure Container Instances'
+        - name: 'Deploy APP to Azure Container Instances'
           uses: 'azure/aci-deploy@v1'
           with:
             resource-group: ${{ secrets.RESOURCE_GROUP }}
             dns-name-label: scytale
             image: ${{ secrets.REGISTRY_LOGIN_SERVER }}/scytale:${{ github.sha }}
-            environment-variables: PORT=80
             secure-environment-variables: APPINSIGHTS_INSTRUMENTATIONKEY=${{ secrets.APPINSIGHTS_INSTRUMENTATIONKEY }} ACCOUNT_NAME=${{ secrets.ACCOUNT_NAME }} ACCOUNT_KEY=${{ secrets.ACCOUNT_KEY }} APPINSIGHTS_APIKEY=${{ secrets.APPINSIGHTS_APIKEY }} APPINSIGHTS_APPID=${{ secrets.APPINSIGHTS_APPID }}
             registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
             registry-username: ${{ secrets.REGISTRY_USERNAME }}
             registry-password: ${{ secrets.REGISTRY_PASSWORD }}
             name: xuaps-scytale
             location: 'west europe'
+            ports:
+              - 80
+              - 443
+        - name: 'Deploy NGINX to Azure Container Instances'
+          uses: 'azure/aci-deploy@v1'
+          with:
+            resource-group: ${{ secrets.RESOURCE_GROUP }}
+            dns-name-label: scytale
+            image: jonasal/nginx-certbot:latest
+            azure-file-volume-share-name: nginx
+            azure-file-volume-account-name: ${{ secretd.ACCOUNT_NAME }}
+            azure-file-volume-account-key: ${{ secrets.ACCOUNT_KEY }}
+            azure-file-volume-mount-path: /etc/nginx/user_conf.d
+            registry-login-server: ${{ secrets.REGISTRY_LOGIN_SERVER }}
+            registry-username: ${{ secrets.REGISTRY_USERNAME }}
+            registry-password: ${{ secrets.REGISTRY_PASSWORD }}
+            name: xuaps-scytale
+            location: 'west europe'
+            ports:
+              - 80
+              - 443
