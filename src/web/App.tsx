@@ -35,7 +35,15 @@ const App = () => {
       ),
     []
   );
-  const stats = useMemo(() => new StatsApi(), []);
+  const stats = useMemo(
+    () =>
+      new StatsApi(
+        new Configuration({
+          basePath: `${window.location.protocol}//${window.location.host}/api`,
+        })
+      ),
+    []
+  );
   const FileStatsRequested = useGetStats(
     useCallback((file) => createFileStatsDoc(state, file), [state]),
     stats.getDocumentStats.bind(stats),
