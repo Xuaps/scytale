@@ -25,7 +25,6 @@ jobs:
         registry: https://xuapscr.azurecr.io/
         username: ${{ secrets.AzureAppService_ContainerUsername_6fbf058be970446196ee09e830cecbd5 }}
         password: ${{ secrets.AzureAppService_ContainerPassword_5d44fe9e6066417da8decabb807cc5c7 }}
-
     - run: |
         npm install
         npm run build:backend 
