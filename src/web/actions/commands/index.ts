@@ -1,45 +1,22 @@
-import { generateRandomPassword } from "../../domain/encryption";
-import { EncryptedFile, DecryptedFile } from "../../model";
+import * as Comlink from "comlink";
 
-const cypherWorker: Worker = new Worker("/assets/cypher.bundle.js");
+const Cypher = Comlink.wrap<{
+  encryptFile: (
+    file: File,
+    password: string
+  ) => Promise<{
+    id: string;
+    encryptedFile: File;
+    name: string;
+    password: string;
+  }>;
+  decryptFile: (
+    id: string,
+    file: File,
+    password: string
+  ) => Promise<{ name: string; decryptedFile: File }>;
+}>(new Worker("/assets/cypher.bundle.js"));
 
-export const encryptFile = (file: File) => new Promise<EncryptedFile>((res, rej) => {
-  const channel = new MessageChannel();
-
-  channel.port1.onmessage = ({data}) => {
-    channel.port1.close();
-    if (data.error) {
-      rej(data.error);
-    }else {
-      res(data);
-    }
-  };
-
-  cypherWorker.postMessage({
-    file: file,
-    password: generateRandomPassword(20),
-    cmd: "encrypt"
-  }, [channel.port2]);
-});
-
-export const decryptFile = (id: string, file: Blob, password: string) => new Promise<DecryptedFile>((res, rej) => {
-  const channel = new MessageChannel();
-
-  channel.port1.onmessage = ({data}) => {
-    channel.port1.close();
-    if (data.error) {
-      rej(data.error);
-    }else {
-      res(data);
-    }
-  };
-
-  cypherWorker.postMessage({
-    id,
-    file,
-    password,
-    cmd: "decrypt"
-  }, [channel.port2]);
-});
-
-export * from './gen'
+export const encryptFile = Cypher.encryptFile;
+export const decryptFile = Cypher.decryptFile;
+export * from "./gen";

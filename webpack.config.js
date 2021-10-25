@@ -8,9 +8,9 @@ module.exports = {
 
   output: {
     filename: "[name].bundle.js",
-    chunkFilename: '[name].chunk.js',
+    chunkFilename: "[name].chunk.js",
     path: __dirname + "/dist/src/web",
-    publicPath: "/assets/"
+    publicPath: "/assets/",
   },
 
   // Enable sourcemaps for debugging webpack's output.
@@ -18,7 +18,7 @@ module.exports = {
 
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js"],
   },
 
   module: {
@@ -30,18 +30,18 @@ module.exports = {
       },
 
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      {enforce: "pre", test: /\.js$/, loader: "source-map-loader"},
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.css$/,
-        use: [{loader: "style-loader"}, {loader: "css-loader"}]
+        use: [{ loader: "style-loader" }, { loader: "css-loader" }],
       },
-    ]
+    ],
   },
 
   optimization: {
     // splitChunks: {
     //   chunks: "all"
     // },
-    usedExports: true
+    usedExports: true,
   },
 };
