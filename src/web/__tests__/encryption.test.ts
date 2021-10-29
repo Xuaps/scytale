@@ -1,5 +1,9 @@
-import { expect } from "chai";
-import { encryptData, decryptData } from "../domain/encryption";
+import {
+  encryptData,
+  decryptData,
+  encryptFile,
+  decryptFile,
+} from "../domain/encryption";
 
 describe("encryption", () => {
   it("encrypt file", async () => {
@@ -10,6 +14,23 @@ describe("encryption", () => {
     const encryptedFile = await encryptData(enc.encode(data), "test");
     const decryptedFile = await decryptData(encryptedFile, "test");
 
-    expect(dec.decode(decryptedFile)).to.equal(data);
+    expect(dec.decode(decryptedFile)).toEqual(data);
+  });
+
+  it("encrypt file new", async () => {
+    const password = "pwd";
+    const fileName = "test";
+    const fileText = "aaa";
+    const file = new File(["aaa"], fileName);
+
+    const { id, encryptedFile } = await encryptFile(file, password);
+    const { name, decryptedFile } = await decryptFile(
+      id,
+      encryptedFile,
+      password
+    );
+
+    expect(name).toEqual(fileName);
+    expect(await decryptedFile.text()).toEqual(fileText);
   });
 });

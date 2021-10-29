@@ -1,20 +1,19 @@
-import { expect } from "chai";
 import { base642Buff, buff2Base64, file2Buff } from "../domain/convert";
 import { decryptData, encryptData } from "../domain/encryption";
 import testFile from "./testfile";
-var isEqual = require('arraybuffer-equal');
+var isEqual = require("arraybuffer-equal");
 
 describe("converters", () => {
   describe("buff2Base64", () => {
     it("should convert from buffer to base64", () => {
       const buffer = new Uint8Array(10);
-      expect(buff2Base64(buffer)).to.equal("AAAAAAAAAAAAAA");
+      expect(buff2Base64(buffer)).toEqual("AAAAAAAAAAAAAA");
     });
   });
 
   describe("base642Buff", () => {
     it("should convert from base64 to buffer", () => {
-      expect(base642Buff("AAAAAAAAAAAAAA==")).to.deep.equal(new Uint8Array(10));
+      expect(base642Buff("AAAAAAAAAAAAAA==")).toEqual(new Uint8Array(10));
     });
   });
 
@@ -22,7 +21,7 @@ describe("converters", () => {
     const encripted = await encryptData(testFile, "test");
     const res = await decryptData(base642Buff(buff2Base64(encripted)), "test");
 
-    expect(isEqual(res, testFile.buffer)).to.be.true;
+    expect(isEqual(res, testFile.buffer)).toBe(true);
   });
 
   describe("file2Buffer", () => {
@@ -36,7 +35,7 @@ describe("converters", () => {
         new Uint8Array(buffer) as any
       );
 
-      expect(buffer2string).to.deep.equal("a".repeat(10));
+      expect(buffer2string).toEqual("a".repeat(10));
     });
   });
 });
