@@ -23,7 +23,7 @@ describe("encryption", () => {
     const fileText = "aaa";
     const file = new File(["aaa"], fileName);
 
-    const { id, encryptedFile } = await encryptFile(file, password);
+    const { id, encryptedFile } = await encryptFile(file);
     const { name, decryptedFile } = await decryptFile(
       id,
       encryptedFile,

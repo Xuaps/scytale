@@ -12,8 +12,9 @@ module.exports = function (config) {
 
     // list of files / patterns to load in the browser
     files: [
-      { pattern: "src/web/domain/*.ts", type: "js" },
-      { pattern: "src/web/__tests__/*.ts", type: "js" },
+      { pattern: "src/web/domain/**/*.ts", type: "js" },
+      { pattern: "src/web/user_stories/**/*.ts", type: "js" },
+      { pattern: "src/web/actions/**/*.ts", type: "js" },
     ],
 
     // list of files / patterns to exclude

@@ -67,7 +67,8 @@ const App = () => {
   );
   const FileAdded = useAddFile(
     encryptFile,
-    useCallback((file) => createFileEncryptedDoc(state, file), [state]),
+    createFileEncryptedDoc,
+    state,
     setState
   );
 

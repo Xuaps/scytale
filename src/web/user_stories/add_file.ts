@@ -1,19 +1,22 @@
+import { useCallback } from "react";
 import { map, mergeMap } from "rxjs";
 import { FileAdded } from "../actions/events";
 
-const useAddFile = (encryptFile, createFileEncryptedDoc, setState) => {
+const useAddFile = (encryptFile, createFileEncryptedDoc, state, setState) => {
+  const createDoc = useCallback((file) => createFileEncryptedDoc(state, file), [
+    state,
+  ]);
   FileAdded.pipe(
-    mergeMap(file => encryptFile(file)),
-    map(file => createFileEncryptedDoc(file))
-  ).subscribe(
-    {
-      next: doc => setState(doc),
-      error: error => {
-        console.log(error)
-      }
-    });
+    mergeMap((file) => encryptFile(file)),
+    map((file) => createDoc(file))
+  ).subscribe({
+    next: (doc) => setState(doc),
+    error: (error) => {
+      console.log(error);
+    },
+  });
 
   return FileAdded;
 };
 
-export default useAddFile
+export default useAddFile;
