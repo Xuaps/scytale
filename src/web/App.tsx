@@ -45,24 +45,28 @@ const App = () => {
     []
   );
   const FileStatsRequested = useGetStats(
-    useCallback((file) => createFileStatsDoc(state, file), [state]),
+    createFileStatsDoc,
     stats.getDocumentStats.bind(stats),
+    state,
     setState
   );
   const FileUploadRequested = useUploadFile(
-    useCallback((file) => createFileUploadedDoc(state, file), [state]),
+    createFileUploadedDoc,
     docs.uploadDocuments.bind(docs),
+    state,
     setState
   );
   const FileDeletionRequested = useDeleteFile(
-    useCallback((file) => createDeleteFileDoc(state, file), [state]),
+    createDeleteFileDoc,
     docs.deleteDocument.bind(docs),
+    state,
     setState
   );
   const DownloadAFileRequested = useDownloadFile(
     decryptFile,
-    useCallback((file) => createDownloadFileDoc(state, file), [state]),
+    createDownloadFileDoc,
     docs.getDocument.bind(docs),
+    state, 
     setState
   );
   const FileAdded = useAddFile(

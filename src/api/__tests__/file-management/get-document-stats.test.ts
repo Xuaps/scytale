@@ -12,10 +12,7 @@ describe("As a user I want to get file's stats", () => {
   let documentsRepo: BlobStorage;
 
   beforeEach(() => {
-    documentsRepo = new BlobStorage(
-      fakeStorageClient.client,
-      config.get("Documents.ContainerName")
-    );
+    documentsRepo = new BlobStorage(fakeStorageClient.client, config.get("Documents.ContainerName"));
   });
 
   describe("Given a document id", () => {

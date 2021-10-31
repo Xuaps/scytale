@@ -5,17 +5,13 @@ import { DeleteDocument } from "../../application";
 import { BlobStorage } from "../../infrastructure/blob-storage-repo";
 
 const fakeDoc = newFile();
-const fakeReadableStream = newReadableStream(fakeDoc.buffer);
 const fakeStorageClient = newClient();
 
 describe("As a user I want to delete a document", () => {
   let documentsRepo: BlobStorage;
 
   beforeEach(() => {
-    documentsRepo = new BlobStorage(
-      fakeStorageClient.client,
-      config.get("Documents.ContainerName")
-    );
+    documentsRepo = new BlobStorage(fakeStorageClient.client, config.get("Documents.ContainerName"));
   });
 
   describe("Given a document id", () => {
@@ -25,4 +21,3 @@ describe("As a user I want to delete a document", () => {
     });
   });
 });
-

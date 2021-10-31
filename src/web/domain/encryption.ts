@@ -4,15 +4,9 @@ const enc = new TextEncoder();
 const dec = new TextDecoder();
 
 const getPasswordKey = (password: string): Promise<CryptoKey> =>
-  crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, [
-    "deriveKey",
-  ]);
+  crypto.subtle.importKey("raw", enc.encode(password), "PBKDF2", false, ["deriveKey"]);
 
-const deriveKey = (
-  passwordKey: CryptoKey,
-  salt: Uint8Array,
-  keyUsage: KeyUsage[]
-): Promise<CryptoKey> =>
+const deriveKey = (passwordKey: CryptoKey, salt: Uint8Array, keyUsage: KeyUsage[]): Promise<CryptoKey> =>
   crypto.subtle.deriveKey(
     {
       name: "PBKDF2",
@@ -26,10 +20,7 @@ const deriveKey = (
     keyUsage
   );
 
-async function encryptData(
-  secretData: Uint8Array,
-  password: string
-): Promise<Uint8Array> {
+async function encryptData(secretData: Uint8Array, password: string): Promise<Uint8Array> {
   try {
     const salt = crypto.getRandomValues(new Uint8Array(16));
     const iv = crypto.getRandomValues(new Uint8Array(12));
@@ -45,9 +36,7 @@ async function encryptData(
     );
 
     const encryptedContentArr = new Uint8Array(encryptedContent);
-    let buff = new Uint8Array(
-      salt.byteLength + iv.byteLength + encryptedContentArr.byteLength
-    );
+    const buff = new Uint8Array(salt.byteLength + iv.byteLength + encryptedContentArr.byteLength);
     buff.set(salt, 0);
     buff.set(iv, salt.byteLength);
     buff.set(encryptedContentArr, salt.byteLength + iv.byteLength);
@@ -58,10 +47,7 @@ async function encryptData(
   }
 }
 
-async function decryptData(
-  encryptedData: Uint8Array,
-  password: string
-): Promise<ArrayBuffer> {
+async function decryptData(encryptedData: Uint8Array, password: string): Promise<ArrayBuffer> {
   try {
     const salt = encryptedData.slice(0, 16);
     const iv = encryptedData.slice(16, 16 + 12);
@@ -86,10 +72,7 @@ async function encryptFile(file: File) {
   const password = generateRandomPassword(20);
   const buff = await file2Buff(file);
   const encryptedData = await encryptData(new Uint8Array(buff), password);
-  const encryptedName = await encryptData(
-    new Uint8Array(enc.encode(file.name)),
-    password
-  );
+  const encryptedName = await encryptData(new Uint8Array(enc.encode(file.name)), password);
 
   return {
     id: buff2Base64(encryptedName),
@@ -108,22 +91,12 @@ async function decryptFile(id: string, file: File, password: string) {
 
   return {
     name: dec.decode(decryptedName),
-    decryptedFile: new File(
-      [new Uint8Array(decryptedData)],
-      dec.decode(decryptedName),
-      { type: "application/download" }
-    ),
+    decryptedFile: new File([new Uint8Array(decryptedData)], dec.decode(decryptedName), {
+      type: "application/download",
+    }),
   };
 }
 const generateRandomPassword = (length: number): string =>
-  window.btoa(
-    String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length)))
-  );
+  self.btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(length))));
 
-export {
-  generateRandomPassword,
-  encryptData,
-  decryptData,
-  encryptFile,
-  decryptFile,
-};
+export { generateRandomPassword, encryptData, decryptData, encryptFile, decryptFile };

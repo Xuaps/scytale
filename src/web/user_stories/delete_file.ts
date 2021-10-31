@@ -1,7 +1,10 @@
+import { useCallback } from "react";
 import { map, mergeMap } from "rxjs";
 import { FileDeletionRequested } from "../actions/events";
 
-const useDeleteFile = (createDeleteFileDoc, deleteFile, setState) => {
+const useDeleteFile = (createDeleteFileDoc, deleteFile, state, setState) => {
+  const deleteDoc = useCallback((file) => createDeleteFileDoc(state, file), [state])
+
   FileDeletionRequested.pipe(
     mergeMap(async file => {
       try {
@@ -12,7 +15,7 @@ const useDeleteFile = (createDeleteFileDoc, deleteFile, setState) => {
       }
       return file;
     }),
-    map(file => createDeleteFileDoc(file))
+    map(file => deleteDoc(file))
   ).subscribe({
     next: doc => {
       setState(doc);

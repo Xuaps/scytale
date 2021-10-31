@@ -8,7 +8,9 @@
     "test:browser": "karma start",
     "build:backend": "tsc",
     "build:frontend": "webpack",
-    "start": " nodemon --exec \"npm run build:backend && npm run build:frontend && node ./dist/index.js\" -w src -e ts,tsx"
+    "start": " nodemon --exec \"npm run build:backend && npm run build:frontend && node ./dist/index.js\" -w src -e ts,tsx",
+    "lint": "eslint --ext ts,tsx src/web",
+    "lint:fix": "eslint --ext ts,tsx src/web --fix"
   },
   "keywords": [],
   "author": "",
@@ -27,8 +29,12 @@
     "@types/react": "^17.0.9",
     "@types/react-dom": "^17.0.6",
     "@types/stream-buffers": "^3.0.3",
+    "@typescript-eslint/eslint-plugin": "^5.2.0",
+    "@typescript-eslint/parser": "^5.2.0",
     "arraybuffer-equal": "^1.0.4",
     "css-loader": "^5.2.6",
+    "eslint": "^7.32.0",
+    "eslint-plugin-react": "^7.26.1",
     "faker": "^5.5.2",
     "jest": "^27.3.1",
     "karma": "^6.3.2",
