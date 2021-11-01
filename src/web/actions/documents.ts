@@ -5,15 +5,17 @@ export type FileUploaded = (state: State, files: UploadedFile[]) => State;
 export type FileDeleted = (state: State, file: SharedFile) => State;
 export type FileEncrypted = (state: State, file: EncryptedFile) => State;
 export type FileDecrypted = (state: State, file: DecryptedFile) => State;
-export type FileStatsRecovered = (state: State, stats: FileStats) => State
+export type FileStatsRecovered = (state: State, stats: FileStats) => State;
 
-export const createFileEncryptedDoc: FileEncrypted = (state, file) => ({
-  ...state,
-  upload: {
-    ...state.upload,
-    encryptedFiles: [...state.upload.encryptedFiles, file],
-  },
-});
+export const createFileEncryptedDoc: FileEncrypted = (state, file) => {
+  return {
+    ...state,
+    upload: {
+      ...state.upload,
+      encryptedFiles: [...state.upload.encryptedFiles, file],
+    },
+  };
+};
 
 export const createFileUploadedDoc: FileUploaded = (state, files) => {
   const nextFiles = [...state.upload.uploadedFiles, ...files];
@@ -29,7 +31,7 @@ export const createFileUploadedDoc: FileUploaded = (state, files) => {
 };
 
 export const createDeleteFileDoc: FileDeleted = (state, file: SharedFile) => {
-  const nextFiles = [...state.upload.uploadedFiles.filter(f => f.id !== file.id)];
+  const nextFiles = [...state.upload.uploadedFiles.filter((f) => f.id !== file.id)];
 
   return {
     ...state,
@@ -53,6 +55,6 @@ export const createFileStatsDoc: FileStatsRecovered = (state, stats) => ({
   ...state,
   file_stats: {
     loaded: true,
-    stats
-  }
-})
+    stats,
+  },
+});

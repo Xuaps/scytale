@@ -12,10 +12,10 @@ const Download = ({
   id: string;
   password: string;
   state: DownloadState;
-  onRender: Subject<SharedFile>;
+  onRender: (file: SharedFile ) => void;
 }) => {
   useEffect(() => {
-    onRender.next({id, password})
+    onRender({id, password})
   }, []);
 
   if (!state.selectedFile) return <div>Decrypting file...</div>;

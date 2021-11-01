@@ -47,32 +47,27 @@ const App = () => {
   const FileStatsRequested = useGetStats(
     createFileStatsDoc,
     stats.getDocumentStats.bind(stats),
-    state,
     setState
   );
   const FileUploadRequested = useUploadFile(
     createFileUploadedDoc,
     docs.uploadDocuments.bind(docs),
-    state,
     setState
   );
   const FileDeletionRequested = useDeleteFile(
     createDeleteFileDoc,
     docs.deleteDocument.bind(docs),
-    state,
     setState
   );
   const DownloadAFileRequested = useDownloadFile(
     decryptFile,
     createDownloadFileDoc,
     docs.getDocument.bind(docs),
-    state, 
     setState
   );
   const FileAdded = useAddFile(
     encryptFile,
     createFileEncryptedDoc,
-    state,
     setState
   );
 
@@ -85,7 +80,7 @@ const App = () => {
             <Stats
               id={match.params.id}
               state={state.file_stats}
-              onLoad={FileStatsRequested}
+              onLoad={(file) => FileStatsRequested.next({file, state})}
             />
           )}
         />
@@ -96,16 +91,16 @@ const App = () => {
               id={match.params.id}
               password={location.hash.substring(1)}
               state={state.download}
-              onRender={DownloadAFileRequested}
+              onRender={(file) => DownloadAFileRequested.next({file, state})}
             />
           )}
         />
         <Route path="/">
           <Upload
             state={state.upload}
-            onAddFile={FileAdded}
-            onFileUpload={FileUploadRequested}
-            onDeleteFile={FileDeletionRequested}
+            onAddFile={(file: File) => FileAdded.next({file, state})}
+            onFileUpload={(file) => FileUploadRequested.next({file, state})}
+            onDeleteFile={(file) => FileDeletionRequested.next({file, state})}
           />
         </Route>
       </Switch>

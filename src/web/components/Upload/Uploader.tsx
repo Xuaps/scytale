@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
-import { Subject } from "rxjs";
 
-const Uploader = ({ onAddFile }: { onAddFile: Subject<File> }) => {
+const Uploader = ({ onAddFile } : {onAddFile: (file:File) => void}) => {
   const {
     acceptedFiles,
     fileRejections,
@@ -15,7 +14,7 @@ const Uploader = ({ onAddFile }: { onAddFile: Subject<File> }) => {
 
   useEffect(() => {
     if(acceptedFiles.length === 1) {
-      onAddFile.next(acceptedFiles[0]);
+      onAddFile(acceptedFiles[0]);
     }
   }, [acceptedFiles])
 

@@ -1,28 +1,32 @@
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { map, mergeMap } from "rxjs";
 import { FileUploadRequested } from "../actions/events";
 
-const useUploadFile = (createFileUploadedDoc, uploadDocuments, state, setState) => {
-  const createDoc = useCallback((file) => createFileUploadedDoc(state, file), [state]);
-  FileUploadRequested.pipe(
-    mergeMap(async (file) => {
-      const res = await uploadDocuments({ document: file.encryptedFile });
-      return {
-        id: res.id,
-        name: file.name,
-        password: file.password,
-      };
-    }),
-    map((file) => createDoc([file]))
-  ).subscribe({
-    next: (doc) => {
-      setState(doc);
-      localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
-    },
-    error: (error) => {
-      console.log(error);
-    },
-  });
+const useUploadFile = (createFileUploadedDoc, uploadDocuments, setState) => {
+  useEffect(() => {
+    FileUploadRequested.pipe(
+      mergeMap(async ({ file, state }) => {
+        const res = await uploadDocuments({ document: file.encryptedFile });
+        return {
+          file: {
+            id: res.id,
+            name: file.name,
+            password: file.password,
+          },
+          state,
+        };
+      }),
+      map(({ file, state }) => createFileUploadedDoc(state, [file]))
+    ).subscribe({
+      next: (doc) => {
+        setState(doc);
+        localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
+      },
+      error: (error) => {
+        console.log(error);
+      },
+    });
+  }, []);
 
   return FileUploadRequested;
 };

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { Subject } from "rxjs";
 import { SharedFile } from "../../model";
 import { FileStatsState } from "../../store";
 
@@ -10,10 +9,10 @@ const Stats = ({
 }: {
   id: string
   state: FileStatsState
-  onLoad: Subject<SharedFile>
+  onLoad: (file: SharedFile) => void
 }) => {
   useEffect(() => {
-    onLoad.next({id, password: ""})
+    onLoad({id, password: ""})
   }, []);
 
   if (!state.loaded) return <div>loading stats...</div>;

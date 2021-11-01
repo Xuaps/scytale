@@ -1,8 +1,8 @@
 import React from "react";
+import { Link } from 'react-router-dom'
 import Layout from "../Layout";
 import Uploader from "./Uploader";
 import { EncryptedFile, SharedFile } from "../../model";
-import { Subject } from "rxjs";
 import { UploadState } from "../../store";
 
 const Upload = ({
@@ -12,9 +12,9 @@ const Upload = ({
   onDeleteFile,
 }: {
   state: UploadState
-  onFileUpload: Subject<EncryptedFile>
-  onAddFile: Subject<File>
-  onDeleteFile: Subject<SharedFile>
+  onFileUpload: (file: EncryptedFile) => void
+  onAddFile: (file: File) => void
+  onDeleteFile: (file: SharedFile) => void
 }) => {
   return (
     <Layout>
@@ -24,14 +24,14 @@ const Upload = ({
           <li key={f.name}>{f.name}</li>
         ))}
       </ul>
-      <button onClick={() => onFileUpload.next(encryptedFiles[0])}>send</button>
+      <button onClick={() => onFileUpload(encryptedFiles[0])}>send</button>
       <br />
       <ul>
         {uploadedFiles.map((f) => (
           <li key={f.id}>
-            <a href={`${f.id}#${f.password}`}>{f.name}</a>&nbsp;
-            <a href={`/stats/${f.id}`}>stats</a>&nbsp;
-            <button onClick={() => {console.log("t"); onDeleteFile.next(f)}}>Delete</button>
+            <Link to={`${f.id}#${f.password}`}>{f.name}</Link>&nbsp;
+            <Link to={`/stats/${f.id}`}>stats</Link>&nbsp;
+            <button onClick={() => onDeleteFile(f)}>Delete</button>
           </li>
         ))}
       </ul>
