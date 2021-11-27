@@ -9,7 +9,7 @@ module.exports = {
   output: {
     filename: "[name].bundle.js",
     chunkFilename: "[name].chunk.js",
-    path: __dirname + "/dist/src/web",
+    path: __dirname + "/dist/assets",
     publicPath: "/assets/",
   },
 
