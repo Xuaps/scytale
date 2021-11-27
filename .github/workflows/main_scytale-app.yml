@@ -12,8 +12,6 @@ on:
 jobs:
   deploy:
     runs-on: 'ubuntu-latest'
-    env:
-      NODE_ENV: production
 
     steps:
     - uses: actions/checkout@v2
@@ -22,7 +20,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
     - run: |
         npm install
-        npm run build:frontend
+        NODE_ENV=production npm run build:frontend
     - name: Upload to blob storage
       uses: azure/CLI@v1
       with:
