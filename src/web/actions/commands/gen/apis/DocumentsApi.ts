@@ -29,6 +29,7 @@ export interface GetDocumentRequest {
 }
 
 export interface UploadDocumentsRequest {
+    id: string;
     document?: Blob;
 }
 
@@ -105,6 +106,10 @@ export class DocumentsApi extends runtime.BaseAPI {
      * Create a document
      */
     async uploadDocumentsRaw(requestParameters: UploadDocumentsRequest): Promise<runtime.ApiResponse<InlineResponse201>> {
+        if (requestParameters.id === null || requestParameters.id === undefined) {
+            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling uploadDocuments.');
+        }
+
         const queryParameters: any = {};
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -130,8 +135,8 @@ export class DocumentsApi extends runtime.BaseAPI {
         }
 
         const response = await this.request({
-            path: `/documents`,
-            method: 'POST',
+            path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+            method: 'PUT',
             headers: headerParameters,
             query: queryParameters,
             body: formParams,

@@ -7,13 +7,20 @@
       email: "admin@xuaps.com"
       name: "Xuaps"
   paths:
-    /documents:
-      post:
+    /documents/{id}:
+      put:
         tags:
           - documents
         operationId: "upload-documents"
         summary: "Create a document"
         description: "Create a new document"
+        parameters:
+          - name: id
+            in: path
+            description: "Document id"
+            required: true
+            schema:
+              type: string
         requestBody:
           required: true
           content:
@@ -34,7 +41,6 @@
                   properties:
                     id:
                       type: string
-    /documents/{id}:
       get:
         tags:
           - documents
