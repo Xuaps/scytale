@@ -1,6 +1,4 @@
 module.exports = {
-  mode: "development",
-
   entry: {
     main: "./src/web/Main.tsx",
     cypher: "./src/web/workers/cypher.ts",
