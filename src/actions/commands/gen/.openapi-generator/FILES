@@ -3,6 +3,5 @@ apis/StatsApi.ts
 apis/index.ts
 index.ts
 models/InlineResponse200.ts
-models/InlineResponse201.ts
 models/index.ts
 runtime.ts

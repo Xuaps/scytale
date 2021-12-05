@@ -6,10 +6,10 @@ const useUploadFile = (createFileUploadedDoc, uploadDocuments, setState) => {
   useEffect(() => {
     FileUploadRequested.pipe(
       mergeMap(async ({ file, state }) => {
-        const res = await uploadDocuments({ id: file.id, document: file.encryptedFile });
+        await uploadDocuments({ id: file.id, document: file.encryptedFile });
         return {
           file: {
-            id: res.id,
+            id: file.id,
             name: file.name,
             password: file.password,
           },
@@ -19,6 +19,7 @@ const useUploadFile = (createFileUploadedDoc, uploadDocuments, setState) => {
       map(({ file, state }) => createFileUploadedDoc(state, [file]))
     ).subscribe({
       next: (doc) => {
+        console.log(doc);
         setState(doc);
         localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
       },

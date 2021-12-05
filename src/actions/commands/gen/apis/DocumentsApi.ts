@@ -14,11 +14,6 @@
 
 
 import * as runtime from '../runtime';
-import {
-    InlineResponse201,
-    InlineResponse201FromJSON,
-    InlineResponse201ToJSON,
-} from '../models';
 
 export interface DeleteDocumentRequest {
     id: string;
@@ -105,7 +100,7 @@ export class DocumentsApi extends runtime.BaseAPI {
      * Create a new document
      * Create a document
      */
-    async uploadDocumentsRaw(requestParameters: UploadDocumentsRequest): Promise<runtime.ApiResponse<InlineResponse201>> {
+    async uploadDocumentsRaw(requestParameters: UploadDocumentsRequest): Promise<runtime.ApiResponse<void>> {
         if (requestParameters.id === null || requestParameters.id === undefined) {
             throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling uploadDocuments.');
         }
@@ -142,16 +137,15 @@ export class DocumentsApi extends runtime.BaseAPI {
             body: formParams,
         });
 
-        return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse201FromJSON(jsonValue));
+        return new runtime.VoidApiResponse(response);
     }
 
     /**
      * Create a new document
      * Create a document
      */
-    async uploadDocuments(requestParameters: UploadDocumentsRequest): Promise<InlineResponse201> {
-        const response = await this.uploadDocumentsRaw(requestParameters);
-        return await response.value();
+    async uploadDocuments(requestParameters: UploadDocumentsRequest): Promise<void> {
+        await this.uploadDocumentsRaw(requestParameters);
     }
 
 }
