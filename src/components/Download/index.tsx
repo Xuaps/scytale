@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import { SharedFile } from "../../model";
-import { Subject } from "rxjs";
 import { DownloadState } from "../../store";
 
 const Download = ({
@@ -15,7 +14,7 @@ const Download = ({
   onRender: (file: SharedFile ) => void;
 }) => {
   useEffect(() => {
-    onRender({id, password})
+    onRender({id, password: decodeURIComponent(password)})
   }, []);
 
   if (!state.selectedFile) return <div>Decrypting file...</div>;

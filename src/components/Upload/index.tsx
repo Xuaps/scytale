@@ -29,7 +29,7 @@ const Upload = ({
       <ul>
         {uploadedFiles.map((f) => (
           <li key={f.id}>
-            <Link to={`${f.id}#${f.password}`}>{f.name}</Link>&nbsp;
+            <Link to={`${f.id}/${encodeURIComponent(f.password)}`}>{f.name}</Link>&nbsp;
             <Link to={`/stats/${f.id}`}>stats</Link>&nbsp;
             <button onClick={() => onDeleteFile(f)}>Delete</button>
           </li>

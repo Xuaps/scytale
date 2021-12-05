@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useEffect, useMemo, useState } from "react";
+import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import * as Components from "./components";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
 import { reactPlugin } from "./app-insight";
@@ -19,6 +19,7 @@ const Download = withAITracking(reactPlugin, Components.Download);
 const Stats = withAITracking(reactPlugin, Components.Stats);
 const App = () => {
   const [state, setState] = useState(store);
+  const [loading, setLoading] = useState(true);
   const docs = useMemo(
     () =>
       new DocumentsApi(
@@ -47,7 +48,20 @@ const App = () => {
     setState
   );
   const FileAdded = useAddFile(encryptFile, createFileEncryptedDoc, setState);
+  
+  useEffect(() => {
+    setLoading(!(FileStatsRequested.observed
+      && FileUploadRequested.observed
+      && FileDeletionRequested.observed
+      && DownloadAFileRequested.observed
+      && FileAdded.observed))
+  }, [FileStatsRequested.observed, 
+    FileUploadRequested.observed, 
+    FileDeletionRequested.observed, 
+    DownloadAFileRequested.observed,
+  FileAdded.observed])
 
+  if(loading) return <div>Loading ...</div>
   return (
     <Router>
       <Switch>
@@ -62,11 +76,11 @@ const App = () => {
           )}
         />
         <Route
-          path="/:id/"
+          path="/:id/:password"
           children={({ location, match }) => (
             <Download
               id={match.params.id}
-              password={location.hash.substring(1)}
+              password={match.params.password}
               state={state.download}
               onRender={(file) => DownloadAFileRequested.next({ file, state })}
             />
