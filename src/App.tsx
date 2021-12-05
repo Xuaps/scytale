@@ -1,8 +1,8 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import * as Components from "./components";
 import { withAITracking } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin, appInsights } from "./app-insight";
+import { reactPlugin } from "./app-insight";
 import store from "./store";
 import { useAddFile, useDeleteFile, useDownloadFile, useGetStats, useUploadFile } from "./user_stories";
 import {
@@ -23,7 +23,7 @@ const App = () => {
     () =>
       new DocumentsApi(
         new Configuration({
-          basePath: `${window.location.protocol}//${window.location.host}/api`,
+          basePath: `https://xuaps-apim-development-we.azure-api.net/doc`,
         })
       ),
     []

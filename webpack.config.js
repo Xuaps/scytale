@@ -1,7 +1,7 @@
 module.exports = {
   entry: {
-    main: "./src/web/Main.tsx",
-    cypher: "./src/web/workers/cypher.ts",
+    main: "./src/Main.tsx",
+    cypher: "./src/workers/cypher.ts",
   },
 
   output: {
@@ -41,5 +41,13 @@ module.exports = {
     //   chunks: "all"
     // },
     usedExports: true,
+  },
+
+  devServer: {
+    static: {
+      directory: 'dist',
+    },
+    compress: true,
+    port: 9000,
   },
 };

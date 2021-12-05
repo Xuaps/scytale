@@ -13,7 +13,7 @@ describe("Upload file", () => {
     result.current.next({ file: { id: "anyId", encryptedFile: new File([], ""), password: "", name: "" }, state });
     await waitFor(() => setState.calls.any());
 
-    expect(uploadFileMock).toHaveBeenCalledWith({ document: jasmine.any(File) });
+    expect(uploadFileMock).toHaveBeenCalledWith({ id: "anyId", document: jasmine.any(File) });
   });
   it("should move the file to the list of uploaded files", async () => {
     const uploadFileMock = jasmine.createSpy().and.returnValue({ id: "anyId" });
