@@ -6,7 +6,7 @@ const useGetStats = (createFileStatsDoc, getFileStats, setState) => {
   useEffect(() => {
     FileStatsRequested.pipe(
       mergeMap(async ({ file, state }) => {
-        return { stats: await getFileStats({ id: file.id }), state };
+        return { stats: (await getFileStats({ id: file.id })).value.map((v) => v.client), state };
       }),
       map(({ stats, state }) => createFileStatsDoc(state, stats))
     ).subscribe({

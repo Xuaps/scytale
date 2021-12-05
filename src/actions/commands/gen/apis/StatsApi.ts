@@ -12,53 +12,51 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
-import {
-    InlineResponse200,
-    InlineResponse200FromJSON,
-    InlineResponse200ToJSON,
-} from '../models';
+import * as runtime from "../runtime";
+import { InlineResponse200, InlineResponse200FromJSON, InlineResponse200ToJSON } from "../models";
 
 export interface GetDocumentStatsRequest {
-    id: string;
+  id: string;
 }
 
 /**
- * 
+ *
  */
 export class StatsApi extends runtime.BaseAPI {
-
-    /**
-     * Return a document\'s stats
-     * Get document stats by id
-     */
-    async getDocumentStatsRaw(requestParameters: GetDocumentStatsRequest): Promise<runtime.ApiResponse<Array<InlineResponse200>>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDocumentStats.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/stats/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => jsonValue.map(InlineResponse200FromJSON));
+  /**
+   * Return a document\'s stats
+   * Get document stats by id
+   */
+  async getDocumentStatsRaw(
+    requestParameters: GetDocumentStatsRequest
+  ): Promise<runtime.ApiResponse<InlineResponse200>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling getDocumentStats."
+      );
     }
 
-    /**
-     * Return a document\'s stats
-     * Get document stats by id
-     */
-    async getDocumentStats(requestParameters: GetDocumentStatsRequest): Promise<Array<InlineResponse200>> {
-        const response = await this.getDocumentStatsRaw(requestParameters);
-        return await response.value();
-    }
+    const queryParameters: any = {};
 
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request({
+      path: `/stats/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+      method: "GET",
+      headers: headerParameters,
+      query: queryParameters,
+    });
+
+    return new runtime.JSONApiResponse(response, (jsonValue) => InlineResponse200FromJSON(jsonValue));
+  }
+
+  /**
+   * Return a document\'s stats
+   * Get document stats by id
+   */
+  async getDocumentStats(requestParameters: GetDocumentStatsRequest): Promise<InlineResponse200> {
+    const response = await this.getDocumentStatsRaw(requestParameters);
+    return await response.value();
+  }
 }

@@ -32,7 +32,7 @@ const App = () => {
     () =>
       new StatsApi(
         new Configuration({
-          basePath: `${window.location.protocol}//${window.location.host}/api`,
+          basePath: `https://xuaps-apim-development-we.azure-api.net/doc`,
         })
       ),
     []

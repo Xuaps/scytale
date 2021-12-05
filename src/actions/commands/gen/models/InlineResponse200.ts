@@ -13,6 +13,13 @@
  */
 
 import { exists, mapValues } from '../runtime';
+import {
+    InlineResponse200Value,
+    InlineResponse200ValueFromJSON,
+    InlineResponse200ValueFromJSONTyped,
+    InlineResponse200ValueToJSON,
+} from './';
+
 /**
  * 
  * @export
@@ -21,58 +28,10 @@ import { exists, mapValues } from '../runtime';
 export interface InlineResponse200 {
     /**
      * 
-     * @type {string}
+     * @type {Array<InlineResponse200Value>}
      * @memberof InlineResponse200
      */
-    ip?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    model?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    os?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    type?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    city?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    stateOrProvince?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    countryOrRegion?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    browser?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof InlineResponse200
-     */
-    timestamp?: string;
+    value?: Array<InlineResponse200Value>;
 }
 
 export function InlineResponse200FromJSON(json: any): InlineResponse200 {
@@ -85,15 +44,7 @@ export function InlineResponse200FromJSONTyped(json: any, ignoreDiscriminator: b
     }
     return {
         
-        'ip': !exists(json, 'ip') ? undefined : json['ip'],
-        'model': !exists(json, 'model') ? undefined : json['model'],
-        'os': !exists(json, 'os') ? undefined : json['os'],
-        'type': !exists(json, 'type') ? undefined : json['type'],
-        'city': !exists(json, 'city') ? undefined : json['city'],
-        'stateOrProvince': !exists(json, 'stateOrProvince') ? undefined : json['stateOrProvince'],
-        'countryOrRegion': !exists(json, 'countryOrRegion') ? undefined : json['countryOrRegion'],
-        'browser': !exists(json, 'browser') ? undefined : json['browser'],
-        'timestamp': !exists(json, 'timestamp') ? undefined : json['timestamp'],
+        'value': !exists(json, 'value') ? undefined : ((json['value'] as Array<any>).map(InlineResponse200ValueFromJSON)),
     };
 }
 
@@ -106,15 +57,7 @@ export function InlineResponse200ToJSON(value?: InlineResponse200 | null): any {
     }
     return {
         
-        'ip': value.ip,
-        'model': value.model,
-        'os': value.os,
-        'type': value.type,
-        'city': value.city,
-        'stateOrProvince': value.stateOrProvince,
-        'countryOrRegion': value.countryOrRegion,
-        'browser': value.browser,
-        'timestamp': value.timestamp,
+        'value': value.value === undefined ? undefined : ((value.value as Array<any>).map(InlineResponse200ValueToJSON)),
     };
 }
 

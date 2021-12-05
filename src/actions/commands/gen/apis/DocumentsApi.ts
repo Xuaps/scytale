@@ -12,140 +12,144 @@
  * Do not edit the class manually.
  */
 
-
-import * as runtime from '../runtime';
+import * as runtime from "../runtime";
 
 export interface DeleteDocumentRequest {
-    id: string;
+  id: string;
 }
 
 export interface GetDocumentRequest {
-    id: string;
+  id: string;
 }
 
 export interface UploadDocumentsRequest {
-    id: string;
-    document?: Blob;
+  id: string;
+  document?: Blob;
 }
 
 /**
- * 
+ *
  */
 export class DocumentsApi extends runtime.BaseAPI {
-
-    /**
-     * Delete a document
-     * Delete document by id
-     */
-    async deleteDocumentRaw(requestParameters: DeleteDocumentRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling deleteDocument.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const response = await this.request({
-            path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'DELETE',
-            headers: headerParameters,
-            query: queryParameters,
-        });
-
-        return new runtime.VoidApiResponse(response);
+  /**
+   * Delete a document
+   * Delete document by id
+   */
+  async deleteDocumentRaw(requestParameters: DeleteDocumentRequest): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling deleteDocument."
+      );
     }
 
-    /**
-     * Delete a document
-     * Delete document by id
-     */
-    async deleteDocument(requestParameters: DeleteDocumentRequest): Promise<void> {
-        await this.deleteDocumentRaw(requestParameters);
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const response = await this.request({
+      path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+      method: "DELETE",
+      headers: headerParameters,
+      query: queryParameters,
+    });
+
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Delete a document
+   * Delete document by id
+   */
+  async deleteDocument(requestParameters: DeleteDocumentRequest): Promise<void> {
+    await this.deleteDocumentRaw(requestParameters);
+  }
+
+  /**
+   * Return a document
+   * Get document by id
+   */
+  async getDocumentRaw(requestParameters: GetDocumentRequest): Promise<runtime.ApiResponse<Blob>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling getDocument."
+      );
     }
 
-    /**
-     * Return a document
-     * Get document by id
-     */
-    async getDocumentRaw(requestParameters: GetDocumentRequest): Promise<runtime.ApiResponse<Blob>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling getDocument.');
-        }
+    const queryParameters: any = {};
 
-        const queryParameters: any = {};
+    const headerParameters: runtime.HTTPHeaders = {};
 
-        const headerParameters: runtime.HTTPHeaders = {};
+    const response = await this.request({
+      path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+      method: "GET",
+      headers: headerParameters,
+      query: queryParameters,
+    });
 
-        const response = await this.request({
-            path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'GET',
-            headers: headerParameters,
-            query: queryParameters,
-        });
+    return new runtime.BlobApiResponse(response);
+  }
 
-        return new runtime.BlobApiResponse(response);
+  /**
+   * Return a document
+   * Get document by id
+   */
+  async getDocument(requestParameters: GetDocumentRequest): Promise<Blob> {
+    const response = await this.getDocumentRaw(requestParameters);
+    return await response.value();
+  }
+
+  /**
+   * Create a new document
+   * Create a document
+   */
+  async uploadDocumentsRaw(requestParameters: UploadDocumentsRequest): Promise<runtime.ApiResponse<void>> {
+    if (requestParameters.id === null || requestParameters.id === undefined) {
+      throw new runtime.RequiredError(
+        "id",
+        "Required parameter requestParameters.id was null or undefined when calling uploadDocuments."
+      );
     }
 
-    /**
-     * Return a document
-     * Get document by id
-     */
-    async getDocument(requestParameters: GetDocumentRequest): Promise<Blob> {
-        const response = await this.getDocumentRaw(requestParameters);
-        return await response.value();
+    const queryParameters: any = {};
+
+    const headerParameters: runtime.HTTPHeaders = {};
+
+    const consumes: runtime.Consume[] = [{ contentType: "multipart/form-data" }];
+    // @ts-ignore: canConsumeForm may be unused
+    const canConsumeForm = runtime.canConsumeForm(consumes);
+
+    let formParams: { append(param: string, value: any): any };
+    let useForm = false;
+    // use FormData to transmit files using content-type "multipart/form-data"
+    useForm = canConsumeForm;
+    if (useForm) {
+      formParams = new FormData();
+    } else {
+      formParams = new URLSearchParams();
     }
 
-    /**
-     * Create a new document
-     * Create a document
-     */
-    async uploadDocumentsRaw(requestParameters: UploadDocumentsRequest): Promise<runtime.ApiResponse<void>> {
-        if (requestParameters.id === null || requestParameters.id === undefined) {
-            throw new runtime.RequiredError('id','Required parameter requestParameters.id was null or undefined when calling uploadDocuments.');
-        }
-
-        const queryParameters: any = {};
-
-        const headerParameters: runtime.HTTPHeaders = {};
-
-        const consumes: runtime.Consume[] = [
-            { contentType: 'multipart/form-data' },
-        ];
-        // @ts-ignore: canConsumeForm may be unused
-        const canConsumeForm = runtime.canConsumeForm(consumes);
-
-        let formParams: { append(param: string, value: any): any };
-        let useForm = false;
-        // use FormData to transmit files using content-type "multipart/form-data"
-        useForm = canConsumeForm;
-        if (useForm) {
-            formParams = new FormData();
-        } else {
-            formParams = new URLSearchParams();
-        }
-
-        if (requestParameters.document !== undefined) {
-            formParams.append('document', requestParameters.document as any);
-        }
-
-        const response = await this.request({
-            path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
-            method: 'PUT',
-            headers: headerParameters,
-            query: queryParameters,
-            body: formParams,
-        });
-
-        return new runtime.VoidApiResponse(response);
+    if (requestParameters.document !== undefined) {
+      formParams.append("document", requestParameters.document as any);
     }
 
-    /**
-     * Create a new document
-     * Create a document
-     */
-    async uploadDocuments(requestParameters: UploadDocumentsRequest): Promise<void> {
-        await this.uploadDocumentsRaw(requestParameters);
-    }
+    const response = await this.request({
+      path: `/documents/{id}`.replace(`{${"id"}}`, encodeURIComponent(String(requestParameters.id))),
+      method: "PUT",
+      headers: headerParameters,
+      query: queryParameters,
+      body: formParams,
+    });
 
+    return new runtime.VoidApiResponse(response);
+  }
+
+  /**
+   * Create a new document
+   * Create a document
+   */
+  async uploadDocuments(requestParameters: UploadDocumentsRequest): Promise<void> {
+    await this.uploadDocumentsRaw(requestParameters);
+  }
 }

@@ -51,10 +51,13 @@
           200:
             description: "Success"
             content:
-              application/octet-stream:
+              multipart/form-data:
                 schema:
-                  type: string
-                  format: binary
+                  type: object
+                  properties:
+                    document:  
+                      type: string
+                      format: binary
       delete:
         tags:
           - documents
@@ -91,28 +94,34 @@
             content:
               application/json:
                 schema:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      ip:
-                        type: string
-                      model:
-                        type: string
-                      os:
-                        type: string
-                      type:
-                        type: string
-                      city:
-                        type: string
-                      stateOrProvince:
-                        type: string
-                      countryOrRegion:
-                        type: string
-                      browser:
-                        type: string
-                      timestamp:
-                        type: string
+                  type: object
+                  properties:
+                    value:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          client:
+                            type: object
+                            properties:
+                              ip:
+                                type: string
+                              model:
+                                type: string
+                              os:
+                                type: string
+                              type:
+                                type: string
+                              city:
+                                type: string
+                              stateOrProvince:
+                                type: string
+                              countryOrRegion:
+                                type: string
+                              browser:
+                                type: string
+                              timestamp:
+                                type: string
   servers:
     - url: "http://localhost:3000/api"
     - url: "https://xuaps-apim-development-we.azure-api.net/doc"

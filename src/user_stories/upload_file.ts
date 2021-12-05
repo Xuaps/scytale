@@ -19,7 +19,6 @@ const useUploadFile = (createFileUploadedDoc, uploadDocuments, setState) => {
       map(({ file, state }) => createFileUploadedDoc(state, [file]))
     ).subscribe({
       next: (doc) => {
-        console.log(doc);
         setState(doc);
         localStorage.setItem("files", JSON.stringify(doc.upload.uploadedFiles));
       },
