@@ -26,7 +26,7 @@ const Stats = ({ id, state, onLoad }: { id: string; state: FileStatsState; onLoa
       </thead>
       <tbody>
         {state.stats.map((r) => (
-          <tr>
+          <tr key={r.timestamp}>
             <td>{r.type}</td>
             <td>{r.model}</td>
             <td>{r.os}</td>

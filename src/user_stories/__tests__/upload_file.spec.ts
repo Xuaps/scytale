@@ -21,7 +21,7 @@ describe("Upload file", () => {
     const state = { upload: { uploadedFiles: {} } } as State;
     const { result, waitFor } = renderHook(() => useUploadFile(createFileUploadedDoc, uploadFileMock, setState));
 
-    result.current.next({ file: { id: "", encryptedFile: new File([], ""), password: "", name: "" }, state });
+    result.current.next({ file: { id: "anyId", encryptedFile: new File([], ""), password: "", name: "" }, state });
     await waitFor(() => setState.calls.any());
 
     expect(setState).toHaveBeenCalledWith({
@@ -34,7 +34,7 @@ describe("Upload file", () => {
     const state = { upload: { uploadedFiles: {} } } as State;
     const { result, waitFor } = renderHook(() => useUploadFile(createFileUploadedDoc, uploadFileMock, setState));
 
-    result.current.next({ file: { id: "", encryptedFile: new File([], ""), password: "", name: "" }, state });
+    result.current.next({ file: { id: "anyId", encryptedFile: new File([], ""), password: "", name: "" }, state });
     await waitFor(() => setState.calls.any());
 
     expect(localStorage.getItem("files")).toEqual(JSON.stringify([{ id: "anyId", name: "", password: "" }]));

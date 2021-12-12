@@ -4,11 +4,13 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "karma start",
-    "build": "webpack",
+    "test": "NODE_ENV=development karma start",
+    "build": "NODE_ENV=development webpack",
     "start": "NODE_ENV=development webpack serve",
     "lint": "eslint --ext ts,tsx src",
-    "lint:fix": "eslint --ext ts,tsx src --fix"
+    "lint:fix": "eslint --ext ts,tsx src --fix",
+    "typecheck": "tsc --noEmit --project src/tsconfig.json",
+    "typecheck:watch": "tsc --noEmit --watch --project src/tsconfig.json"
   },
   "keywords": [],
   "author": "",

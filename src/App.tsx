@@ -1,3 +1,4 @@
+/* eslint-disable react/no-children-prop */
 import React, { useEffect, useMemo, useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
 import * as Components from "./components";
@@ -48,20 +49,26 @@ const App = () => {
     setState
   );
   const FileAdded = useAddFile(encryptFile, createFileEncryptedDoc, setState);
-  
-  useEffect(() => {
-    setLoading(!(FileStatsRequested.observed
-      && FileUploadRequested.observed
-      && FileDeletionRequested.observed
-      && DownloadAFileRequested.observed
-      && FileAdded.observed))
-  }, [FileStatsRequested.observed, 
-    FileUploadRequested.observed, 
-    FileDeletionRequested.observed, 
-    DownloadAFileRequested.observed,
-  FileAdded.observed])
 
-  if(loading) return <div>Loading ...</div>
+  useEffect(() => {
+    setLoading(
+      !(
+        FileStatsRequested.observed &&
+        FileUploadRequested.observed &&
+        FileDeletionRequested.observed &&
+        DownloadAFileRequested.observed &&
+        FileAdded.observed
+      )
+    );
+  }, [
+    FileStatsRequested.observed,
+    FileUploadRequested.observed,
+    FileDeletionRequested.observed,
+    DownloadAFileRequested.observed,
+    FileAdded.observed,
+  ]);
+
+  if (loading) return <div>Loading ...</div>;
   return (
     <Router>
       <Switch>
@@ -77,7 +84,7 @@ const App = () => {
         />
         <Route
           path="/:id/:password"
-          children={({ location, match }) => (
+          children={({ match }) => (
             <Download
               id={match.params.id}
               password={match.params.password}

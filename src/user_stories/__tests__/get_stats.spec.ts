@@ -5,7 +5,7 @@ import { State } from "../../store";
 
 describe("Get stats", () => {
   it("should get the stats", async () => {
-    const getStatsMock = jasmine.createSpy().and.returnValue([]);
+    const getStatsMock = jasmine.createSpy().and.returnValue({ value: [] });
     const state = {} as State;
     const setState = jasmine.createSpy();
     const { result, waitFor } = renderHook(() => useGetStats(createFileStatsDoc, getStatsMock, setState));
@@ -16,7 +16,7 @@ describe("Get stats", () => {
     expect(getStatsMock).toHaveBeenCalledWith({ id: "anyId" });
   });
   it("should update the stats for the selected file", async () => {
-    const getStatsMock = jasmine.createSpy().and.returnValue([]);
+    const getStatsMock = jasmine.createSpy().and.returnValue({ value: [] });
     const state = {} as State;
     const setState = jasmine.createSpy();
     const { result, waitFor } = renderHook(() => useGetStats(createFileStatsDoc, getStatsMock, setState));
