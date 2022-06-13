@@ -1,11 +1,15 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect, useMemo, useState } from "react";
 import { HashRouter as Router, Switch, Route } from "react-router-dom";
-import * as Components from "./components";
-import { withAITracking } from "@microsoft/applicationinsights-react-js";
-import { reactPlugin } from "./app-insight";
+import { Upload, Download, Stats } from "./components";
 import store from "./store";
-import { useAddFile, useDeleteFile, useDownloadFile, useGetStats, useUploadFile } from "./user_stories";
+import {
+  useAddFile,
+  useDeleteFile,
+  useDownloadFile,
+  useGetStats,
+  useUploadFile,
+} from "./user_stories";
 import {
   createDeleteFileDoc,
   createFileEncryptedDoc,
@@ -13,11 +17,14 @@ import {
   createFileUploadedDoc,
   createDownloadFileDoc,
 } from "./actions/documents";
-import { Configuration, decryptFile, DocumentsApi, encryptFile, StatsApi } from "./actions/commands";
+import {
+  Configuration,
+  decryptFile,
+  DocumentsApi,
+  encryptFile,
+  StatsApi,
+} from "./actions/commands";
 
-const Upload = withAITracking(reactPlugin, Components.Upload);
-const Download = withAITracking(reactPlugin, Components.Download);
-const Stats = withAITracking(reactPlugin, Components.Stats);
 const App = () => {
   const [state, setState] = useState(store);
   const [loading, setLoading] = useState(true);
@@ -39,9 +46,21 @@ const App = () => {
       ),
     []
   );
-  const FileStatsRequested = useGetStats(createFileStatsDoc, stats.getDocumentStats.bind(stats), setState);
-  const FileUploadRequested = useUploadFile(createFileUploadedDoc, docs.uploadDocuments.bind(docs), setState);
-  const FileDeletionRequested = useDeleteFile(createDeleteFileDoc, docs.deleteDocument.bind(docs), setState);
+  const FileStatsRequested = useGetStats(
+    createFileStatsDoc,
+    stats.getDocumentStats.bind(stats),
+    setState
+  );
+  const FileUploadRequested = useUploadFile(
+    createFileUploadedDoc,
+    docs.uploadDocuments.bind(docs),
+    setState
+  );
+  const FileDeletionRequested = useDeleteFile(
+    createDeleteFileDoc,
+    docs.deleteDocument.bind(docs),
+    setState
+  );
   const DownloadAFileRequested = useDownloadFile(
     decryptFile,
     createDownloadFileDoc,
@@ -106,4 +125,4 @@ const App = () => {
   );
 };
 
-export default withAITracking(reactPlugin, App);
+export default App;

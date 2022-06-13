@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { map, mergeMap } from "rxjs";
+import { DeleteDocumentRequest } from "../actions/commands";
+import { FileDeleted } from "../actions/documents";
 import { FileDeletionRequested } from "../actions/events";
+import { State } from "../store";
 
-const useDeleteFile = (createDeleteFileDoc, deleteFile, setState) => {
+const useDeleteFile = (
+  createDeleteFileDoc: FileDeleted,
+  deleteFile: (requestParameters: DeleteDocumentRequest) => Promise<void>,
+  setState: (store: State) => void
+) => {
   useEffect(() => {
     FileDeletionRequested.pipe(
       mergeMap(async ({ file, state }) => {

@@ -8,7 +8,7 @@ module.exports = function (config) {
 
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-    frameworks: ["jasmine", "karma-typescript"],
+    frameworks: ["jasmine", "webpack"],
 
     // list of files / patterns to load in the browser
     files: [
@@ -23,7 +23,7 @@ module.exports = function (config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      "**/*.ts": "karma-typescript",
+      "**/*.ts": ["webpack"],
     },
 
     // test results reporter to use
@@ -56,16 +56,26 @@ module.exports = function (config) {
     // Concurrency level
     // how many browser should be started simultaneous
     concurrency: Infinity,
-    karmaTypescriptConfig: {
-      compilerOptions: {
-        esModuleInterop: true,
-        emitDecoratorMetadata: true,
-        experimentalDecorators: true,
-        module: "ES5",
-        sourceMap: false,
-        target: "ES5",
-        exclude: ["node_modules"],
-        downlevelIteration: true,
+    webpack: {
+      entry: "./src/Main.tsx",
+      mode: "development",
+      module: {
+        rules: [
+          {
+            test: /\.(js|ts|tsx)$/,
+            exclude: /node_modules/,
+            use: {
+              loader: "babel-loader",
+            },
+          },
+          {
+            test: /\.css$/,
+            use: ["style-loader", "css-loader"],
+          },
+        ],
+      },
+      resolve: {
+        extensions: [".ts", ".tsx", ".js", ".json"],
       },
     },
   });

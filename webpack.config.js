@@ -1,53 +1,45 @@
-module.exports = {
-  entry: {
-    main: "./src/Main.tsx",
-    cypher: "./src/workers/cypher.ts",
-  },
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const path = require("path");
 
-  output: {
-    filename: "[name].bundle.js",
-    chunkFilename: "[name].chunk.js",
-    path: __dirname + "/dist/assets",
-    publicPath: "/assets/",
-  },
-
-  // Enable sourcemaps for debugging webpack's output.
+module.exports = ({ env }) => ({
+  entry: "./src/Main.tsx",
   devtool: "source-map",
-
-  resolve: {
-    // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js"],
+  mode: "development",
+  output: {
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
   },
-
   module: {
     rules: [
-      // All files with a '.ts' or '.tsx' extension will be handled by 'ts-loader'.
       {
-        test: /\.tsx?$/,
-        loader: "ts-loader",
+        test: /\.(js|ts|tsx)$/,
+        exclude: /node_modules/,
+        use: {
+          loader: "babel-loader",
+        },
       },
-
-      // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
-      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" },
       {
         test: /\.css$/,
-        use: [{ loader: "style-loader" }, { loader: "css-loader" }],
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
-
-  optimization: {
-    // splitChunks: {
-    //   chunks: "all"
-    // },
-    usedExports: true,
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json"],
   },
-
   devServer: {
+    port: 3000,
+    open: true,
+    hot: true,
     static: {
-      directory: 'dist',
+      directory: path.join(__dirname, "dist"),
     },
-    compress: true,
-    port: 9000,
   },
-};
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "public/index.html",
+      hash: true, // cache busting
+      filename: "../dist/index.html",
+    }),
+  ],
+});

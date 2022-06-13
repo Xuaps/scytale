@@ -2,8 +2,7 @@ import * as Comlink from "comlink";
 
 const Cypher = Comlink.wrap<{
   encryptFile: (
-    file: File,
-    password: string
+    file: File
   ) => Promise<{
     id: string;
     encryptedFile: File;
@@ -15,7 +14,7 @@ const Cypher = Comlink.wrap<{
     file: File,
     password: string
   ) => Promise<{ name: string; decryptedFile: File }>;
-}>(new Worker("/assets/cypher.bundle.js"));
+}>(new Worker(new URL("../../workers/cypher.ts", import.meta.url)));
 
 export const encryptFile = Cypher.encryptFile;
 export const decryptFile = Cypher.decryptFile;

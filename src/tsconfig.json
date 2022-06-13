@@ -1,9 +1,14 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "jsx": "react-jsx",
-    "esModuleInterop": true
+    "outDir": "./dist/",
+    "noImplicitAny": true,
+    "module": "es2022",
+    "target": "es2015",
+    "jsx": "react",
+    "allowJs": true,
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "moduleResolution": "node"
   },
-  "exclude": ["./__mocks__", "./__tests__", "node_modules"]
+  "exclude": ["node_modules"]
 }

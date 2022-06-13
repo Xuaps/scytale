@@ -1,8 +1,20 @@
 import { useEffect } from "react";
 import { map, mergeMap } from "rxjs";
+import { GetDocumentRequest } from "../actions/commands";
+import { FileDecrypted } from "../actions/documents";
 import { DownloadAFileRequested } from "../actions/events";
+import { State } from "../store";
 
-const useDownloadFile = (decryptFile, createDownloadFileDoc, getDocument, setState) => {
+const useDownloadFile = (
+  decryptFile: (
+    id: string,
+    file: File,
+    password: string
+  ) => Promise<{ name: string; decryptedFile: File }>,
+  createDownloadFileDoc: FileDecrypted,
+  getDocument: (requestParameters: GetDocumentRequest) => Promise<Blob>,
+  setState: (store: State) => void
+) => {
   useEffect(() => {
     DownloadAFileRequested.pipe(
       mergeMap(async ({ file, state }) => ({
@@ -14,7 +26,11 @@ const useDownloadFile = (decryptFile, createDownloadFileDoc, getDocument, setSta
         state,
       })),
       mergeMap(async ({ file, state }) => ({
-        file: await decryptFile(file.id, file.doc, file.password),
+        file: await decryptFile(
+          file.id,
+          new File([file.doc], file.id),
+          file.password
+        ),
         state,
       })),
       map(({ file, state }) => createDownloadFileDoc(state, file))

@@ -1,8 +1,15 @@
 import { useEffect } from "react";
 import { map, mergeMap } from "rxjs";
+import { UploadDocumentsRequest } from "../actions/commands";
+import { FileUploaded } from "../actions/documents";
 import { FileUploadRequested } from "../actions/events";
+import { State } from "../store";
 
-const useUploadFile = (createFileUploadedDoc, uploadDocuments, setState) => {
+const useUploadFile = (
+  createFileUploadedDoc: FileUploaded,
+  uploadDocuments: (request: UploadDocumentsRequest) => Promise<void>,
+  setState: (store: State) => void
+) => {
   useEffect(() => {
     FileUploadRequested.pipe(
       mergeMap(async ({ file, state }) => {
