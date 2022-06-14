@@ -90,26 +90,22 @@ async function encryptFile(
   name: string;
   password: string;
 }> {
-  return new Promise((resolve, reject) => {
-    setTimeout(async () => {
-      const password = generateRandomPassword(20);
-      const buff = await file2Buff(file);
-      const encryptedData = await encryptData(new Uint8Array(buff), password);
-      const encryptedName = await encryptData(
-        new Uint8Array(enc.encode(file.name)),
-        password
-      );
+  const password = generateRandomPassword(20);
+  const buff = await file2Buff(file);
+  const encryptedData = await encryptData(new Uint8Array(buff), password);
+  const encryptedName = await encryptData(
+    new Uint8Array(enc.encode(file.name)),
+    password
+  );
 
-      resolve({
-        id: buff2Base64(encryptedName),
-        encryptedFile: new File([encryptedData], buff2Base64(encryptedName), {
-          type: "application/download",
-        }),
-        name: file.name,
-        password,
-      });
-    }, 10000);
-  });
+  return {
+    id: buff2Base64(encryptedName),
+    encryptedFile: new File([encryptedData], buff2Base64(encryptedName), {
+      type: "application/download",
+    }),
+    name: file.name,
+    password,
+  };
 }
 
 async function decryptFile(id: string, file: File, password: string) {
