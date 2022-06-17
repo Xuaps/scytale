@@ -68,6 +68,10 @@ jobs:
       working-directory: ${{ env.APP_PATH }} 
       run: npm ci --ignore-scripts
 
+    - name: Install Chrome
+      uses: browser-actions/setup-chrome@latest
+      run: chrome --version
+
     - name: Tests
       working-directory: ${{ env.APP_PATH }} 
       run: npm run test
