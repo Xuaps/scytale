@@ -7,6 +7,7 @@
     "build": "webpack --env env=production --mode production",
     "start": "webpack-dev-server --env env=development --mode development",
     "test": "karma start",
+    "test:ci": "karma start --single-run",
     "lint": "eslint --ext ts,tsx src",
     "lint:fix": "eslint --ext ts,tsx src --fix",
     "typecheck": "tsc --noEmit --project src/tsconfig.json",
