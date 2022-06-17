@@ -1,8 +1,8 @@
 // Karma configuration
 // Generated on Wed May 12 2021 21:39:24 GMT+0200 (Central European Summer Time)
-process.env.CHROME_BIN = require("puppeteer").executablePath();
 
 module.exports = function (config) {
+  process.env.CHROME_BIN = require("puppeteer").executablePath();
   config.set({
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: "",
