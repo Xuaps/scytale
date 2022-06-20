@@ -10,70 +10,70 @@ env:
 
 jobs:
   lint:
-    name: 'Lint App'
+    name: "Lint App"
     runs-on: ubuntu-latest
     environment: production
- 
+
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
- 
+
     # Checkout the repository to the GitHub Actions runner
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.13.2'
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.13.2"
 
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: npm-${{ hashFiles('package-lock.json') }}
-        restore-keys: npm-
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
 
-    - name: Install dependencies
-      working-directory: ${{ env.APP_PATH }} 
-      run: npm ci --ignore-scripts
+      - name: Install dependencies
+        working-directory: ${{ env.APP_PATH }}
+        run: npm ci --ignore-scripts
 
-    - name: Linter
-      working-directory: ${{ env.APP_PATH }} 
-      run: npm run lint
+      - name: Linter
+        working-directory: ${{ env.APP_PATH }}
+        run: npm run lint
 
   test:
-    name: 'Test App'
+    name: "Test App"
     runs-on: ubuntu-latest
     environment: production
- 
+
     # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
       run:
         shell: bash
- 
+
     # Checkout the repository to the GitHub Actions runner
     steps:
-    - uses: actions/checkout@v2
-    - name: Setup Node.js
-      uses: actions/setup-node@v2
-      with:
-        node-version: '16.13.2'
+      - uses: actions/checkout@v2
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16.13.2"
 
-    - name: Cache dependencies
-      uses: actions/cache@v2
-      with:
-        path: ~/.npm
-        key: npm-${{ hashFiles('package-lock.json') }}
-        restore-keys: npm-
+      - name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: npm-${{ hashFiles('package-lock.json') }}
+          restore-keys: npm-
 
-    - name: Install dependencies
-      working-directory: ${{ env.APP_PATH }} 
-      run: npm ci --ignore-scripts
+      - name: Install dependencies
+        working-directory: ${{ env.APP_PATH }}
+        run: npm ci --ignore-scripts
 
-    - name: Tests
-      working-directory: ${{ env.APP_PATH }} 
-      run: npm run test
+      - name: Tests
+        working-directory: ${{ env.APP_PATH }}
+        run: npm run test:ci
 
   dependabot:
     runs-on: ubuntu-latest
