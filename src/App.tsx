@@ -1,6 +1,11 @@
 /* eslint-disable react/no-children-prop */
 import React, { useEffect, useMemo, useState } from "react";
-import { HashRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Routes,
+  Route,
+  PathMatch,
+} from "react-router-dom";
 import { Upload, Download, Stats } from "./components";
 import store from "./store";
 import {
@@ -90,10 +95,10 @@ const App = () => {
   if (loading) return <div>Loading ...</div>;
   return (
     <Router>
-      <Switch>
+      <Routes>
         <Route
           path="/stats/:id/"
-          children={({ match }) => (
+          children={({ match }: { match: PathMatch<string> }) => (
             <Stats
               id={match.params.id}
               state={state.file_stats}
@@ -103,7 +108,7 @@ const App = () => {
         />
         <Route
           path="/:id/:password"
-          children={({ match }) => (
+          children={({ match }: { match: PathMatch<string> }) => (
             <Download
               id={match.params.id}
               password={match.params.password}
@@ -112,15 +117,20 @@ const App = () => {
             />
           )}
         />
-        <Route path="/">
-          <Upload
-            state={state.upload}
-            onAddFile={(file: File) => FileAdded.next({ file, state })}
-            onFileUpload={(file) => FileUploadRequested.next({ file, state })}
-            onDeleteFile={(file) => FileDeletionRequested.next({ file, state })}
-          />
-        </Route>
-      </Switch>
+        <Route
+          path="/"
+          element={
+            <Upload
+              state={state.upload}
+              onAddFile={(file: File) => FileAdded.next({ file, state })}
+              onFileUpload={(file) => FileUploadRequested.next({ file, state })}
+              onDeleteFile={(file) =>
+                FileDeletionRequested.next({ file, state })
+              }
+            />
+          }
+        />
+      </Routes>
     </Router>
   );
 };
