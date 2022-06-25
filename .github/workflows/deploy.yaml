@@ -68,9 +68,11 @@ jobs:
       working-directory: ${{ env.APP_PATH }} 
       run: npm ci --ignore-scripts
 
-    - name: Tests
-      working-directory: ${{ env.APP_PATH }} 
-      run: npm run test
+    - name: Cypress run
+      uses: cypress-io/github-action@v4
+      with:
+        build: npm run build
+        start: npm start
 
   build-and-deploy:
     needs: [lint, test]
