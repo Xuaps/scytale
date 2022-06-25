@@ -1,20 +1,24 @@
-import { DecryptedFile, EncryptedFile, SharedFile, UploadedFile, FileStats } from "../model";
+import {
+  DecryptedFile,
+  EncryptedFile,
+  SharedFile,
+  UploadedFile,
+  FileStats,
+} from "../model";
 import { State } from "../store";
 
 export type FileUploaded = (state: State, files: UploadedFile[]) => State;
 export type FileDeleted = (state: State, file: SharedFile) => State;
-export type FileEncrypted = (state: State, file: EncryptedFile) => State;
+export type FileEncrypted = (
+  files: EncryptedFile[],
+  file: EncryptedFile
+) => EncryptedFile[];
 export type FileDecrypted = (state: State, file: DecryptedFile) => State;
 export type FileStatsRecovered = (state: State, stats: FileStats) => State;
 
-export const createFileEncryptedDoc: FileEncrypted = (state, file) => {
-  return {
-    ...state,
-    upload: {
-      ...state.upload,
-      encryptedFiles: [...state.upload.encryptedFiles, file],
-    },
-  };
+export const createFileEncryptedDoc: FileEncrypted = (files, file) => {
+  console.log("tachan");
+  return [...files, file];
 };
 
 export const createFileUploadedDoc: FileUploaded = (state, files) => {
@@ -31,7 +35,9 @@ export const createFileUploadedDoc: FileUploaded = (state, files) => {
 };
 
 export const createDeleteFileDoc: FileDeleted = (state, file: SharedFile) => {
-  const nextFiles = [...state.upload.uploadedFiles.filter((f) => f.id !== file.id)];
+  const nextFiles = [
+    ...state.upload.uploadedFiles.filter((f) => f.id !== file.id),
+  ];
 
   return {
     ...state,

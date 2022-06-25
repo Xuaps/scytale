@@ -1,9 +1,7 @@
 import * as Comlink from "comlink";
 
 const Cypher = Comlink.wrap<{
-  encryptFile: (
-    file: File
-  ) => Promise<{
+  encryptFile: (file: File) => Promise<{
     id: string;
     encryptedFile: File;
     name: string;
@@ -14,8 +12,7 @@ const Cypher = Comlink.wrap<{
     file: File,
     password: string
   ) => Promise<{ name: string; decryptedFile: File }>;
-}>(new Worker(new URL("../../workers/cypher.ts", import.meta.url)));
+}>(new Worker(new URL("./cypher.ts", import.meta.url)));
 
 export const encryptFile = Cypher.encryptFile;
 export const decryptFile = Cypher.decryptFile;
-export * from "./gen";

@@ -1,37 +1,54 @@
-import React from "react";
-import { Link } from 'react-router-dom'
+import React, { useState, useEffect } from "react";
+import { map, mergeMap } from "rxjs";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { EncryptedFile, SharedFile } from "../../model";
-import { UploadState } from "../../store";
+import { EncryptedFile } from "../../model";
+import { FileAdded } from "../../actions/events";
+import { createFileEncryptedDoc } from "../../actions/documents";
+import { encryptFile } from "domain/encryption";
 
-const Upload = ({
-  state: { encryptedFiles, uploadedFiles },
-  onFileUpload,
-  onAddFile,
-  onDeleteFile,
-}: {
-  state: UploadState
-  onFileUpload: (file: EncryptedFile) => void
-  onAddFile: (file: File) => void
-  onDeleteFile: (file: SharedFile) => void
-}) => {
+const Upload = () => {
+  const [files, setFiles] = useState<EncryptedFile[]>([]);
+  const onFileAdded = (file: File) => {
+    console.log("juas", file);
+    FileAdded.next(file);
+  };
+
+  useEffect(() => {
+    FileAdded.pipe(
+      mergeMap(async (file) => {
+        console.log(" juasaaa");
+        const f = await encryptFile(file);
+        console.log(" juasaaa", f);
+        return f;
+      }),
+      map((file) => createFileEncryptedDoc(files, file))
+    ).subscribe({
+      next: (doc) => setFiles(doc),
+      error: (error) => {
+        console.log("jjj", error);
+      },
+    });
+  }, []);
+
   return (
     <Layout>
-      <Uploader onAddFile={onAddFile} />
-      <ul>
-        {encryptedFiles.map((f) => (
-          <li key={f.name}>{f.name}</li>
-        ))}
-      </ul>
-      <button onClick={() => onFileUpload(encryptedFiles[0])}>send</button>
+      <Uploader onFileAdded={onFileAdded} />
       <br />
       <ul>
-        {uploadedFiles.map((f) => (
+        {files.map((f) => (
           <li key={f.id}>
-            <Link to={`${f.id}/${encodeURIComponent(f.password)}`}>{f.name}</Link>&nbsp;
-            <Link to={`/stats/${f.id}`}>stats</Link>&nbsp;
-            <button onClick={() => onDeleteFile(f)}>Delete</button>
+            <div className="form-group">
+              <label htmlFor={`password-${f.id}`}>Password</label>
+              <div className="input-group">
+                <input
+                  id={`password-${f.id}`}
+                  className="form-control"
+                  type="password"
+                  value={f.password}
+                />
+              </div>
+            </div>
           </li>
         ))}
       </ul>

@@ -1,20 +1,22 @@
 import React, { useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 
-const Uploader = ({ onAddFile }: { onAddFile: (file: File) => void }) => {
-  const { acceptedFiles, getRootProps, getInputProps, isDragActive } = useDropzone({
-    maxFiles: 1,
-  });
+const Uploader = ({ onFileAdded }: { onFileAdded: (file: File) => void }) => {
+  const { acceptedFiles, getRootProps, getInputProps, isDragActive } =
+    useDropzone({
+      maxFiles: 1,
+      multiple: false,
+    });
 
   useEffect(() => {
     if (acceptedFiles.length === 1) {
-      onAddFile(acceptedFiles[0]);
+      onFileAdded(acceptedFiles[0]);
     }
   }, [acceptedFiles]);
 
   return (
     <div {...getRootProps()}>
-      <input {...getInputProps()} />
+      <input data-testid="file-selector" {...getInputProps()} />
       {isDragActive ? (
         <p>Drop the files here ...</p>
       ) : (

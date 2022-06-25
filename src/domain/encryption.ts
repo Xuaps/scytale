@@ -82,14 +82,13 @@ async function decryptData(
   }
 }
 
-async function encryptFile(
-  file: File
-): Promise<{
+async function encryptFile(file: File): Promise<{
   id: string;
   encryptedFile: File;
   name: string;
   password: string;
 }> {
+  console.log("encrypt");
   const password = generateRandomPassword(20);
   const buff = await file2Buff(file);
   const encryptedData = await encryptData(new Uint8Array(buff), password);
