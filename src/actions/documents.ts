@@ -17,7 +17,6 @@ export type FileDecrypted = (state: State, file: DecryptedFile) => State;
 export type FileStatsRecovered = (state: State, stats: FileStats) => State;
 
 export const createFileEncryptedDoc: FileEncrypted = (files, file) => {
-  console.log("tachan");
   return [...files, file];
 };
 

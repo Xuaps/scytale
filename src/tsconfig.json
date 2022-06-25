@@ -8,7 +8,12 @@
     "allowJs": true,
     "sourceMap": true,
     "esModuleInterop": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "paths": {
+      "domain/encryption": [
+        "./domain/encryption.ts"
+      ]
+    }
   },
   "exclude": [
     "node_modules"

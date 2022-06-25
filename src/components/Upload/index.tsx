@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { map, mergeMap } from "rxjs";
+import { EncryptedFile } from "../../model";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
-import { EncryptedFile } from "../../model";
+
 import { FileAdded } from "../../actions/events";
 import { createFileEncryptedDoc } from "../../actions/documents";
 import { encryptFile } from "domain/encryption";
@@ -10,23 +11,17 @@ import { encryptFile } from "domain/encryption";
 const Upload = () => {
   const [files, setFiles] = useState<EncryptedFile[]>([]);
   const onFileAdded = (file: File) => {
-    console.log("juas", file);
     FileAdded.next(file);
   };
 
   useEffect(() => {
     FileAdded.pipe(
-      mergeMap(async (file) => {
-        console.log(" juasaaa");
-        const f = await encryptFile(file);
-        console.log(" juasaaa", f);
-        return f;
-      }),
+      mergeMap(async (file) => await encryptFile(file)),
       map((file) => createFileEncryptedDoc(files, file))
     ).subscribe({
       next: (doc) => setFiles(doc),
-      error: (error) => {
-        console.log("jjj", error);
+      error: () => {
+        return;
       },
     });
   }, []);

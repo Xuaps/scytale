@@ -88,7 +88,6 @@ async function encryptFile(file: File): Promise<{
   name: string;
   password: string;
 }> {
-  console.log("encrypt");
   const password = generateRandomPassword(20);
   const buff = await file2Buff(file);
   const encryptedData = await encryptData(new Uint8Array(buff), password);
