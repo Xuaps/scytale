@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { Card, Placeholder } from "react-bootstrap";
 import { useDropzone } from "react-dropzone";
 
 const Uploader = ({ onFileAdded }: { onFileAdded: (file: File) => void }) => {
@@ -15,14 +16,24 @@ const Uploader = ({ onFileAdded }: { onFileAdded: (file: File) => void }) => {
   }, [acceptedFiles]);
 
   return (
-    <div {...getRootProps()}>
+    <>
       <input data-testid="file-selector" {...getInputProps()} />
-      {isDragActive ? (
-        <p>Drop the files here ...</p>
-      ) : (
-        <p>Drag &apos;n&apos; drop some files here, or click to select files</p>
-      )}
-    </div>
+      <Card {...getRootProps()}>
+        <Card.Body>
+          <Card.Title>Encrypt a file</Card.Title>
+          <Card.Text>
+            {isDragActive ? (
+              <p>Drop the files here ...</p>
+            ) : (
+              <p>
+                Drag &apos;n&apos; drop some files here, or click to select
+                files
+              </p>
+            )}
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </>
   );
 };
 

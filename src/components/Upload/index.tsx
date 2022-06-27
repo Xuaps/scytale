@@ -7,6 +7,7 @@ import Uploader from "./Uploader";
 import { FileAdded } from "../../actions/events";
 import { createFileEncryptedDoc } from "../../actions/documents";
 import { encryptFile } from "domain/encryption";
+import { Form, InputGroup, Table } from "react-bootstrap";
 
 const Upload = () => {
   const [files, setFiles] = useState<EncryptedFile[]>([]);
@@ -30,23 +31,33 @@ const Upload = () => {
     <Layout>
       <Uploader onFileAdded={onFileAdded} />
       <br />
-      <ul>
-        {files.map((f) => (
-          <li key={f.id}>
-            <div className="form-group">
-              <label htmlFor={`password-${f.id}`}>Password</label>
-              <div className="input-group">
-                <input
-                  id={`password-${f.id}`}
-                  className="form-control"
-                  type="password"
-                  value={f.password}
-                />
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
+      <Table>
+        <thead>
+          <tr>
+            <th>Password</th>
+          </tr>
+        </thead>
+        <tbody>
+          {files.map((f) => (
+            <tr key={f.id}>
+              <td className="input-group">
+                <InputGroup>
+                  <Form.Control
+                    id={`password-${f.id}`}
+                    className="form-control"
+                    type="password"
+                    value={f.password}
+                  />
+                  <InputGroup.Text>
+                    <i className="bi bi-eye-slash"></i>
+                  </InputGroup.Text>
+                </InputGroup>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+      <ul></ul>
     </Layout>
   );
 };

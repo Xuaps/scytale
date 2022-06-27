@@ -4,7 +4,6 @@ describe("empty spec", () => {
     cy.get("input[type=file]").selectFile("cypress/fixtures/test.file", {
       force: true,
     });
-    cy.get("ul li:first label").should("have.text", "Password");
+    cy.get("td.input-group input").should("not.have.value", undefined);
   });
 });
-
