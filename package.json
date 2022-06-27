@@ -10,8 +10,18 @@
     "test:watch": "",
     "lint": "eslint --ext ts,tsx src",
     "lint:fix": "eslint --ext ts,tsx src --fix",
+    "lint:staged": "lint-staged",
     "typecheck": "tsc --noEmit --project src/tsconfig.json",
-    "typecheck:watch": "tsc --noEmit --watch --project src/tsconfig.json"
+    "typecheck:watch": "tsc --noEmit --watch --project src/tsconfig.json",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*.ts": [
+      "eslint --fix"
+    ],
+    "**/*.tsx": [
+      "eslint --fix"
+    ]
   },
   "keywords": [],
   "author": "",
@@ -37,6 +47,8 @@
     "eslint-plugin-cypress": "^2.12.1",
     "eslint-plugin-react": "^7.30.1",
     "html-webpack-plugin": "^5.5.0",
+    "husky": "^8.0.1",
+    "lint-staged": "^13.0.3",
     "prettier": "2.7.1",
     "source-map-loader": "^4.0.0",
     "stream-buffers": "^3.0.2",
