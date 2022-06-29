@@ -2,8 +2,8 @@ import {
   encryptFile,
   decryptFile,
   decryptData,
-} from "../../src/domain/encryption";
-import { base642Buff } from "../../src/domain/convert";
+} from "../../src/core/encryption/encryption";
+import { base642Buff } from "../../src/core/encryption/convert";
 
 describe("encrypt file", () => {
   it("should encrypt the file", async () => {
@@ -54,4 +54,3 @@ const expectIdEqualToFileName = async (
       await decryptData(base642Buff(encryptedFile.id), encryptedFile.password)
     )
   ).to.eq(fileName);
-

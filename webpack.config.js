@@ -27,7 +27,10 @@ module.exports = ({ env }) => ({
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"],
     alias: {
-      "domain/encryption": path.resolve(__dirname, "src/workers/cypher-proxy"),
+      "core/encryption": path.resolve(
+        __dirname,
+        "src/infra/workers/cypher-proxy.ts"
+      ),
     },
   },
   devServer: {

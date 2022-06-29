@@ -1,4 +1,4 @@
-import { base642Buff, buff2Base64, file2Buff } from "../domain/convert";
+import { base642Buff, buff2Base64, file2Buff } from "./convert";
 
 const enc = new TextEncoder();
 const dec = new TextDecoder();

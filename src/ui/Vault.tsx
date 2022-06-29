@@ -1,16 +1,17 @@
 import React, { useState } from "react";
-import { EncryptedFile } from "../model";
+import { EncryptedFile } from "../core/model";
 import Layout from "./Layout";
 import Uploader from "./Uploader";
 
-import { createFileEncryptedDoc } from "../actions/documents";
-import { encryptFile } from "domain/encryption";
+import { createFileEncryptedDoc } from "./reducers";
+import { encryptFile } from "core/encryption";
 import { Form, InputGroup, Table } from "react-bootstrap";
 
 const Upload = () => {
   const [files, setFiles] = useState<EncryptedFile[]>([]);
   const onFileAdded = async (file: File) => {
     const encryptedFile = await encryptFile(file);
+
     const doc = createFileEncryptedDoc(files, encryptedFile);
     setFiles(doc);
   };

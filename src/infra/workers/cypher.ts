@@ -1,5 +1,5 @@
 import * as Comlink from "comlink";
-import { encryptFile, decryptFile } from "../domain/encryption";
+import { encryptFile, decryptFile } from "../../core/encryption/encryption";
 
 Comlink.expose({
   encryptFile,
