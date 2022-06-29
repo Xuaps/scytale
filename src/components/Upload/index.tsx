@@ -1,31 +1,19 @@
-import React, { useState, useEffect } from "react";
-import { map, mergeMap } from "rxjs";
+import React, { useState } from "react";
 import { EncryptedFile } from "../../model";
 import Layout from "../Layout";
 import Uploader from "./Uploader";
 
-import { FileAdded } from "../../actions/events";
 import { createFileEncryptedDoc } from "../../actions/documents";
 import { encryptFile } from "domain/encryption";
 import { Form, InputGroup, Table } from "react-bootstrap";
 
 const Upload = () => {
   const [files, setFiles] = useState<EncryptedFile[]>([]);
-  const onFileAdded = (file: File) => {
-    FileAdded.next(file);
+  const onFileAdded = async (file: File) => {
+    const encryptedFile = await encryptFile(file);
+    const doc = createFileEncryptedDoc(files, encryptedFile);
+    setFiles(doc);
   };
-
-  useEffect(() => {
-    FileAdded.pipe(
-      mergeMap(async (file) => await encryptFile(file)),
-      map((file) => createFileEncryptedDoc(files, file))
-    ).subscribe({
-      next: (doc) => setFiles(doc),
-      error: () => {
-        return;
-      },
-    });
-  }, []);
 
   return (
     <Layout>
