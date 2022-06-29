@@ -1,5 +1,5 @@
 describe("Add files", () => {
-  it("should encrypt the file", () => {
+  it("should add a new file to the list", () => {
     cy.visit("/");
     cy.get("input[type=file]").selectFile("cypress/fixtures/test.file", {
       force: true,

@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { EncryptedFile } from "../../model";
-import Layout from "../Layout";
+import { EncryptedFile } from "../model";
+import Layout from "./Layout";
 import Uploader from "./Uploader";
 
-import { createFileEncryptedDoc } from "../../actions/documents";
+import { createFileEncryptedDoc } from "../actions/documents";
 import { encryptFile } from "domain/encryption";
 import { Form, InputGroup, Table } from "react-bootstrap";
 

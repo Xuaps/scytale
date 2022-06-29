@@ -1,8 +1,16 @@
 import React, { useEffect } from "react";
-import { SharedFile } from "../../model";
-import { FileStatsState } from "../../store";
+import { SharedFile } from "../model";
+import { FileStatsState } from "../store";
 
-const Stats = ({ id, state, onLoad }: { id: string; state: FileStatsState; onLoad: (file: SharedFile) => void }) => {
+const Stats = ({
+  id,
+  state,
+  onLoad,
+}: {
+  id: string;
+  state: FileStatsState;
+  onLoad: (file: SharedFile) => void;
+}) => {
   useEffect(() => {
     onLoad({ id, password: "" });
   }, []);
