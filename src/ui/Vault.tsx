@@ -6,6 +6,7 @@ import Uploader from "./Uploader";
 import { createFileEncryptedDoc } from "./reducers";
 import { encryptFile } from "core/encryption";
 import { Form, InputGroup, Table } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 const Upload = () => {
   const [files, setFiles] = useState<EncryptedFile[]>([]);
@@ -29,6 +30,7 @@ const Upload = () => {
         <tbody>
           {files.map((f) => (
             <tr key={f.id}>
+              <td>{f.name}</td>
               <td className="input-group">
                 <InputGroup>
                   <Form.Control
@@ -42,6 +44,13 @@ const Upload = () => {
                   </InputGroup.Text>
                 </InputGroup>
               </td>
+              <td>
+                <Link to="">Download original file</Link>
+              </td>
+              <td>
+                <Link to="">Download encrypted file</Link>
+              </td>
+              <td>Share file</td>
             </tr>
           ))}
         </tbody>
