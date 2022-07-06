@@ -11,3 +11,4 @@ dist
 *.tfvars
 
 cypress/videos/
+cypress/downloads/

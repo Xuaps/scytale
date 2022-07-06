@@ -35,7 +35,6 @@ const Upload = () => {
               <td className="input-group">
                 <InputGroup>
                   <Form.Control
-                    id={`password-${f.id}`}
                     className="form-control"
                     type="password"
                     value={f.password}
@@ -46,7 +45,9 @@ const Upload = () => {
                 </InputGroup>
               </td>
               <td>
-                <Link to="">Download original file</Link>
+                <a href={URL.createObjectURL(f.encryptedData)} download>
+                  Download original file
+                </a>
               </td>
               <td>
                 <Link to="">Download encrypted file</Link>
