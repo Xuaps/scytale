@@ -31,6 +31,7 @@ module.exports = ({ env }) => ({
         __dirname,
         "src/infra/workers/cypher-proxy.ts"
       ),
+      store: path.resolve(__dirname, "src/infra/store.ts"),
     },
   },
   devServer: {

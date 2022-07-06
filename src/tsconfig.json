@@ -12,6 +12,9 @@
     "paths": {
       "core/encryption": [
         "./core/encryption/encryption.ts"
+      ],
+      "store": [
+        "./infra/store.ts"
       ]
     }
   },
