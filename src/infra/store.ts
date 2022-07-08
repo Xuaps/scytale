@@ -4,7 +4,7 @@ function encryptedFilesFn() {
   let filesCollection: EncryptedFile[] = [];
 
   return {
-    get: () => filesCollection,
+    getLast: () => filesCollection[filesCollection.length - 1],
     add: (file: EncryptedFile) => {
       filesCollection = [...filesCollection, file];
     },

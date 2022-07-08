@@ -6,9 +6,9 @@ describe("Download encrypted file", () => {
     cy.get("input[type=file]").selectFile("cypress/fixtures/test.file", {
       force: true,
     });
-    cy.get("tbody > tr > :nth-child(3) > a").click();
+    cy.get(".btn-secondary").click();
 
-    cy.get("tbody > tr > :nth-child(3) > a")
+    cy.get(".btn-secondary")
       .should("have.attr", "href")
       .then((dataUrl) => {
         const id = dataUrl.toString().split("/")[3];
