@@ -6,7 +6,7 @@ import Uploader from "./Uploader";
 import { EncryptedFileView, toEncryptedFileView } from "./mappers";
 import { encryptFile } from "core/encryption";
 import { EncryptedFile } from "./EncryptedFile";
-import { Row, Col } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 
 const Upload = () => {
   const [file, setFile] = useState<EncryptedFileView>();
@@ -21,7 +21,19 @@ const Upload = () => {
       <Row>
         <Col className="col-md-6 offset-md-3">
           {file ? (
-            <EncryptedFile file={file} />
+            <>
+              <EncryptedFile file={file} />
+              <Row>
+                <Col className="col-md-2 offset-5" style={{ marginTop: 10 }}>
+                  <Button
+                    className="self-align-center"
+                    onClick={() => setFile(null)}
+                  >
+                    Start
+                  </Button>
+                </Col>
+              </Row>
+            </>
           ) : (
             <Uploader onFileAdded={onFileAdded} />
           )}
