@@ -11,7 +11,7 @@ describe("Add files", () => {
     cy.get(".bi").click();
     cy.get("code")
       .invoke("text")
-      .should("match", /^[a-zA-Z0-9+]*=$/g);
+      .should("match", /^[a-zA-Z0-9/+]*=$/g);
     cy.get(".col-md-6 > :nth-child(2)").click();
     cy.contains("Drag").should("exist");
   });
