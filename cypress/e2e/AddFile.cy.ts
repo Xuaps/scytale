@@ -4,6 +4,7 @@ describe("Add files", () => {
     cy.get("input[type=file]").selectFile("cypress/fixtures/test.file", {
       force: true,
     });
+    cy.get("[data-testid='spinner']").should("be.visible");
     cy.get(".card-title").should("have.text", "test.file");
     cy.get("code")
       .invoke("text")
