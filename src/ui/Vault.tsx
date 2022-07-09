@@ -6,6 +6,7 @@ import Uploader from "./Uploader";
 import { EncryptedFileView, toEncryptedFileView } from "./mappers";
 import { encryptFile } from "core/encryption";
 import { EncryptedFile } from "./EncryptedFile";
+import { Row, Col } from "react-bootstrap";
 
 const Upload = () => {
   const [file, setFile] = useState<EncryptedFileView>();
@@ -17,11 +18,15 @@ const Upload = () => {
 
   return (
     <Layout>
-      {file ? (
-        <EncryptedFile file={file} />
-      ) : (
-        <Uploader onFileAdded={onFileAdded} />
-      )}
+      <Row>
+        <Col className="col-md-6 offset-md-3">
+          {file ? (
+            <EncryptedFile file={file} />
+          ) : (
+            <Uploader onFileAdded={onFileAdded} />
+          )}
+        </Col>
+      </Row>
     </Layout>
   );
 };
