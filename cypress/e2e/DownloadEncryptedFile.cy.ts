@@ -9,10 +9,9 @@ describe("Download encrypted file", () => {
     cy.get(".btn-secondary").click();
 
     cy.get(".btn-secondary")
-      .should("have.attr", "href")
+      .should("have.attr", "download")
       .then((dataUrl) => {
-        const id = dataUrl.toString().split("/")[3];
-        const downloadedFilename = `${downloadsFolder}/${id}`;
+        const downloadedFilename = `${downloadsFolder}/${dataUrl}`;
 
         cy.readFile(downloadedFilename).should("exist");
       });

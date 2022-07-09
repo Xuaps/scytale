@@ -36,7 +36,7 @@ export const EncryptedFile = ({ file }: { file: EncryptedFileView }) => {
               variant="secondary"
               as="a"
               style={{ width: "100%" }}
-              download
+              download={`${file.id}.scytale`}
             >
               Download
             </Button>
