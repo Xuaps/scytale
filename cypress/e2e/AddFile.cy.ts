@@ -5,6 +5,12 @@ describe("Add files", () => {
       force: true,
     });
     cy.get(".card-title").should("have.text", "test.file");
-    cy.get(".card-title").should("not.have.value", undefined);
+    cy.get("code")
+      .invoke("text")
+      .should("match", /^[*]*?$/g);
+    cy.get(".bi").click();
+    cy.get("code")
+      .invoke("text")
+      .should("match", /^[a-zA-Z0-9+]*=$/g);
   });
 });
