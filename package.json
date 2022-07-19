@@ -37,7 +37,7 @@
     "@types/react-dom": "^18.0.5",
     "@types/stream-buffers": "^3.0.3",
     "@typescript-eslint/eslint-plugin": "^5.29.0",
-    "@typescript-eslint/parser": "^5.29.0",
+    "@typescript-eslint/parser": "^5.30.7",
     "arraybuffer-equal": "^1.0.4",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.1",
