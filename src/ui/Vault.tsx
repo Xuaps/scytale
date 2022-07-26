@@ -14,61 +14,101 @@ import { DecryptedFile } from "./DecryptedFile";
 import { Row, Col, Button, Spinner } from "react-bootstrap";
 
 const isFileEncrypted = (file: File) => file.name.indexOf(".scytale") > -1;
-const processFile = async (
-  file: File
-): Promise<EncryptedFileView | DecryptedFileView> => {
-  if (isFileEncrypted(file)) {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(
-          toDecryptedFileView({ name: "test.file", decryptedFile: file })
-        );
-      }, 1000);
-    });
-  } else {
-    const encryptedFile = await encryptFile(file);
-    encryptedFiles.add(encryptedFile);
 
-    return toEncryptedFileView(encryptedFiles.getLast());
+type EncryptedFileState = {
+  kind: "download_encrypted_file";
+  file: EncryptedFileView;
+};
+
+type DecryptedFileState = {
+  kind: "download_decrypted_file";
+  file: DecryptedFileView;
+};
+
+type LoadingState = {
+  kind: "loading";
+  file: File;
+};
+
+type VaultState =
+  | {
+      kind: "upload";
+    }
+  | LoadingState
+  | EncryptedFileState
+  | DecryptedFileState;
+
+const nextState = (
+  currentState: VaultState,
+  file?: File,
+  encryptedFile?: EncryptedFileView,
+  decryptedFile?: DecryptedFileView
+): VaultState => {
+  switch (currentState.kind) {
+    case "upload":
+      return { kind: "loading", file };
+    case "loading": {
+      console.log(encryptedFile, decryptedFile);
+      if (encryptedFile) {
+        return { kind: "download_encrypted_file", file: encryptedFile };
+      } else {
+        return { kind: "download_decrypted_file", file: decryptedFile };
+      }
+    }
+    case "download_encrypted_file":
+      return { kind: "upload" };
+    case "download_decrypted_file":
+      return { kind: "upload" };
+    default:
+      return currentState;
   }
 };
 
 const Vault = () => {
-  const [file, setFile] = useState<EncryptedFileView | DecryptedFileView>();
-  const [loading, setLoading] = useState(false);
+  const [state, setState] = useState<VaultState>({ kind: "upload" });
+
   const onFileAdded = async (file: File) => {
-    setLoading(true);
+    setState(nextState(state, file));
+  };
 
-    const processedFile = await processFile(file);
-
-    setFile(processedFile);
-    setLoading(false);
+  const processFile = async (file: File) => {
+    if (isFileEncrypted(file)) {
+      setTimeout(() => {
+        setState(
+          nextState(
+            state,
+            undefined,
+            undefined,
+            toDecryptedFileView({
+              name: "test.file",
+              decryptedFile: file,
+            })
+          )
+        );
+      }, 1000);
+    } else {
+      const encryptedFile = await encryptFile(file);
+      encryptedFiles.add(encryptedFile);
+      setState(
+        nextState(
+          state,
+          undefined,
+          toEncryptedFileView(encryptedFiles.getLast())
+        )
+      );
+    }
   };
 
   return (
     <Layout>
       <Row>
         <Col className="col-md-6 offset-md-3">
-          {file ? (
-            <>
-              {"password" in file ? (
-                <EncryptedFile file={file} />
-              ) : (
-                <DecryptedFile file={file} />
-              )}
-              <Row>
-                <Col className="col-md-2 offset-5" style={{ marginTop: 10 }}>
-                  <Button
-                    className="self-align-center"
-                    onClick={() => setFile(null)}
-                  >
-                    Start
-                  </Button>
-                </Col>
-              </Row>
-            </>
-          ) : loading ? (
-            <div className="text-center">
+          {state.kind === "loading" && (
+            <div className="text-center" onLoad={() => processFile(state.file)}>
+              <img
+                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
+                onLoad={() => processFile(state.file)}
+              />
               <Spinner
                 data-testid="spinner"
                 style={{ width: "20rem", height: "20rem" }}
@@ -78,9 +118,38 @@ const Vault = () => {
                 <span className="visually-hidden">Loading...</span>
               </Spinner>
             </div>
-          ) : (
-            <Uploader onFileAdded={onFileAdded} />
           )}
+          {state.kind === "download_encrypted_file" && (
+            <>
+              <EncryptedFile file={state.file} />
+              <Row>
+                <Col className="col-md-2 offset-5" style={{ marginTop: 10 }}>
+                  <Button
+                    className="self-align-center"
+                    onClick={() => setState(nextState(state))}
+                  >
+                    Start
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+          {state.kind === "download_decrypted_file" && (
+            <>
+              <DecryptedFile file={state.file} />
+              <Row>
+                <Col className="col-md-2 offset-5" style={{ marginTop: 10 }}>
+                  <Button
+                    className="self-align-center"
+                    onClick={() => setState(nextState(state))}
+                  >
+                    Start
+                  </Button>
+                </Col>
+              </Row>
+            </>
+          )}
+          {state.kind === "upload" && <Uploader onFileAdded={onFileAdded} />}
         </Col>
       </Row>
     </Layout>
