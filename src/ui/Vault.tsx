@@ -11,7 +11,8 @@ import {
 import { encryptFile } from "core/encryption";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
-import { Row, Col, Button, Spinner } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
+import { Spinner } from "./Spinner";
 
 const isFileEncrypted = (file: File) => file.name.indexOf(".scytale") > -1;
 
@@ -104,19 +105,8 @@ const Vault = () => {
       <Row>
         <Col className="col-md-6 offset-md-3">
           {state.kind === "loading" && (
-            <div className="text-center" onLoad={() => processFile(state.file)}>
-              <img
-                src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="
-                onLoad={() => processFile(state.file)}
-              />
-              <Spinner
-                data-testid="spinner"
-                style={{ width: "20rem", height: "20rem" }}
-                animation="grow"
-                role="status"
-              >
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
+            <div className="text-center">
+              <Spinner onLoad={() => processFile(state.file)} />
             </div>
           )}
           {state.kind === "download_encrypted_file" && (

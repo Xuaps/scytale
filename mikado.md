@@ -3,7 +3,8 @@ _ Decrypt file
   _ decrypt file
     X add missing unit test
     _ ask for password
-      _ divide vault in three components
+      X encapsulate onload
+      X divide vault in three components
   _ change image
 
 _ Internationalize
