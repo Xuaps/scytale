@@ -9,18 +9,24 @@ export type DecryptedFileView = Pick<DecryptedFile, "name"> & {
   decryptedData: File;
 };
 
-export const toEncryptedFileView = (
-  file: EncryptedFile
-): EncryptedFileView => ({
+const toEncryptedFileView = (file: EncryptedFile): EncryptedFileView => ({
   id: file.id,
   name: file.name,
   encryptedData: file.encryptedFile,
   password: file.password,
 });
 
-export const toDecryptedFileView = (
-  file: DecryptedFile
-): DecryptedFileView => ({
+const toDecryptedFileView = (file: DecryptedFile): DecryptedFileView => ({
   name: file.name,
   decryptedData: file.decryptedFile,
 });
+
+export const mapToView = (
+  file: EncryptedFile | DecryptedFile
+): EncryptedFileView | DecryptedFileView => {
+  if ("password" in file) {
+    return toEncryptedFileView(file);
+  } else {
+    return toDecryptedFileView(file);
+  }
+};

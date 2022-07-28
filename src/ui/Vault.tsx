@@ -1,20 +1,12 @@
 import React, { useState } from "react";
-import { encryptedFiles } from "store";
 import Layout from "./Layout";
 import Uploader from "./Uploader";
-import {
-  DecryptedFileView,
-  EncryptedFileView,
-  toEncryptedFileView,
-  toDecryptedFileView,
-} from "./mappers";
-import { encryptFile } from "core/encryption";
+import { DecryptedFileView, EncryptedFileView, mapToView } from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
 import { Row, Col, Button } from "react-bootstrap";
 import { Spinner } from "./Spinner";
-
-const isFileEncrypted = (file: File) => file.name.indexOf(".scytale") > -1;
+import { processFile } from "../actions/process-file";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -41,19 +33,20 @@ type VaultState =
 
 const nextState = (
   currentState: VaultState,
-  file?: File,
-  encryptedFile?: EncryptedFileView,
-  decryptedFile?: DecryptedFileView
+  processedFile?: File | EncryptedFileView | DecryptedFileView
 ): VaultState => {
   switch (currentState.kind) {
-    case "upload":
-      return { kind: "loading", file };
+    case "upload": {
+      return { kind: "loading", file: processedFile as File };
+    }
     case "loading": {
-      console.log(encryptedFile, decryptedFile);
-      if (encryptedFile) {
-        return { kind: "download_encrypted_file", file: encryptedFile };
+      if ("password" in processedFile) {
+        return { kind: "download_encrypted_file", file: processedFile };
       } else {
-        return { kind: "download_decrypted_file", file: decryptedFile };
+        return {
+          kind: "download_decrypted_file",
+          file: processedFile as DecryptedFileView,
+        };
       }
     }
     case "download_encrypted_file":
@@ -72,41 +65,19 @@ const Vault = () => {
     setState(nextState(state, file));
   };
 
-  const processFile = async (file: File) => {
-    if (isFileEncrypted(file)) {
-      setTimeout(() => {
-        setState(
-          nextState(
-            state,
-            undefined,
-            undefined,
-            toDecryptedFileView({
-              name: "test.file",
-              decryptedFile: file,
-            })
-          )
-        );
-      }, 1000);
-    } else {
-      const encryptedFile = await encryptFile(file);
-      encryptedFiles.add(encryptedFile);
-      setState(
-        nextState(
-          state,
-          undefined,
-          toEncryptedFileView(encryptedFiles.getLast())
-        )
-      );
-    }
-  };
-
   return (
     <Layout>
       <Row>
         <Col className="col-md-6 offset-md-3">
           {state.kind === "loading" && (
             <div className="text-center">
-              <Spinner onLoad={() => processFile(state.file)} />
+              <Spinner
+                onLoad={async () =>
+                  setState(
+                    nextState(state, mapToView(await processFile(state.file)))
+                  )
+                }
+              />
             </div>
           )}
           {state.kind === "download_encrypted_file" && (
