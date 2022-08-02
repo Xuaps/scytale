@@ -1,12 +1,21 @@
 import React, { useState } from "react";
 import Layout from "./Layout";
 import Uploader from "./Uploader";
-import { DecryptedFileView, EncryptedFileView, mapToView } from "./mappers";
+import {
+  DecryptedFileView,
+  EncryptedFileView,
+  toDecryptedFileView,
+  toEncryptedFileView,
+} from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
 import { Row, Col, Button } from "react-bootstrap";
 import { Spinner } from "./Spinner";
-import { processFile } from "../actions/process-file";
+import {
+  decryptNewFile,
+  encryptNewFile,
+  isFileEncrypted,
+} from "../actions/process-file";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -65,6 +74,16 @@ const Vault = () => {
     setState(nextState(state, file));
   };
 
+  const processFile = async () => {
+    if (state.kind !== "loading") return;
+
+    if (isFileEncrypted(state.file)) {
+      return toDecryptedFileView(await decryptNewFile(state.file));
+    } else {
+      return toEncryptedFileView(await encryptNewFile(state.file));
+    }
+  };
+
   return (
     <Layout>
       <Row>
@@ -73,9 +92,7 @@ const Vault = () => {
             <div className="text-center">
               <Spinner
                 onLoad={async () =>
-                  setState(
-                    nextState(state, mapToView(await processFile(state.file)))
-                  )
+                  setState(nextState(state, await processFile()))
                 }
               />
             </div>

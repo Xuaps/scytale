@@ -5,10 +5,10 @@ _ Decrypt file
     _ ask for password
       X encapsulate onload
       X divide vault in three components
-      _ separate behaviour from data
-        _ vault
-        _ mapper
-        _ action
+      X separate behaviour from data
+        X vault
+        X mapper
+        X action
       _ add test to processFile action
   _ change image
 
