@@ -9,13 +9,14 @@ import {
 } from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
-import { Row, Col, Button } from "react-bootstrap";
+import { Row, Col, Button, Form } from "react-bootstrap";
 import { Spinner } from "./Spinner";
 import {
   decryptNewFile,
   encryptNewFile,
   isFileEncrypted,
 } from "../actions/process-file";
+import { Password } from "./Password";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -30,23 +31,42 @@ type DecryptedFileState = {
 type LoadingState = {
   kind: "loading";
   file: File;
+  password?: string;
+};
+
+type AskPasswordState = {
+  kind: "ask_password";
+  file: File;
 };
 
 type VaultState =
   | {
       kind: "upload";
     }
+  | AskPasswordState
   | LoadingState
   | EncryptedFileState
   | DecryptedFileState;
 
 const nextState = (
   currentState: VaultState,
-  processedFile?: File | EncryptedFileView | DecryptedFileView
+  processedFile?: File | EncryptedFileView | DecryptedFileView,
+  password?: string
 ): VaultState => {
   switch (currentState.kind) {
     case "upload": {
-      return { kind: "loading", file: processedFile as File };
+      if (!(processedFile instanceof File)) return currentState;
+
+      if (isFileEncrypted(processedFile)) {
+        return { kind: "ask_password", file: processedFile };
+      } else {
+        return { kind: "loading", file: processedFile };
+      }
+    }
+    case "ask_password": {
+      if (!(processedFile instanceof File)) return currentState;
+
+      return { kind: "loading", file: processedFile, password };
     }
     case "loading": {
       if ("password" in processedFile) {
@@ -88,6 +108,13 @@ const Vault = () => {
     <Layout>
       <Row>
         <Col className="col-md-6 offset-md-3">
+          {state.kind === "ask_password" && (
+            <Password
+              onPassword={(password) =>
+                setState(nextState(state, state.file, password))
+              }
+            />
+          )}
           {state.kind === "loading" && (
             <div className="text-center">
               <Spinner

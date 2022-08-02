@@ -23,6 +23,12 @@ export const Scytale = {
 
     return Scytale;
   },
+  setPassword: (password: string) => {
+    cy.get("input[type=password]").type(password);
+    cy.get("button").click();
+
+    return Scytale;
+  },
   downloadFile: () => {
     cy.get(".btn-secondary").click();
 

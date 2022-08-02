@@ -6,6 +6,7 @@ describe("Decrypt file", () => {
       .uploadFile(
         "cypress/fixtures/0G4K4QPJUDE47Q9hlpj7CecZOM2tL4TCI4ciKob-rBS1T-XVgMSbX0_J8W6mi17LNE3YkR0.scytale"
       )
+      .setPassword("IxiZH8gqPF/OWqft16eCjZ1WyhU=")
       .checkSpinnerVisible()
       .checkFileNameVisible();
   });
