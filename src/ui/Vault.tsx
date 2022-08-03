@@ -98,7 +98,9 @@ const Vault = () => {
     if (state.kind !== "loading") return;
 
     if (isFileEncrypted(state.file)) {
-      return toDecryptedFileView(await decryptNewFile(state.file));
+      return toDecryptedFileView(
+        await decryptNewFile(state.file, state.password)
+      );
     } else {
       return toEncryptedFileView(await encryptNewFile(state.file));
     }

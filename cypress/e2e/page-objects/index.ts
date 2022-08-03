@@ -39,8 +39,8 @@ export const Scytale = {
 
     return Scytale;
   },
-  checkFileNameVisible: () => {
-    cy.get(".card-title").should("have.text", "test.file");
+  checkFileNameVisible: (filename = "test.file") => {
+    cy.get(".card-title").should("have.text", filename);
 
     return Scytale;
   },

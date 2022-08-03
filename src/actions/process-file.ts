@@ -1,4 +1,4 @@
-import { encryptFile } from "core/encryption";
+import { decryptFile, encryptFile } from "core/encryption";
 import { encryptedFiles } from "store";
 import { DecryptedFile, EncryptedFile } from "../core/model";
 
@@ -12,13 +12,12 @@ export const encryptNewFile = async (file: File): Promise<EncryptedFile> => {
   return encryptedFiles.getLast();
 };
 
-export const decryptNewFile = async (file: File): Promise<DecryptedFile> => {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
-        name: "test.file",
-        decryptedFile: file,
-      });
-    }, 1000);
-  });
+export const decryptNewFile = async (
+  file: File,
+  password: string
+): Promise<DecryptedFile> => {
+  const fileID = file.name.split(".")[0];
+  const decryptedFile = await decryptFile(fileID, file, password);
+
+  return decryptedFile;
 };

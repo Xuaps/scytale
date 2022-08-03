@@ -4,10 +4,10 @@ describe("Decrypt file", () => {
   it("should show a loader and decrypt the file", () => {
     Scytale.load()
       .uploadFile(
-        "cypress/fixtures/0G4K4QPJUDE47Q9hlpj7CecZOM2tL4TCI4ciKob-rBS1T-XVgMSbX0_J8W6mi17LNE3YkR0.scytale"
+        "cypress/fixtures/EZTghagSe4vJ4EJTF0zSOa0MYyzxBl5wrAR0c-AK3_MCA64aq51MZT5ECUjs-A9q27oQGIzqFum56eZ8Jy3N2AqQb1UGHBDR76ENFHa5V-U.scytale"
       )
-      .setPassword("IxiZH8gqPF/OWqft16eCjZ1WyhU=")
+      .setPassword("Kw+A+SokSR3WL1RD5PQxzDVLeu4=")
       .checkSpinnerVisible()
-      .checkFileNameVisible();
+      .checkFileNameVisible("finger-pressing-virtual-lock (1).jpg");
   });
 });
