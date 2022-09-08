@@ -1,16 +1,19 @@
 _ Decrypt file
   X detect file
-  _ decrypt file
+  X decrypt file
     X add missing unit test
-    _ ask for password
+    X ask for password
       X encapsulate onload
       X divide vault in three components
       X separate behaviour from data
         X vault
         X mapper
         X action
-      _ add test to processFile action
+      / add test to processFile action
+  _ observability
+    _ configure honeycomb
   _ change image
+  _ share
 
 _ Internationalize
 
