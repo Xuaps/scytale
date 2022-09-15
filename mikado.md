@@ -11,7 +11,10 @@ _ Decrypt file
         X action
       / add test to processFile action
   _ observability
-    _ configure honeycomb
+    X configure honeycomb
+    _ first event (page load) as root trace (catch user session/user page view ?????)
+    _ request
+    _ user interactions
   _ change image
   _ share
 
