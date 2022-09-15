@@ -9,7 +9,7 @@ import {
 } from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { Spinner } from "./Spinner";
 import {
   decryptNewFile,
@@ -17,6 +17,7 @@ import {
   isFileEncrypted,
 } from "../actions/process-file";
 import { Password } from "./Password";
+import { trace, context } from "@opentelemetry/api";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -87,7 +88,7 @@ const nextState = (
   }
 };
 
-const Vault = () => {
+const Vault = ({ activeContext }) => {
   const [state, setState] = useState<VaultState>({ kind: "upload" });
 
   const onFileAdded = async (file: File) => {
@@ -98,11 +99,31 @@ const Vault = () => {
     if (state.kind !== "loading") return;
 
     if (isFileEncrypted(state.file)) {
-      return toDecryptedFileView(
-        await decryptNewFile(state.file, state.password)
-      );
+      return context.with(activeContext, async () => {
+        const span = trace
+          .getTracer("scytale", "1.0.0")
+          .startSpan("button_clicked", {
+            attributes: {
+              //Add your attributes to describe the button clicked here
+            },
+          });
+        const decryptedFile = await decryptNewFile(state.file, state.password);
+        span.end();
+        return toDecryptedFileView(decryptedFile);
+      });
     } else {
-      return toEncryptedFileView(await encryptNewFile(state.file));
+      return context.with(activeContext, async () => {
+        const span = trace
+          .getTracer("scytale", "1.0.0")
+          .startSpan("button_clicked", {
+            attributes: {
+              //Add your attributes to describe the button clicked here
+            },
+          });
+        const encryptedFile = await encryptNewFile(state.file);
+        span.end();
+        return toEncryptedFileView(encryptedFile);
+      });
     }
   };
 
