@@ -12,6 +12,11 @@ _ Decrypt file
       / add test to processFile action
   _ observability
     X configure honeycomb
+      x move var to environment file
+      _ start trace on page load
+      _ add span on user navigation
+      _ add span on user intercation
+
     _ first event (page load) as root trace (catch user session/user page view ?????)
     _ request
     _ user interactions

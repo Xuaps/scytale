@@ -1,6 +1,7 @@
 const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = ({ env }) => ({
   entry: "./src/Main.tsx",
@@ -54,5 +55,6 @@ module.exports = ({ env }) => ({
       filename: "../dist/index.html",
     }),
     new NodePolyfillPlugin(),
+    new Dotenv(),
   ],
 });
