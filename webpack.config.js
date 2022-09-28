@@ -1,3 +1,4 @@
+const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 
@@ -52,5 +53,6 @@ module.exports = ({ env }) => ({
       hash: true, // cache busting
       filename: "../dist/index.html",
     }),
+    new NodePolyfillPlugin(),
   ],
 });
