@@ -4,7 +4,30 @@
   http://jedwatson.github.io/classnames
 */
 
+/*!
+ * The buffer module from node.js, for the browser.
+ *
+ * @author   Feross Aboukhadijeh <feross@feross.org> <http://feross.org>
+ * @license  MIT
+ */
+
+/*! https://mths.be/punycode v1.3.2 by @mathias */
+
 /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */
+
+/**
+ * @license
+ * Copyright Google LLC All Rights Reserved.
+ *
+ * Use of this source code is governed by an MIT-style license that can be
+ * found in the LICENSE file at https://angular.io/license
+ */
+
+/**
+ * @license Angular v14.2.0-next.0
+ * (c) 2010-2022 Google LLC. https://angular.io/
+ * License: MIT
+ */
 
 /**
  * @license React
