@@ -9,7 +9,7 @@ import {
 } from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { Spinner } from "./Spinner";
 import {
   decryptNewFile,
