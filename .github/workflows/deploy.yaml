@@ -77,6 +77,7 @@ jobs:
   build-and-deploy:
     needs: [lint, test]
     concurrency: ci-${{ github.ref }} 
+    environment: production
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
