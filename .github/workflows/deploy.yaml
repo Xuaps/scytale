@@ -89,6 +89,15 @@ jobs:
           key: npm-${{ hashFiles('package-lock.json') }}
           restore-keys: npm-
 
+      - name: 'Create env file'
+        working-directory: ${{ env.APP_PATH }}
+        run: |
+          touch .env
+          echo HONEYCOMB_DATASET=${{ secrets.HONEYCOMB_DATASET }} >> .env
+          echo HONEYCOMB_WRITE_KEY=${{ secrets.HONEYCOMB_WRITE_KEY }} >> .env
+          echo HONEYCOMB_SERVICE_NAME=${{ secrets.HONEYCOMB_SERVICE_NAME }} >> .env
+          cat .env
+
       - name: Install dependencies
         working-directory: ${{ env.APP_PATH }} 
         run: |
