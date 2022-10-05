@@ -2,10 +2,9 @@ import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
 import { HoneycombExporter } from "opentelemetry-exporter-honeycomb";
-import { trace } from "@opentelemetry/api";
+import { trace, context, SpanKind } from "@opentelemetry/api";
 
 const tracer = trace.getTracer("scytale", "0.1.0");
-
 const options = {
   dataset: process.env.HONEYCOMB_DATASET,
   writeKey: process.env.HONEYCOMB_WRITE_KEY,
@@ -20,4 +19,9 @@ provider.register({
   contextManager: new ZoneContextManager(),
 });
 
-export default tracer;
+function withContext(span, fn, thisArg, ...args) {
+  const ctx = trace.setSpan(context.active(), span);
+  context.with(ctx, fn, thisArg, args);
+}
+
+export { tracer, SpanKind, withContext };
