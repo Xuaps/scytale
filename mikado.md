@@ -13,9 +13,11 @@ _ Decrypt file
   _ observability
     X configure honeycomb
       x move var to environment file
-      _ start trace on page load
+      x start trace on page load
       _ add span on user navigation
-      _ add span on user intercation
+      x add span on user intercation
+      _ trace parent relationship
+      _ simplify tracing api
 
     _ first event (page load) as root trace (catch user session/user page view ?????)
     _ request
