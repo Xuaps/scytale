@@ -9,7 +9,7 @@ import {
 } from "./mappers";
 import { EncryptedFile } from "./EncryptedFile";
 import { DecryptedFile } from "./DecryptedFile";
-import { Row, Col, Button, Form } from "react-bootstrap";
+import { Row, Col, Button } from "react-bootstrap";
 import { Spinner } from "./Spinner";
 import {
   decryptNewFile,
@@ -17,6 +17,7 @@ import {
   isFileEncrypted,
 } from "../actions/process-file";
 import { Password } from "./Password";
+import { tracer } from "../tracing";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -91,18 +92,32 @@ const Vault = () => {
   const [state, setState] = useState<VaultState>({ kind: "upload" });
 
   const onFileAdded = async (file: File) => {
+    const span = tracer.startSpan("onFileAdded");
     setState(nextState(state, file));
+    span.end();
   };
 
   const processFile = async () => {
     if (state.kind !== "loading") return;
 
     if (isFileEncrypted(state.file)) {
-      return toDecryptedFileView(
+      const span = tracer.startSpan("decryptNewFile");
+      const decriptedFile = toDecryptedFileView(
         await decryptNewFile(state.file, state.password)
       );
+      span.setAttribute("file.name", decriptedFile.name);
+      span.end();
+
+      return decriptedFile;
     } else {
-      return toEncryptedFileView(await encryptNewFile(state.file));
+      const span = tracer.startSpan("encryptNewFile");
+      const encryptedFile = toEncryptedFileView(
+        await encryptNewFile(state.file)
+      );
+      span.setAttribute("file.name", state.file.name);
+      span.end();
+
+      return encryptedFile;
     }
   };
 
