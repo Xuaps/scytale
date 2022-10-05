@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./tracing";
+import tracer from "./tracing";
 
 import "./style.css";
 import { App } from "./ui";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const span = tracer.startSpan("Loading app");
 
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
+
+span.end();
