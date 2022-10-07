@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Layout from "./Layout";
 import Uploader from "./Uploader";
 import {
@@ -18,6 +18,7 @@ import {
 } from "../actions/process-file";
 import { Password } from "./Password";
 import { tracer } from "../tracing";
+import { Context, Span, trace, context } from "@opentelemetry/api";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";
@@ -88,11 +89,18 @@ const nextState = (
   }
 };
 
+const rootSpan = tracer.startSpan("Vault");
+const ctx = trace.setSpan(context.active(), rootSpan);
+
 const Vault = () => {
+  useEffect(() => {
+    rootSpan.end();
+  }, []);
+
   const [state, setState] = useState<VaultState>({ kind: "upload" });
 
   const onFileAdded = async (file: File) => {
-    const span = tracer.startSpan("onFileAdded");
+    const span = tracer.startSpan("onFileAdded", undefined, ctx);
     setState(nextState(state, file));
     span.end();
   };
@@ -101,7 +109,7 @@ const Vault = () => {
     if (state.kind !== "loading") return;
 
     if (isFileEncrypted(state.file)) {
-      const span = tracer.startSpan("decryptNewFile");
+      const span = tracer.startSpan("decryptNewFile", undefined, ctx);
       const decriptedFile = toDecryptedFileView(
         await decryptNewFile(state.file, state.password)
       );
@@ -110,7 +118,7 @@ const Vault = () => {
 
       return decriptedFile;
     } else {
-      const span = tracer.startSpan("encryptNewFile");
+      const span = tracer.startSpan("encryptNewFile", undefined, ctx);
       const encryptedFile = toEncryptedFileView(
         await encryptNewFile(state.file)
       );

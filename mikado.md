@@ -16,7 +16,8 @@ _ Decrypt file
       x start trace on page load
       _ add span on user navigation
       x add span on user intercation
-      _ trace parent relationship
+      x trace parent relationship
+      _ fix exporter
       _ simplify tracing api
 
     _ first event (page load) as root trace (catch user session/user page view ?????)

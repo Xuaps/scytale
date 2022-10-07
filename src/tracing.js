@@ -1,4 +1,7 @@
-import { SimpleSpanProcessor } from "@opentelemetry/sdk-trace-base";
+import {
+  ConsoleSpanExporter,
+  SimpleSpanProcessor,
+} from "@opentelemetry/sdk-trace-base";
 import { WebTracerProvider } from "@opentelemetry/sdk-trace-web";
 import { ZoneContextManager } from "@opentelemetry/context-zone";
 import { HoneycombExporter } from "opentelemetry-exporter-honeycomb";
@@ -10,7 +13,7 @@ const options = {
   writeKey: process.env.HONEYCOMB_WRITE_KEY,
   serviceName: process.env.HONEYCOMB_SERVICE_NAME,
 };
-const exporter = new HoneycombExporter(options);
+const exporter = new ConsoleSpanExporter(); //new HoneycombExporter(options);
 const provider = new WebTracerProvider();
 provider.addSpanProcessor(new SimpleSpanProcessor(exporter));
 
