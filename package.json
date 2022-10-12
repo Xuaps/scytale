@@ -70,7 +70,6 @@
     "ejs": "^3.1.6",
     "js-base64": "^3.6.1",
     "libhoney": "^4.0.0",
-    "opentelemetry-exporter-honeycomb": "^0.1.1",
     "react": "^18.2.0",
     "react-bootstrap": "^2.4.0",
     "react-dom": "^18.2.0",
