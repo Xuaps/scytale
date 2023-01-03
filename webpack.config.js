@@ -2,6 +2,7 @@ const NodePolyfillPlugin = require("node-polyfill-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const Dotenv = require("dotenv-webpack");
+const WorkboxPlugin = require("workbox-webpack-plugin");
 
 module.exports = ({ env }) => ({
   entry: "./src/Main.tsx",
@@ -53,6 +54,13 @@ module.exports = ({ env }) => ({
       template: "public/index.html",
       hash: true, // cache busting
       filename: "../dist/index.html",
+    }),
+    new WorkboxPlugin.GenerateSW({
+      // these options encourage the ServiceWorkers to get in there fast
+      // and not allow any straggling "old" SWs to hang around
+      clientsClaim: true,
+      skipWaiting: true,
+      maximumFileSizeToCacheInBytes: 4194304,
     }),
     new NodePolyfillPlugin(),
     new Dotenv(),
