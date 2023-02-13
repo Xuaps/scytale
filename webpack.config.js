@@ -53,14 +53,14 @@ module.exports = ({ env }) => ({
     new HtmlWebpackPlugin({
       template: "public/index.html",
       hash: true, // cache busting
-      filename: "../dist/index.html",
+      output: {
+        filename: "index.html",
+      },
     }),
-    new WorkboxPlugin.GenerateSW({
-      // these options encourage the ServiceWorkers to get in there fast
-      // and not allow any straggling "old" SWs to hang around
-      clientsClaim: true,
-      skipWaiting: true,
+    new WorkboxPlugin.InjectManifest({
       maximumFileSizeToCacheInBytes: 4194304,
+      swSrc: "./sw/sw.js",
+      swDest: "sw.js",
     }),
     new NodePolyfillPlugin(),
     new Dotenv(),
