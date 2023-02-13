@@ -59,7 +59,7 @@ module.exports = ({ env }) => ({
     }),
     new WorkboxPlugin.InjectManifest({
       maximumFileSizeToCacheInBytes: 4194304,
-      swSrc: "./sw/sw.js",
+      swSrc: path.resolve(__dirname, "/src-sw/sw.js"),
       swDest: "sw.js",
     }),
     new NodePolyfillPlugin(),
