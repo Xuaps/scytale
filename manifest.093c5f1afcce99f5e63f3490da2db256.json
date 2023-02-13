@@ -1,0 +1,42 @@
+{
+  "icons": [
+    {
+      "src": "./icon_192x192.e60f4bbf7d47b18506b4b86cbb6aaf60.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon_168x168.2db27dc0ea4016c7f1bcd5b351384f19.png",
+      "sizes": "168x168",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon_144x144.0be9b3eb81b93e8ce7695f2223ded824.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon_96x96.6a59b6a898e91c8ba0e505dc6fd6dfd2.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon_72x72.5e0d039c6bd6b4573fb123ad6af0d419.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon_48x48.0629899ade748b480c6f7fbd35ebe187.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "name": "Scytale",
+  "short_name": "Scytale",
+  "orientation": "portrait",
+  "display": "standalone",
+  "start_url": ".",
+  "background_color": "#fff",
+  "theme_color": "#4285f4",
+  "description": "Encrypt and decrypt files in a secure way"
+}
