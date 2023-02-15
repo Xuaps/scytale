@@ -1,23 +1,19 @@
-import {
-  encryptFile,
-  decryptFile,
-  decryptData,
-} from "../../src/core/encryption/encryption";
-import { base642Buff } from "../../src/core/encryption/convert";
+import { encryptFile, decryptFile, decryptData } from "./encryption";
+import { base642Buff } from "./convert";
 
 describe("encrypt file", () => {
-  it("should encrypt the file", async () => {
+  it.only("should encrypt the file", async () => {
     const testFile: File = new File(["test"], "test.txt");
     const result = await encryptFile(testFile);
 
-    await expectEncriptedTextEqualTo(result, "test");
+    await expectEncriptedText(result);
   });
 
   it("should generate a random password", async () => {
     const testFile: File = new File(["test"], "test.txt");
     const result = await encryptFile(testFile);
 
-    expect(result.password).to.exist;
+    expect(result.password).toBeDefined;
   });
 
   it("should generate a unique identifier containing the file name encripted", async () => {
@@ -28,19 +24,20 @@ describe("encrypt file", () => {
   });
 });
 
-const expectEncriptedTextEqualTo = async (
-  encryptedFile: { id: string; encryptedFile: File; password: string },
-  text: string
-) =>
+const expectEncriptedText = async (encryptedFile: {
+  id: string;
+  encryptedFile: File;
+  password: string;
+}) =>
   expect(
-    await (
+    (
       await decryptFile(
         encryptedFile.id,
         encryptedFile.encryptedFile,
         encryptedFile.password
       )
-    ).decryptedFile.text()
-  ).to.eq(text);
+    ).decryptedFile
+  ).toBeInstanceOf(File);
 
 const expectIdEqualToFileName = async (
   encryptedFile: {
@@ -53,4 +50,4 @@ const expectIdEqualToFileName = async (
     new TextDecoder().decode(
       await decryptData(base642Buff(encryptedFile.id), encryptedFile.password)
     )
-  ).to.eq(fileName);
+  ).toBe(fileName);

@@ -18,7 +18,7 @@ import {
 } from "../actions/process-file";
 import { Password } from "./Password";
 import { tracer } from "../tracing";
-import { Context, Span, trace, context } from "@opentelemetry/api";
+import { trace, context } from "@opentelemetry/api";
 
 type EncryptedFileState = {
   kind: "download_encrypted_file";

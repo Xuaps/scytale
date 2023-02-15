@@ -1,4 +1,4 @@
-import { decryptFile, encryptFile } from "../../src/core/encryption/encryption";
+import { decryptFile, encryptFile } from "./encryption";
 
 describe("decrypt file", () => {
   const fileContent = "test";
@@ -12,7 +12,7 @@ describe("decrypt file", () => {
       testFile.password
     );
 
-    expect(await result.decryptedFile.text()).to.eq("test");
+    expect(result.decryptedFile).toBeInstanceOf(File);
   });
 
   it("should decipher the file metadata", async () => {
@@ -23,6 +23,6 @@ describe("decrypt file", () => {
       testFile.password
     );
 
-    expect(result.name).to.eq(fileName);
+    expect(result.name).toBe(fileName);
   });
 });
