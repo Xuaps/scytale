@@ -42,7 +42,7 @@
     "arraybuffer-equal": "^1.0.4",
     "babel-loader": "^8.2.5",
     "css-loader": "^6.7.3",
-    "cypress": "^10.2.0",
+    "cypress": "^12.8.0",
     "dotenv-webpack": "^8.0.1",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.5.0",
